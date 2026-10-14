@@ -1,0 +1,11 @@
+# 本地自检 / 调试残留文件（不上传到仓库）
+_*
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+
+# 编辑器
+.vscode/
+.idea/

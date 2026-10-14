@@ -1,0 +1,3982 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>蔡利莹 · 个人作品集</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    /* ========== Design Tokens（沿用 PPT 视觉系统）========== */
+    :root {
+      --c-primary: #002FA7;
+      --c-primary-dark: #0B2C67;
+      --c-primary-mid: #2758B5;
+      --c-primary-soft: #11377B;
+      --c-accent-yellow: #F2CF5D;
+      --c-accent-mint: #68CBE4;
+      --c-text: #18243A;
+      --c-text-light: #7088B5;
+      --c-bg: #FFFFFF;
+      --c-bg-soft: #FAFCFF;
+      --c-bg-blue-soft: #D6E4FA;
+      --c-border: #E5EAF2;
+
+      --font-serif: 'Noto Serif SC', 'Songti SC', serif;
+      --font-sans: 'Noto Sans SC', 'PingFang SC', sans-serif;
+      --font-en: 'Inter', system-ui, sans-serif;
+
+      --container: 1200px;
+      --container-narrow: 880px;
+
+      --space-1: 8px;
+      --space-2: 16px;
+      --space-3: 24px;
+      --space-4: 40px;
+      --space-5: 64px;
+      --space-6: 96px;
+      --space-7: 144px;
+    }
+
+    /* ========== Reset & Base ========== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      color: var(--c-text);
+      background: var(--c-bg);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ========== 顶部固定导航 ========== */
+    /* 默认在浅底上用深色；滚动出首页后 JS 切到浅色玻璃态 */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--c-border);
+      transition: background .3s ease, border-color .3s ease, color .3s ease;
+    }
+    /* 当 nav 在浅底 Hero 上方时：变成半透明深蓝 + 白字 */
+    .nav.on-light-hero {
+      background: rgba(11, 44, 103, 0.45);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,.15);
+    }
+    .nav.on-light-hero .nav-logo,
+    .nav.on-light-hero .nav-links a { color: #fff; }
+    .nav.on-light-hero .nav-links a:hover { color: var(--c-accent-yellow); }
+    .nav-inner {
+      max-width: var(--container); margin: 0 auto;
+      padding: 16px 32px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .nav-logo {
+      font-family: var(--font-en); font-weight: 600;
+      font-size: 14px; letter-spacing: 2px;
+      color: var(--c-primary);
+    }
+    .nav-links {
+      display: flex; gap: 34px; list-style: none;
+      font-family: var(--font-sans); font-size: 13px;
+      letter-spacing: 1px; color: var(--c-text);
+    }
+    .nav-links a { transition: color .2s; }
+    .nav-links a:hover { color: var(--c-primary); }
+
+    /* ===== 「品牌&产品」下拉子目录 ===== */
+    .nav-links li { position: relative; }
+    .nav-links .has-sub > a {
+      display: inline-flex; align-items: center; gap: 7px;
+    }
+    /* 小箭头：悬停时翻转为向上 */
+    .nav-links .has-sub > a::after {
+      content: ''; width: 5px; height: 5px; margin-top: -3px;
+      border-right: 1.4px solid currentColor;
+      border-bottom: 1.4px solid currentColor;
+      transform: rotate(45deg);
+      transition: transform .25s ease, margin-top .25s ease;
+    }
+    .nav-links .has-sub:hover > a::after,
+    .nav-links .has-sub:focus-within > a::after {
+      transform: rotate(225deg); margin-top: 3px;
+    }
+    .sub-menu {
+      position: absolute; top: 100%; left: 0;
+      /* 至少与主项标题同宽，随最长子项自适应；左右 14px 保证文字不顶边框 */
+      min-width: 100%;
+      /* 12px 间距：面板是独立悬浮卡，不再与 nav 顶边硬接 */
+      margin-top: 12px; padding: 10px 14px 12px;
+      list-style: none;
+      display: flex; flex-direction: column; gap: 2px;
+      background: rgba(255, 255, 255, .82);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--c-border);
+      border-radius: 12px;
+      box-shadow: 0 22px 44px -22px rgba(11, 44, 103, .35);
+      opacity: 0; visibility: hidden; pointer-events: none;
+      transform: translateY(6px);
+      transition: opacity .22s ease, transform .22s ease, visibility .22s;
+      z-index: 120;
+    }
+    /* 透明桥接层：鼠标从标题移到面板时不中断 hover */
+    .sub-menu::before {
+      content: ''; position: absolute; top: -12px; left: 0; right: 0; height: 12px;
+    }
+    .nav-links .has-sub:hover .sub-menu,
+    .nav-links .has-sub:focus-within .sub-menu {
+      opacity: 1; visibility: visible; pointer-events: auto;
+      transform: translateY(0);
+    }
+    /* 面板内文字始终为深色（覆盖深色 nav 态的白字）；padding-left:0 与主项文字对齐 */
+    .nav .nav-links .sub-menu a {
+      display: block; padding: 9px 0;
+      border-radius: 8px;
+      font-size: 13px; color: var(--c-text);
+      white-space: nowrap;
+      transition: background .2s ease, color .2s ease;
+    }
+    .nav .nav-links .sub-menu a:hover {
+      background: rgba(0, 47, 167, .06); color: var(--c-primary);
+    }
+    /* 深色玻璃 nav 态：面板跟随导航材质，深蓝半透明 */
+    .nav.on-light-hero .sub-menu {
+      background: rgba(13, 40, 96, .55);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255,255,255,.14);
+      box-shadow: 0 24px 44px -22px rgba(4, 16, 48, .55);
+    }
+    .nav.on-light-hero .nav-links .sub-menu a { color: rgba(255,255,255,.92); }
+    .nav.on-light-hero .nav-links .sub-menu a:hover {
+      background: rgba(255,255,255,.12); color: #fff;
+    }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+    }
+
+    /* ========== 通用 Page 结构 ========== */
+    .page {
+      min-height: 100vh;
+      padding: 120px 32px 80px;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .container { max-width: var(--container); margin: 0 auto; width: 100%; }
+    .container-narrow { max-width: var(--container-narrow); margin: 0 auto; width: 100%; }
+
+    /* ========== 通用排版元素 ========== */
+    .eyebrow {
+      font-family: var(--font-en); font-size: 12px;
+      letter-spacing: 3px; color: var(--c-primary);
+      text-transform: uppercase; font-weight: 500;
+      margin-bottom: 24px;
+    }
+    .eyebrow-muted { color: var(--c-text-light); }
+    .num-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font-en); font-size: 11px;
+      letter-spacing: 2px; color: var(--c-primary-mid);
+    }
+    .num-tag::before {
+      content: ''; display: block;
+      width: 32px; height: 1px; background: var(--c-primary-mid);
+    }
+    .display-title {
+      font-family: var(--font-serif);
+      font-weight: 600;
+      font-size: clamp(48px, 7vw, 88px);
+      line-height: 1.1;
+      letter-spacing: -1px;
+    }
+    .section-title {
+      font-family: var(--font-serif);
+      font-weight: 600;
+      font-size: clamp(36px, 5vw, 60px);
+      line-height: 1.15;
+    }
+    .lead {
+      font-size: 18px; line-height: 1.8; color: var(--c-text);
+      max-width: 640px;
+    }
+
+    /* ========== 占位图 ========== */
+    .img-placeholder {
+      background: linear-gradient(135deg, #EEF2F8 0%, #DCE3F0 100%);
+      border: 1px dashed #B0BDD2;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 8px;
+      color: var(--c-text-light);
+      font-family: var(--font-en); font-size: 12px;
+      letter-spacing: 1.5px; text-align: center;
+      padding: 24px;
+      border-radius: 4px;
+    }
+    /* 产品图点击跳转外链：悬停轻浮起，提示可点击 */
+    a.launch-link { display: block; border-radius: 4px; }
+    a.launch-link .img-placeholder {
+      transition: transform .45s cubic-bezier(.22, .61, .36, 1), box-shadow .45s ease;
+    }
+    a.launch-link:hover .img-placeholder,
+    a.launch-link:focus-visible .img-placeholder,
+    a.launch-link .award-figure,
+    a.launch-link img {
+      transition: transform .45s cubic-bezier(.22, .61, .36, 1), box-shadow .45s ease;
+    }
+    a.launch-link:hover .img-placeholder,
+    a.launch-link:focus-visible .img-placeholder,
+    a.launch-link:hover .award-figure,
+    a.launch-link:hover img,
+    a.launch-link:focus-visible .award-figure,
+    a.launch-link:focus-visible img {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 30px rgba(11, 44, 103, .14);
+    }
+
+    /* PDF 策划案文字链接：hover 划线提示可点击 */
+    a.case-pdf-link { text-decoration: none; cursor: pointer; }
+    a.case-pdf-link p,
+    a.case-pdf-link h4 { transition: opacity .3s ease; }
+    a.case-pdf-link:hover p,
+    a.case-pdf-link:focus-visible p,
+    a.case-pdf-link:hover h4,
+    a.case-pdf-link:focus-visible h4,
+    a.case-pdf-link.role-link:hover span,
+    a.case-pdf-link.role-link:focus-visible span { opacity: .72; text-decoration: underline; text-underline-offset: 4px; }
+
+    /* 策划案封面：整块可点开预览 */
+    button.deck-trigger {
+      display: block; width: 100%; padding: 0; margin: 0; border: 0;
+      background: none; cursor: pointer; font: inherit; color: inherit;
+      -webkit-appearance: none; appearance: none;
+    }
+    button.deck-trigger:focus-visible { outline: 2px solid var(--c-primary); outline-offset: 6px; border-radius: 6px; }
+
+    /* ===== 策划案预览弹层（站内浏览，无下载入口）===== */
+    .deck-viewer {
+      position: fixed; inset: 0; z-index: 200;
+      display: none; flex-direction: column;
+      background: rgba(9, 22, 44, .9);
+      -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+      opacity: 0; transition: opacity .32s ease;
+    }
+    .deck-viewer.open { display: flex; }
+    .deck-viewer.visible { opacity: 1; }
+
+    .deck-head {
+      flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; padding: 16px 28px;
+      border-bottom: 1px solid rgba(255, 255, 255, .12);
+    }
+    .deck-title .deck-name { color: #fff; font-size: 14px; letter-spacing: 1px; }
+    .deck-title .deck-meta { color: rgba(255, 255, 255, .5); margin-left: 10px; font-size: 12px; letter-spacing: 2px; }
+    .deck-close {
+      flex: 0 0 auto; width: 36px; height: 36px; border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, .28); background: transparent;
+      color: #fff; font-size: 16px; line-height: 1; cursor: pointer;
+      transition: background .25s ease, border-color .25s ease;
+    }
+    .deck-close:hover { background: rgba(255, 255, 255, .14); border-color: rgba(255, 255, 255, .5); }
+
+    .deck-body {
+      flex: 1 1 auto; overflow-y: auto; overflow-x: hidden;
+      padding: 32px 24px 72px;
+      display: flex; flex-direction: column; align-items: center; gap: 20px;
+      overscroll-behavior: contain;
+    }
+    .deck-body img {
+      display: block; width: 100%; max-width: 1080px; height: auto;
+      border-radius: 6px; box-shadow: 0 22px 48px rgba(0, 0, 0, .38);
+      -webkit-user-drag: none; user-select: none; -webkit-user-select: none;
+      pointer-events: none;
+    }
+    .deck-body img.deck-long { max-width: 880px; border-radius: 10px; }
+    .deck-page-no {
+      margin-top: 2px; color: rgba(255, 255, 255, .34); font-size: 11px; letter-spacing: 2px;
+    }
+    .deck-foot {
+      position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%);
+      color: rgba(255, 255, 255, .42); font-size: 11px; letter-spacing: 1.5px;
+      pointer-events: none;
+    }
+    body.deck-locked { overflow: hidden; }
+
+    @media (max-width: 720px) {
+      .deck-head { padding: 12px 16px; }
+      .deck-body { padding: 20px 12px 64px; gap: 14px; }
+    }
+
+    .img-placeholder strong {
+      font-size: 14px; color: var(--c-primary);  letter-spacing: 2px;
+    }
+    .img-placeholder .ph-cap { font-size: 11px; color: var(--c-text-light); }
+
+    /* ========== 滚动渐入 ========== */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s ease, transform .8s ease; }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: .1s; }
+    .reveal-delay-2 { transition-delay: .2s; }
+    .reveal-delay-3 { transition-delay: .3s; }
+
+    /* ============================================================ */
+    /* ========== Page 1 — Hero 封面（PPT 第 1 页）========== */
+    /* ============================================================ */
+    .page-1 {
+      /* 背景图：首页背景图1.jpg（丝绸质感的蓝白渐变）*/
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.35) 0%, rgba(214,228,250,.35) 100%);
+      background-color: #C6D6EE;
+      color: var(--c-primary-dark);
+      text-align: center;
+      padding: 0 32px;
+      position: relative; overflow: hidden;
+    }
+    /* 首页视差：丝绸背景独立图层，scale 放大留出位移余量，由 JS 驱动反向缓动 */
+    .page-1 .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background: url('home-bg.jpg') center/cover no-repeat;
+      transform: scale(1.08);
+      will-change: transform;
+      pointer-events: none;
+    }
+    .page-1 .hero-bg::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,.35) 0%, rgba(214,228,250,.35) 100%);
+    }
+    /* 去掉深色光晕遮罩——浅底浅图不再需要 */
+    .page-1::before { content: none; }
+    .hero-inner {
+      position: relative; z-index: 1;
+      /* 让文字在浅色图上始终清晰可读 */
+      text-shadow: 0 1px 2px rgba(255,255,255,.6);
+    }
+    .hero-mark {
+      font-family: var(--font-en); font-size: 11px;
+      letter-spacing: 6px; color: rgba(11,44,103,.65);
+      margin-bottom: 32px;
+    }
+    .hero-name {
+      font-family: var(--font-serif);
+      font-size: clamp(72px, 14vw, 200px);
+      font-weight: 600; line-height: 1; letter-spacing: 4px;
+      margin-bottom: 32px;
+      color: #002FA7; /* PPT 主色，呼应品牌识别 */
+    }
+    .hero-sub {
+      font-family: var(--font-en); font-size: 14px;
+      letter-spacing: 4px; color: rgba(11,44,103,.75);
+      font-weight: 500;
+    }
+    .hero-arrow {
+      position: absolute; bottom: 48px; left: 50%;
+      transform: translateX(-50%); z-index: 2;
+      color: rgba(255,255,255,.88);
+      text-shadow: 0 1px 12px rgba(4,20,50,.35);
+      font-size: 13px; letter-spacing: 4px;
+      /* 纯透明度呼吸：位置不动，避免截屏/录屏拍到两帧位移叠影 */
+      animation: arrow-breath 2.4s ease-in-out infinite;
+    }
+    @keyframes arrow-breath {
+      0%, 100% { opacity: 1; }
+      50% { opacity: .45; }
+    }
+
+    /* ========== Page 2 — 引言（PPT 第 2 页）========== */
+    .page-2 {
+      /* 背景图：克莱因蓝（IKB），全屏 cover */
+      background:
+        linear-gradient(180deg, rgba(0,47,167,.0) 0%, rgba(11,44,103,.15) 100%),
+        url('bg-klein.png') center/cover no-repeat;
+      text-align: center;
+      color: #fff;
+    }
+    .page-2 .display-title {
+      color: #fff; /* 纯白，确保在克莱因蓝上始终清晰 */
+      max-width: 900px; margin: 0 auto;
+      text-shadow: 0 2px 24px rgba(0,12,52,.4);
+    }
+    .page-2 .display-title::before, .page-2 .display-title::after {
+      content: ''; display: block; width: 64px; height: 1px;
+      background: rgba(255,255,255,.7); margin: 0 auto;
+    }
+    .page-2 .display-title::before { margin-bottom: 48px; }
+    .page-2 .display-title::after { margin-top: 48px; }
+    /* 金句入场编排：上下细线从中点向两端延展，两行字先后浮现（.in 触发，仅一次） */
+    .page-2 .display-title { opacity: 1; transform: none; } /* 覆盖全局 reveal，交给内部元素编排 */
+    .page-2 .display-title::before, .page-2 .display-title::after {
+      transform: scaleX(0);
+      transition: transform 1.1s cubic-bezier(.25, .1, .25, 1);
+    }
+    .page-2 .display-title::after { transition-delay: .55s; }
+    .page-2 .display-title .q-line {
+      display: inline-block;
+      opacity: 0; transform: translateY(28px);
+      transition: opacity .9s ease, transform .9s cubic-bezier(.25, .1, .25, 1);
+    }
+    .page-2 .display-title .q-line + br + .q-line { transition-delay: .38s; }
+    .page-2 .display-title.in::before, .page-2 .display-title.in::after { transform: scaleX(1); }
+    .page-2 .display-title.in .q-line { opacity: 1; transform: translateY(0); }
+
+    /* ========== Page 3 — 关于我（PPT 第 3 页）========== */
+    .page-3 {
+      /* 背景图：2023作品集背景2.jpg — 蓝白笔触 */
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.55) 0%, rgba(255,255,255,.62) 100%),
+        url('about-bg.jpg') center/cover no-repeat;
+      position: relative;
+    }
+    /* 三栏布局：文字 + 肖像 + 数据 */
+    .about-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.6fr) minmax(0, 0.95fr);
+      gap: 56px; align-items: start;
+    }
+    .about-text {
+      font-size: 17px; line-height: 2;
+      color: var(--c-text);
+      text-shadow: 0 1px 2px rgba(255,255,255,.45);
+    }
+    .about-text p { margin-bottom: 16px; }
+    .about-portrait {
+      margin: 0;
+      text-align: center;
+    }
+    /* 肖像裁切框：呼吸缩放被裁在框内，阴影挂在框上 */
+    .about-portrait .portrait-frame {
+      display: block;
+      overflow: hidden;
+      border-radius: 6px;
+      box-shadow:
+        0 16px 40px rgba(11,44,103,.18),
+        0 2px 8px rgba(11,44,103,.10);
+      transition: transform .5s ease, box-shadow .5s ease;
+    }
+    .about-portrait .portrait-frame:hover {
+      transform: translateY(-4px);
+      box-shadow:
+        0 22px 52px rgba(11,44,103,.22),
+        0 3px 10px rgba(11,44,103,.12);
+    }
+    .about-portrait img {
+      width: 100%;
+      display: block;
+      aspect-ratio: 3 / 4;
+      object-fit: cover;
+      object-position: center 28%; /* 略偏上，避免卡到画面下边缘 */
+      /* 与品牌蓝色调和谐：极轻微降饱和、提暖 */
+      filter: contrast(1.02) saturate(.96);
+      animation: portrait-breathe 12s ease-in-out infinite;
+      will-change: transform;
+    }
+    /* 肖像缓慢推近又退回，静止照片也有呼吸感 */
+    @keyframes portrait-breathe {
+      0%, 100% { transform: scale(1); }
+      50%      { transform: scale(1.045); }
+    }
+    /* ===== 自我介绍：简约大气——整页一次缓慢浮起（三栏近乎同速，仅极轻前后差） ===== */
+    .page-3 .about-text,
+    .page-3 .about-portrait,
+    .page-3 .about-side {
+      opacity: 0;
+      transform: translateY(26px);
+      transition:
+        opacity 1.25s cubic-bezier(.16, .84, .24, 1),
+        transform 1.25s cubic-bezier(.16, .84, .24, 1);
+    }
+    .page-3 .about-portrait.in { transition-delay: .09s; }
+    .page-3 .about-side.in { transition-delay: .18s; }
+    .page-3 .about-text.in,
+    .page-3 .about-portrait.in,
+    .page-3 .about-side.in { opacity: 1; transform: translateY(0); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .about-portrait img { animation: none; }
+      .page-5 .chapter-bg-inner,
+      .page-19 .chapter-bg-inner { animation: none; }
+      .page-3 .about-text,
+      .page-3 .about-portrait,
+      .page-3 .about-side {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+    }
+    .about-portrait .caption-en {
+      display: block;
+      margin-top: 20px;
+      font-family: var(--font-en); font-size: 11px;
+      letter-spacing: 3px; color: var(--c-primary);
+      text-transform: uppercase;
+    }
+    .about-portrait .caption-cn {
+      display: block;
+      margin-top: 6px;
+      font-family: var(--font-serif); font-size: 13px;
+      color: var(--c-text);
+      letter-spacing: 2px;
+    }
+    .about-side .num-card {
+      border: 1px solid rgba(255,255,255,.6);
+      background: rgba(255,255,255,.55);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 32px; margin-bottom: 16px;
+    }
+    .about-side .big {
+      font-family: var(--font-serif);
+      font-size: 80px; font-weight: 600;
+      color: var(--c-primary); line-height: 1;
+    }
+    .about-side .small {
+      font-family: var(--font-en); font-size: 11px;
+      letter-spacing: 2px; color: var(--c-text-light);
+      margin-top: 8px;
+    }
+    .about-side .chip {
+      display: inline-block; padding: 6px 12px;
+      background: rgba(214,228,250,.7);
+      color: var(--c-primary-dark);
+      font-size: 12px; margin: 4px 4px 4px 0;
+      border-radius: 2px;
+    }
+    .about-foot {
+      margin-top: 32px; padding-top: 24px;
+      border-top: 1px solid rgba(229,234,242,.7);
+      color: var(--c-text-light); font-size: 14px;
+    }
+
+    /* 平板：肖像移到顶部，单独一行 */
+    @media (max-width: 1024px) {
+      .about-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 48px;
+      }
+      .about-portrait {
+        grid-column: 1 / -1;
+        max-width: 280px;
+        margin: 0 auto;
+      }
+    }
+    /* 手机：全部单列 */
+    @media (max-width: 768px) {
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      .about-portrait {
+        grid-column: auto;
+        max-width: 220px;
+      }
+    }
+
+    /* ========== Page 4-5 — 我在做什么 ========== */
+    .page-4 {
+      /* 背景图：视觉背景.png — 蓝白水彩丝带 */
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.48) 0%, rgba(255,255,255,.58) 100%),
+        url('capabilities-bg.png') center/cover no-repeat;
+      color: var(--c-text);
+    }
+    .page-4 .eyebrow { color: var(--c-primary); }
+    .page-4 .section-title { color: var(--c-primary-dark); margin-bottom: 64px; text-shadow: 0 1px 2px rgba(255,255,255,.5); }
+    .capability-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+    .cap-card {
+      background: rgba(255,255,255,.55);
+      border: 1px solid rgba(255,255,255,.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 32px 24px;
+      transition: all .3s;
+      box-shadow: 0 8px 24px rgba(11,44,103,.08);
+    }
+    .cap-card:hover {
+      background: rgba(255,255,255,.75);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(11,44,103,.18);
+      border-color: rgba(255,255,255,.9);
+    }
+    .cap-card .num {
+      font-family: var(--font-en); font-size: 32px;
+      color: var(--c-primary); font-weight: 300;
+    }
+    .cap-card .en-label {
+      font-family: var(--font-en); font-size: 11px;
+      letter-spacing: 2px; color: var(--c-text-light);
+      margin: 12px 0 8px;
+    }
+    .cap-card .cn-label {
+      font-family: var(--font-serif);
+      font-size: 22px; font-weight: 600;
+      color: var(--c-primary-dark); margin-bottom: 16px;
+    }
+    .cap-card .cap-desc {
+      font-size: 13px; line-height: 1.7;
+      color: var(--c-text);
+    }
+    @media (max-width: 768px) {
+      .capability-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 480px) {
+      .capability-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Page-5 章节封面：蓝白水彩波纹背景 + 白蒙版，文字翻转深蓝 */
+    .page-5 {
+      position: relative;
+      background-color: #DFE8F4; /* 兜底底色 */
+      color: var(--c-text);
+    }
+    /* 章节封面背景：独立图层承载水彩缓流动画，外层由 JS 驱动鼠标视差（page-5 / page-19 共用） */
+    .page-5 > .chapter-bg,
+    .page-19 > .chapter-bg {
+      position: absolute; inset: 0; z-index: 0;
+      overflow: hidden;
+      will-change: transform;
+      pointer-events: none;
+    }
+    .page-5 .chapter-bg-inner,
+    .page-19 .chapter-bg-inner {
+      position: absolute; inset: 0;
+      background: url('chapter1-bg.jpg') center/cover no-repeat;
+      animation: bg-drift 16s ease-in-out infinite;
+      will-change: transform;
+    }
+    .page-19 .chapter-bg-inner {
+      background: url('chapter2-bg.jpg') center/cover no-repeat;
+    }
+    /* 水彩缓流：多段路径缓慢漂移（缩放在 1.08~1.17 之间呼吸，位移最大 ±3%） */
+    @keyframes bg-drift {
+      0%   { transform: scale(1.08) translate3d(0, 0, 0); }
+      25%  { transform: scale(1.13) translate3d(-2.4%, -1.4%, 0); }
+      50%  { transform: scale(1.17) translate3d(0.4%, 2%, 0); }
+      75%  { transform: scale(1.13) translate3d(2.6%, -1%, 0); }
+      100% { transform: scale(1.08) translate3d(0, 0, 0); }
+    }
+    .page-5::before {
+      content: '';
+      position: absolute; inset: 0; z-index: 1;
+      background: linear-gradient(180deg, rgba(255,255,255,.55) 0%, rgba(255,255,255,.42) 50%, rgba(255,255,255,.58) 100%);
+      pointer-events: none;
+    }
+    .page-5 > * { position: relative; z-index: 1; }
+    /* 下滑箭头是唯一直接挂在 page-5 上的 absolute 子元素，覆盖上述 relative 规则 */
+    .page-5 > svg.scroll-cue { position: absolute; z-index: 2; }
+    .chapter-cover {
+      text-align: center; min-height: 70vh;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+    }
+    .chapter-cover .vertical-cn {
+      font-family: var(--font-serif);
+      font-size: 96px; font-weight: 600;
+      letter-spacing: 24px; writing-mode: vertical-rl;
+      margin: 32px 0;
+    }
+    .chapter-cover .en {
+      font-family: var(--font-en); font-size: 12px;
+      letter-spacing: 6px; color: rgba(255,255,255,.6);
+    }
+    .chapter-cover .sub {
+      font-size: 18px; color: rgba(255,255,255,.8);
+      margin-top: 24px; letter-spacing: 4px;
+    }
+    /* page-5 浅底主题：文字翻转为深蓝，保证水彩波纹上清晰可读 */
+    .page-5 .display-title {
+      color: var(--c-primary);
+      text-shadow: 0 1px 18px rgba(255,255,255,.65);
+    }
+    .page-5 .eyebrow { color: var(--c-primary); opacity: .85; }
+    .page-5 .chapter-cover .en { color: rgba(11,44,103,.65); }
+    .page-5 .chapter-cover .sub { color: rgba(11,44,103,.8); }
+    /* page-5 下滑提示：底部居中的向下箭头，轻缓下沉引导滚动 */
+    .page-5 .scroll-cue {
+      position: absolute; left: 50%; bottom: 54px;
+      transform: translateX(-50%);
+      color: var(--c-primary);
+      opacity: .85;
+      filter: drop-shadow(0 1px 8px rgba(255,255,255,.7));
+      animation: cue-drift 2.2s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes cue-drift {
+      0%, 100% { transform: translateX(-50%) translateY(0); opacity: .85; }
+      55%      { transform: translateX(-50%) translateY(8px); opacity: .45; }
+      70%      { transform: translateX(-50%) translateY(8px); opacity: .45; }
+    }
+
+    /* ========== Page 17 — 蛙小侠（淡蓝丝绸背景：抽象曲面 + 珍珠气泡） ========== */
+    .page-17 {
+      position: relative;
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.5) 0%, rgba(255,255,255,.28) 45%, rgba(255,255,255,.08) 100%),
+        url('waxiaoxia-bg.webp') center/cover no-repeat;
+      background-color: #F5F9FF;
+    }
+    .page-17 .eyebrow { color: var(--c-primary); }
+    .page-17 .section-title { color: var(--c-primary); }
+    .page-17 .lead { color: rgba(11,44,103,.75); }
+    .page-17 .two-col h3 { color: var(--c-primary); }
+    .page-17 .two-col p { color: var(--c-text-light); }
+    .page-17 ul li { border-color: var(--c-border); }
+
+    /* ========== Page 18 — 华为 Cafebar（渐变蓝 × 咖啡吧图融合背景） ========== */
+    .page-18 {
+      position: relative;
+      background: url('cafebar-bg.jpg') center/cover no-repeat;
+      color: #fff;
+    }
+    .page-18::before {
+      content: '';
+      position: absolute; inset: 0;
+      pointer-events: none;
+      /* 蓝色渐变罩：左上饱和蓝压标题，向右下大幅减淡，咖啡吧场景透出 */
+      background: linear-gradient(160deg,
+        rgba(9, 35, 100, .92) 0%,
+        rgba(24, 72, 160, .78) 30%,
+        rgba(60, 120, 220, .50) 62%,
+        rgba(140, 190, 250, .10) 100%);
+    }
+    .page-18 .container { position: relative; z-index: 1; }
+    .page-18 .eyebrow { color: var(--c-accent-yellow); }
+    .page-18 .section-title { color: #fff; }
+    .page-18 .lead { color: rgba(255,255,255,.85); }
+    .page-18 h3, .page-18 h4, .page-18 h5 { color: #fff; }
+
+    /* ========== Page 6 — 新品内容营销 ========== */
+    .page-6 {
+      position: relative;
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.55) 0%, rgba(255,255,255,.3) 45%, rgba(255,255,255,.1) 100%),
+        url('newproduct-bg.webp') center/cover no-repeat;
+      overflow: hidden;
+    }
+    /* 笔触图本身偏右，给文字区加一层柔和白色洗白 */
+    .page-6::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(180deg, rgba(255,255,255,.35) 0%, rgba(255,255,255,0) 18%, rgba(255,255,255,0) 82%, rgba(255,255,255,.25) 100%);
+    }
+    .page-6 .container { position: relative; z-index: 1; }
+    /* 图位 1 改成玻璃卡，浮在笔触图上 */
+    .page-6 .img-placeholder.tall {
+      background: rgba(255, 255, 255, .55);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, .85);
+      box-shadow:
+        0 24px 60px -20px rgba(11, 44, 103, .35),
+        inset 0 1px 0 rgba(255, 255, 255, .9);
+    }
+    .page-6 .img-placeholder.tall strong { color: var(--c-primary); }
+    .page-6 .img-placeholder.tall .ph-cap { color: var(--c-text); opacity: .8; }
+    /* 笔触图蓝主调，章节 eyebrow 加一条蓝色装饰条 */
+    .page-6 .eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      color: var(--c-primary);
+    }
+    .page-6 .eyebrow::before {
+      content: ''; display: block; width: 28px; height: 2px;
+      background: var(--c-primary);
+    }
+    /* 标题加重一档，对得起这张大底图 */
+    .page-6 .section-title { color: var(--c-primary-dark); margin-bottom: 16px; }
+    .page-6 .lead { color: var(--c-text); }
+
+    /* Page 6 — 图位 1 双图并排（动态 + 静态海报，竖版自然比例）*/
+    /* Page 6 — 图位 1 横版物料上下双图（DS029 微信封面 + DS021 头图） */
+    .case-pair {
+      display: grid;
+      grid-template-rows: auto auto;
+      gap: 16px;
+    }
+    .case-pair figure {
+      position: relative;
+      margin: 0;
+      border-radius: 6px;
+      overflow: hidden;
+      background: #fff;
+      border: 1px solid rgba(255, 255, 255, .85);
+      box-shadow:
+        0 24px 60px -20px rgba(11, 44, 103, .35),
+        inset 0 1px 0 rgba(255, 255, 255, .9);
+      transition: transform .35s ease, box-shadow .35s ease;
+    }
+    .case-pair figure:hover {
+      transform: translateY(-3px);
+      box-shadow:
+        0 30px 70px -22px rgba(11, 44, 103, .45),
+        inset 0 1px 0 rgba(255, 255, 255, .9);
+    }
+    /* 横版图原比例展示：width 100%，height auto，永远不裁切 */
+    .case-pair img {
+      width: 100%; height: auto;
+      display: block;
+    }
+    .case-pair figcaption {
+      position: absolute;
+      bottom: 12px; left: 12px;
+      font-family: var(--font-en);
+      font-size: 11px; font-weight: 500;
+      letter-spacing: 1.5px;
+      color: #fff;
+      background: rgba(11, 44, 103, .82);
+      padding: 6px 10px;
+      border-radius: 2px;
+      backdrop-filter: blur(4px);
+    }
+    @media (max-width: 768px) {
+      .case-pair { gap: 12px; }
+      .case-pair figcaption { font-size: 10px; padding: 5px 8px; }
+    }
+    .two-col {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 64px; align-items: center;
+    }
+    .two-col.flip { direction: rtl; }
+    .two-col.flip > * { direction: ltr; }
+    .process-bar {
+      display: flex; align-items: center; gap: 12px;
+      margin: 32px 0; flex-wrap: wrap;
+    }
+    .process-bar .step {
+      font-size: 13px; color: var(--c-text);
+      padding: 6px 14px; background: #fff;
+      border: 1px solid var(--c-border);
+    }
+    .process-bar .arrow { color: var(--c-primary); }
+    .img-placeholder.tall { aspect-ratio: 4/5; }
+    /* 长图滑动阅读框：固定 4:5 视窗，内部滚动 */
+    .longpic-frame {
+      margin: 0;
+      aspect-ratio: 4/5;
+      overflow-y: auto;
+      background: #fff;
+      border: 1px solid #E3E8F0;
+      border-radius: 8px;
+      box-shadow: 0 18px 40px -22px rgba(11, 44, 103, .35);
+      scrollbar-width: thin;
+      scrollbar-color: #C4CFE4 transparent;
+    }
+    .longpic-frame img {
+      display: block; width: 100%; height: auto;
+      user-select: none; -webkit-user-drag: none;
+    }
+    .longpic-frame::-webkit-scrollbar { width: 6px; }
+    .longpic-frame::-webkit-scrollbar-track { background: transparent; }
+    .longpic-frame::-webkit-scrollbar-thumb { background: #C4CFE4; border-radius: 3px; }
+    /* 悬停提示可滚动 */
+    .longpic-frame { cursor: ns-resize; }
+    .img-placeholder.wide { aspect-ratio: 16/9; }
+    .img-placeholder.square { aspect-ratio: 1/1; }
+    .img-placeholder.portrait { aspect-ratio: 5/8; }
+
+    /* page-10 图位 7（DeepSeek 主视觉，圆角图本身带 24px 圆角） */
+    .img-placeholder.hot-cover {
+      background: transparent;
+      border: none;
+      padding: 0;
+      overflow: hidden;
+      border-radius: 16px;
+      box-shadow: 0 14px 36px -18px rgba(11, 44, 103, .3);
+    }
+    .img-placeholder.hot-cover img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform .5s ease;
+    }
+    .img-placeholder.hot-cover:hover img { transform: scale(1.02); }
+
+    /* 图位 2 (page-7) — 动态海报 GIF */
+    .img-placeholder.is-anim {
+      position: relative;
+      overflow: hidden;
+      background: #fff;
+      border: 1px solid var(--c-border);
+      border-radius: 4px;
+      margin: 0;
+      box-shadow: 0 12px 32px -16px rgba(11, 44, 103, .25);
+      transition: transform .35s ease, box-shadow .35s ease;
+    }
+    .img-placeholder.is-anim:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 18px 40px -18px rgba(11, 44, 103, .35);
+    }
+    .img-placeholder.is-anim img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+    }
+    .img-placeholder.is-anim figcaption {
+      position: absolute;
+      bottom: 12px; left: 12px;
+      font-family: var(--font-en);
+      font-size: 11px; font-weight: 500;
+      letter-spacing: 1.5px;
+      color: #fff;
+      background: rgba(11, 44, 103, .82);
+      padding: 6px 10px;
+      border-radius: 2px;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+    .img-placeholder.is-anim .dot {
+      display: inline-block;
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--c-accent-yellow);
+      margin-right: 6px;
+      vertical-align: middle;
+      animation: blink 1.6s ease-in-out infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: .35; }
+    }
+    @media (max-width: 768px) {
+      .two-col { grid-template-columns: 1fr; }
+    }
+
+    /* ========== Page 7 — 案例研究 ========== */
+    .page-7 {
+      /* DS029 案例页：淡蓝玻璃质感背景（预优化版），轻蒙版保深色文字可读 */
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.55) 0%, rgba(255,255,255,.3) 45%, rgba(255,255,255,.1) 100%),
+        url('ds029-bg.webp') center/cover no-repeat;
+    }
+    .case-hero {
+      display: grid; grid-template-columns: 2fr 1fr;
+      gap: 32px; margin-bottom: 64px;
+    }
+    .case-hero h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(32px, 4vw, 48px);
+      font-weight: 600; line-height: 1.3;
+      color: var(--c-text);
+    }
+    .case-hero h2 em {
+      color: var(--c-primary); font-style: normal;
+    }
+    .case-tag { color: var(--c-accent-yellow); }
+    /* 点击查看原文 → 外链入口（新品内容营销案例） */
+    .case-original-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 24px;
+      font-size: 13px; letter-spacing: .5px;
+      color: var(--c-primary-dark);
+      background: #fff;
+      border: 1px solid rgba(11, 44, 103, .25);
+      border-radius: 999px;
+      padding: 8px 18px;
+      text-decoration: none;
+      box-shadow: 0 8px 20px -14px rgba(11, 44, 103, .45);
+      transition: background .3s ease, color .3s ease, border-color .3s ease, transform .3s ease;
+    }
+    .case-original-link .arr {
+      display: inline-block;
+      transition: transform .3s ease;
+    }
+    .case-original-link:hover {
+      background: var(--c-primary);
+      border-color: var(--c-primary);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+    .case-original-link:hover .arr { transform: translateX(4px); }
+    .three-block {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 24px; margin-top: 32px;
+    }
+    .case-block {
+      background: var(--c-bg-soft);
+      padding: 32px 24px;
+      border-top: 2px solid var(--c-primary);
+    }
+    .case-block .block-num {
+      font-family: var(--font-en); font-size: 11px;
+      letter-spacing: 2px; color: var(--c-primary);
+    }
+    .case-block h4 {
+      font-family: var(--font-serif);
+      font-size: 20px; font-weight: 600;
+      margin: 12px 0;
+    }
+    .case-block p {
+      font-size: 14px; line-height: 1.7;
+      color: var(--c-text-light);
+    }
+    @media (max-width: 768px) {
+      .case-hero, .three-block { grid-template-columns: 1fr; }
+    }
+
+    /* ========== Page 8 — Selected Launch ========== */
+    .page-8 {
+      /* 传播锚点页：淡蓝玻璃质感背景（预优化版），轻蒙版保深色文字可读 */
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.55) 0%, rgba(255,255,255,.3) 45%, rgba(255,255,255,.1) 100%),
+        url('anchor-bg.webp') center/cover no-repeat;
+    }
+    .launch-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 20px; margin-top: 48px;
+    }
+    .launch-card {
+      background: #fff; padding: 24px;
+      border: 1px solid var(--c-border);
+      transition: all .3s;
+    }
+    .launch-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(11,44,103,.08);
+    }
+    .launch-card .launch-tag {
+      font-family: var(--font-en); font-size: 10px;
+      letter-spacing: 2px; color: var(--c-primary);
+      background: var(--c-bg-blue-soft);
+      padding: 4px 8px; display: inline-block; margin-bottom: 16px;
+    }
+    .launch-card .img-placeholder { aspect-ratio: 16/9; margin-bottom: 16px; }
+    /* launch-card 真图卡片样式（覆盖默认灰底占位） */
+    .launch-card figure.img-placeholder {
+      margin: 0 0 16px;
+      padding: 0;
+      background: transparent;
+      border: none;
+      overflow: hidden;
+      border-radius: 4px;
+      box-shadow: 0 12px 32px -16px rgba(11, 44, 103, .25);
+      transition: transform .35s ease, box-shadow .35s ease;
+    }
+    .launch-card figure.img-placeholder:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 18px 40px -18px rgba(11, 44, 103, .4);
+    }
+    .launch-card figure.img-placeholder img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+    }
+    .launch-card h4 {
+      font-family: var(--font-serif);
+      font-size: 18px; font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .launch-card p {
+      font-size: 13px; line-height: 1.6;
+      color: var(--c-text-light);
+    }
+    @media (max-width: 768px) {
+      .launch-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* ========== Page 9 — Brand Communication ========== */
+    /* 背景图：视觉背景.png（蓝白水彩），主题翻转为浅底深字 + 白玻璃卡 */
+    .page-9 {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.5) 0%, rgba(255,255,255,.62) 100%),
+        url('brand-comm-bg.jpg') center/cover no-repeat;
+      color: var(--c-text);
+    }
+    .page-9 .eyebrow { color: var(--c-primary); }
+    .page-9 .section-title {
+      color: var(--c-primary-dark);
+      text-shadow: 0 1px 2px rgba(255,255,255,.5);
+    }
+    .three-modules {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 32px; margin-top: 48px;
+    }
+    .module-card {
+      padding: 32px 24px;
+      background: rgba(255,255,255,.55);
+      border: 1px solid rgba(255,255,255,.5);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 4px;
+      box-shadow: 0 12px 32px -20px rgba(11, 44, 103, .25);
+    }
+    .module-card .m-num {
+      font-family: var(--font-en); font-size: 48px;
+      color: var(--c-primary); font-weight: 300;
+    }
+    .module-card h4 {
+      font-family: var(--font-serif);
+      font-size: 22px; font-weight: 600;
+      color: var(--c-primary-dark); margin: 16px 0 12px;
+    }
+    .module-card p {
+      font-size: 14px; line-height: 1.7;
+      color: var(--c-text);
+    }
+    @media (max-width: 768px) {
+      .three-modules { grid-template-columns: 1fr; }
+    }
+
+    /* ========== Page 10 — Hot Topic DeepSeek ========== */
+    .page-10 {
+      /* 热点页背景：淡蓝丝绸预优化图，轻纱级白蒙版（同 page-6/7/8 方案） */
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.55) 0%, rgba(255,255,255,.3) 45%, rgba(255,255,255,.1) 100%),
+        url('hotopic-bg.webp') center/cover no-repeat;
+      background-color: var(--c-bg-soft);
+    }
+    .hot-topic-grid {
+      display: grid; grid-template-columns: 1.3fr 1fr;
+      gap: 48px; align-items: start;
+      margin-top: 48px;
+    }
+    .hot-flow {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 20px; margin-top: 24px;
+    }
+    .flow-step {
+      padding: 24px; background: #fff;
+      border-left: 3px solid var(--c-primary);
+    }
+    .flow-step .step-label {
+      font-family: var(--font-en); font-size: 10px;
+      letter-spacing: 2px; color: var(--c-primary);
+      margin-bottom: 8px;
+    }
+    .flow-step h5 {
+      font-family: var(--font-serif);
+      font-size: 16px; font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .flow-step p { font-size: 13px; color: var(--c-text-light); }
+    @media (max-width: 768px) {
+      .hot-topic-grid, .hot-flow { grid-template-columns: 1fr; }
+    }
+
+    /* ========== Page 11 — Awards ========== */
+    .page-11 {
+      /* 获奖页背景：淡蓝玻璃光泽预优化图，轻纱级白蒙版（同 page-6~10 方案） */
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.55) 0%, rgba(255,255,255,.3) 45%, rgba(255,255,255,.1) 100%),
+        url('award-bg.webp') center/cover no-repeat;
+      background-color: var(--c-bg);
+    }
+    .award-flow {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 16px; margin: 32px 0;
+    }
+    .award-step {
+      padding: 20px; background: var(--c-bg-soft);
+      text-align: center;
+    }
+    .award-step .a-num {
+      font-family: var(--font-en); font-size: 28px;
+      color: var(--c-accent-yellow); font-weight: 300;
+    }
+    .award-step h5 {
+      font-family: var(--font-serif);
+      font-size: 15px; font-weight: 600;
+      margin: 8px 0 4px;
+    }
+    .award-step p { font-size: 12px; color: var(--c-text-light); }
+    .award-types {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 16px; margin-top: 32px;
+    }
+    .award-type {
+      padding: 24px; background: var(--c-bg-soft);
+      border-top: 2px solid var(--c-primary);
+    }
+    .award-type h4 {
+      font-family: var(--font-serif);
+      font-size: 18px; font-weight: 600;
+    }
+    /* 获奖页三张公众号卡片截图（808×572，自带日期/阅读数信息） */
+    .award-figure {
+      margin: 16px 0 0;
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 10px 26px -16px rgba(11, 44, 103, .3);
+    }
+    .award-figure img {
+      display: block; width: 100%; height: auto;
+    }
+    @media (max-width: 768px) {
+      .award-flow, .award-types { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* ========== Page 12 — Brand Moments ========== */
+    /* 整页背景：展会现场图 + 蓝色渐变罩层融合（顶部深保证标题可读，底部渐透出图） */
+    .page-12 {
+      position: relative;
+      background:
+        linear-gradient(180deg,
+          rgba(7, 22, 62, .95) 0%,
+          rgba(9, 34, 96, .82) 34%,
+          rgba(8, 40, 120, .58) 62%,
+          rgba(0, 47, 167, .32) 100%),
+        url('expo-booth.jpg') center/cover no-repeat;
+      color: #fff;
+    }
+    .page-12 .eyebrow { color: var(--c-accent-yellow); }
+    .page-12 .section-title { color: #fff; }
+    .moment-split {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 32px; margin-top: 48px;
+    }
+    /* 深蓝玻璃卡：让双卡在图片背景上依然清晰、有高级质感 */
+    .moment-side {
+      padding: 32px;
+      background: rgba(7, 26, 74, .42);
+      border: 1px solid rgba(255,255,255,.16);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-radius: 4px;
+      box-shadow: 0 16px 44px -20px rgba(0, 6, 32, .6);
+    }
+    .moment-side .moment-tag {
+      font-family: var(--font-en); font-size: 11px;
+      letter-spacing: 2px; color: var(--c-accent-yellow);
+    }
+    .moment-side h4 {
+      font-family: var(--font-serif);
+      font-size: 28px; font-weight: 600;
+      color: #fff; margin: 12px 0 24px;
+    }
+    .moment-side ul {
+      list-style: none; padding: 0;
+    }
+    .moment-side li {
+      padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,.1);
+      font-size: 14px;
+    }
+    .moment-side li::before {
+      content: '·'; color: var(--c-accent-yellow);
+      margin-right: 12px; font-size: 18px;
+    }
+    @media (max-width: 768px) {
+      .moment-split { grid-template-columns: 1fr; }
+    }
+
+    /* ========== Page 13 — Product Marketing ========== */
+    .page-13 {
+      /* 软文页背景：淡蓝光束预优化图，轻纱级白蒙版（同 page-6~11 方案） */
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.55) 0%, rgba(255,255,255,.3) 45%, rgba(255,255,255,.1) 100%),
+        url('softart-bg.webp') center/cover no-repeat;
+      background-color: var(--c-bg-soft);
+    }
+    .product-three {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 24px; margin-top: 48px;
+    }
+    .p-card {
+      background: #fff; padding: 32px 24px;
+      border: 1px solid var(--c-border);
+    }
+    .p-card .p-tag {
+      display: inline-block; padding: 4px 10px;
+      background: var(--c-primary); color: #fff;
+      font-family: var(--font-en); font-size: 10px;
+      letter-spacing: 1.5px; margin-bottom: 16px;
+    }
+    .p-card h4 {
+      font-family: var(--font-serif);
+      font-size: 20px; font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .p-card .p-sub {
+      font-size: 13px; color: var(--c-primary);
+      margin-bottom: 16px;
+    }
+    .p-card p {
+      font-size: 13px; line-height: 1.7;
+      color: var(--c-text-light);
+    }
+    .p-card .p-flow {
+      margin-top: 16px; padding-top: 16px;
+      border-top: 1px solid var(--c-border);
+      font-family: var(--font-en); font-size: 11px;
+      letter-spacing: 1px; color: var(--c-text-light);
+    }
+    @media (max-width: 768px) {
+      .product-three { grid-template-columns: 1fr; }
+    }
+
+    /* ========== Page 14 — Brand × Product 小章节过渡页（居中轻仪式感，区别于正文与大章节） ========== */
+    .page-14 {
+      /* 过渡页背景：同系列淡蓝图 + 稍重的白纱，让页面读起来像一次"停顿" */
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.74) 0%, rgba(255,255,255,.54) 50%, rgba(255,255,255,.68) 100%),
+        url('ds029-bg.webp') center/cover no-repeat;
+      background-color: var(--c-bg-soft);
+    }
+    .sub-cover {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; min-height: 62vh; padding: 0 24px;
+    }
+    .sub-cover .sc-eyebrow {
+      display: inline-flex; align-items: center; gap: 16px;
+      font-family: var(--font-en); font-size: 12px; font-weight: 500;
+      letter-spacing: .34em; color: var(--c-primary);
+    }
+    .sub-cover .sc-eyebrow::before,
+    .sub-cover .sc-eyebrow::after {
+      content: ""; width: 56px; height: 1px;
+    }
+    .sub-cover .sc-eyebrow::before { background: linear-gradient(90deg, rgba(19,62,169,0), rgba(19,62,169,.45)); }
+    .sub-cover .sc-eyebrow::after  { background: linear-gradient(90deg, rgba(19,62,169,.45), rgba(19,62,169,0)); }
+    .sub-cover .sc-title {
+      font-family: var(--font-serif); font-size: clamp(42px, 5.6vw, 72px); line-height: 1.36;
+      font-weight: 600; letter-spacing: -.01em;
+      color: var(--c-primary); margin: 30px 0 0;
+      text-shadow: 0 1px 20px rgba(255,255,255,.6);
+    }
+    .sub-cover .sc-sub {
+      margin-top: 22px; font-size: 16px; line-height: 1.9;
+      letter-spacing: .06em; color: rgba(11,44,103,.72);
+    }
+    /* 下滑竖杠：sub-cover 浅底用蓝；page-19 / page-25 深色底用白。共用同一套流动动画 */
+    .sub-cover .sc-mark,
+    .page-19 .sc-mark,
+    .page-25 .sc-mark {
+      position: relative; overflow: hidden;
+      width: 1px; height: 56px; margin-top: 40px;
+    }
+    .sub-cover .sc-mark {
+      background: linear-gradient(180deg, rgba(19,62,169,.35), rgba(19,62,169,.1));
+    }
+    .page-19 .sc-mark,
+    .page-25 .sc-mark {
+      width: 2px;
+      background: linear-gradient(180deg, rgba(255,255,255,.72), rgba(255,255,255,.3));
+      box-shadow: 0 0 12px rgba(255,255,255,.5);
+    }
+    /* page-19 竖排大字较占高度，收紧间距让竖杠留在首屏内 */
+    .page-19 { padding: 96px 32px 48px; }
+    .page-19 .vertical-cn {
+      font-size: 88px; letter-spacing: 20px; margin: 20px 0;
+    }
+    .page-19 .sc-mark { margin-top: 24px; }
+    .page-25 .sc-mark { margin-top: 32px; }
+    /* page-25 竖杠独立挂页面底部居中，与标题组拉开距离 */
+    .page-25 { position: relative; }
+    .page-25 .sc-mark {
+      position: absolute; left: 50%; bottom: 44px; margin-top: 0;
+    }
+    /* 光脉自上而下循环流动，提示向下浏览 */
+    .sub-cover .sc-mark::after,
+    .page-19 .sc-mark::after,
+    .page-25 .sc-mark::after {
+      content: ''; position: absolute; left: 0; top: 0;
+      width: 100%; height: 100%;
+      animation: scMarkFlow 2.2s cubic-bezier(.45, .05, .55, .95) infinite;
+    }
+    .sub-cover .sc-mark::after {
+      background: linear-gradient(180deg, rgba(19,62,169,0), rgba(19,62,169,.85) 50%, rgba(19,62,169,0));
+    }
+    .page-19 .sc-mark::after,
+    .page-25 .sc-mark::after {
+      background: linear-gradient(180deg, rgba(255,255,255,0), #fff 50%, rgba(255,255,255,0));
+    }
+    @keyframes scMarkFlow {
+      0%   { transform: translateY(-105%); opacity: 0; }
+      22%  { opacity: 1; }
+      72%  { opacity: 1; }
+      100% { transform: translateY(105%); opacity: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .sub-cover .sc-mark::after,
+      .page-19 .sc-mark::after,
+      .page-25 .sc-mark::after { animation: none; opacity: .5; }
+    }
+
+    /* ========== Page 15-18 — Brand Product Cases ========== */
+    /* page-15/16 婺源幽兰：AI 生成同系列淡蓝背景，轻纱级白蒙版（同 page-6~14 方案） */
+    .page-15 {
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.55) 0%, rgba(255,255,255,.3) 45%, rgba(255,255,255,.1) 100%),
+        url('youlan-bg.webp') center/cover no-repeat;
+      background-color: var(--c-bg-soft);
+    }
+    .page-16 {
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.55) 0%, rgba(255,255,255,.3) 45%, rgba(255,255,255,.1) 100%),
+        url('youlan-bg2.webp') center/cover no-repeat;
+      background-color: var(--c-bg-soft);
+    }
+    .case-detail-grid {
+      display: grid; grid-template-columns: 1fr 1.2fr;
+      gap: 64px; align-items: start;
+    }
+    .case-detail-grid.flip { direction: rtl; }
+    .case-detail-grid.flip > * { direction: ltr; }
+    .case-steps {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 16px; margin-top: 24px;
+    }
+    .case-step {
+      padding: 16px; background: var(--c-bg-soft);
+    }
+    .case-step .cs-num {
+      font-family: var(--font-en); font-size: 24px;
+      color: var(--c-primary); font-weight: 300;
+    }
+    .case-step h5 {
+      font-family: var(--font-serif);
+      font-size: 16px; font-weight: 600; margin: 8px 0 4px;
+    }
+    .case-step p { font-size: 12px; color: var(--c-text-light); }
+    .copy-pill {
+      display: inline-block; padding: 6px 14px;
+      background: var(--c-bg-blue-soft);
+      color: var(--c-primary-dark);
+      font-family: var(--font-serif);
+      font-size: 14px; margin: 4px;
+    }
+    @media (max-width: 768px) {
+      .case-detail-grid { grid-template-columns: 1fr; }
+    }
+
+    .page-19 {
+      /* 背景图层是 absolute，必须有定位祖先（同 page-5） */
+      position: relative;
+      background-color: #DFE8F4; /* 图片未加载时的兜底底色 */
+      color: var(--c-primary);
+      text-align: center;
+    }
+    /* 白纱蒙版独立成层（原与背景合写在 background 里，拆层后挂 ::before） */
+    .page-19::before {
+      content: '';
+      position: absolute; inset: 0; z-index: 1;
+      background: linear-gradient(180deg, rgba(255,255,255,.60) 0%, rgba(255,255,255,.44) 45%, rgba(255,255,255,.58) 100%);
+      pointer-events: none;
+    }
+    .page-19 > * { position: relative; z-index: 1; }
+    .page-19 .vertical-cn {
+      color: var(--c-primary);
+      text-shadow: 0 1px 18px rgba(255,255,255,.65);
+    }
+    .page-19 .eyebrow { color: var(--c-primary); opacity: .85; }
+    .page-19 .chapter-cover .en { color: rgba(11,44,103,.65); }
+    .page-19 .chapter-cover .sub { color: rgba(11,44,103,.8); }
+
+    /* ========== Page 20 — Social Media 数据页 =========== */
+    .page-20 {
+      background: var(--c-primary-dark); color: #fff;
+    }
+    .data-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 32px; margin-top: 48px;
+    }
+    .data-card {
+      padding: 32px 24px; background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.1);
+    }
+    .data-card .data-num {
+      font-family: var(--font-serif);
+      font-size: 64px; font-weight: 600;
+      color: var(--c-accent-yellow); line-height: 1;
+    }
+    .data-card .data-num .data-unit {
+      font-size: 24px; margin-left: 4px;
+    }
+    .data-card .data-label {
+      font-family: var(--font-en); font-size: 11px;
+      letter-spacing: 2px; color: rgba(255,255,255,.6);
+      margin-top: 16px;
+    }
+    .data-card .data-sub {
+      font-size: 13px; color: rgba(255,255,255,.8);
+      margin-top: 8px;
+    }
+    .channel-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 16px; margin-top: 32px;
+    }
+    .channel-pill {
+      padding: 12px 16px; background: rgba(255,255,255,.06);
+      font-size: 13px; text-align: center;
+    }
+    /* 社媒平台 logo 无缝滚动栏 */
+    .soc-marquee {
+      margin-top: 44px; overflow: hidden;
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+      mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+    }
+    .soc-track {
+      display: flex; align-items: center; gap: 56px;
+      width: max-content;
+      animation: soc-scroll 30s linear infinite;
+    }
+    .soc-marquee:hover .soc-track { animation-play-state: paused; }
+    .soc-item {
+      display: flex; align-items: center; gap: 10px;
+      color: rgba(255,255,255,.62); font-size: 13px; letter-spacing: 1px;
+      white-space: nowrap;
+    }
+    .soc-item img { height: 26px; opacity: .88; display: block; }
+    @keyframes soc-scroll {
+      to { transform: translateX(-50%); }
+    }
+
+    @media (max-width: 768px) {
+      .data-grid, .channel-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* ========== Page 21 — Matrix Works ========== */
+    .page-21 {
+      /* 多屏矩阵背景图：左侧文字区白蒙版重、右侧露出设备样机 */
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.92) 0%, rgba(255,255,255,.78) 45%, rgba(255,255,255,.38) 100%),
+        url('matrix-bg.jpg') center/cover no-repeat;
+    }
+    .matrix-flow {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 16px; margin-top: 32px;
+    }
+    .mf-step {
+      padding: 24px 16px;
+      background: rgba(255,255,255,.72);
+      border: 1px solid rgba(47, 115, 200, .35);
+      border-radius: 14px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 10px 28px -14px rgba(11, 44, 103, .22);
+      text-align: center;
+    }
+    .mf-step .mf-num {
+      font-family: var(--font-en); font-size: 36px;
+      color: var(--c-primary); font-weight: 300;
+    }
+    .mf-step h5 {
+      font-family: var(--font-serif);
+      font-size: 16px; font-weight: 600; margin: 8px 0;
+    }
+    .mf-step p {
+      font-size: 12px; color: var(--c-text-light);
+      line-height: 1.6;
+    }
+    @media (max-width: 768px) {
+      .matrix-flow { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* ========== Page 22 — B2B From Zero ========== */
+    .page-22 {
+      /* 小红书矩阵背景图：左侧文字区白蒙版重、右侧露出账号样机 */
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.94) 0%, rgba(255,255,255,.80) 45%, rgba(255,255,255,.40) 100%),
+        url('b2b-bg.jpg') center/cover no-repeat;
+    }
+    .b2b-stats {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 20px; margin-top: 32px;
+    }
+    .b2b-stat {
+      padding: 22px 20px;
+      background: rgba(255,255,255,.72);
+      border-radius: 16px;
+      backdrop-filter: blur(8px);
+      /* 弥散式柔影：多层大扩散低透明度，无边框 */
+      box-shadow:
+        0 18px 40px -12px rgba(47, 115, 200, .22),
+        0 8px 20px -6px rgba(47, 115, 200, .12),
+        0 2px 6px rgba(47, 115, 200, .06);
+    }
+    .b2b-stat .b-num {
+      font-family: var(--font-serif);
+      font-size: 40px; font-weight: 600;
+      color: var(--c-primary); line-height: 1;
+    }
+    .b2b-stat .b-label {
+      font-size: 13px; color: var(--c-text-light);
+      margin-top: 8px;
+    }
+    @media (max-width: 768px) {
+      .b2b-stats { grid-template-columns: 1fr; }
+    }
+
+    /* ========== Page 23 — B2B Product × Social ========== */
+    /* 平台语境背景图：左侧白蒙版保文字可读，右侧露出产品卡片视觉 */
+    .page-23 {
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.92) 0%, rgba(255,255,255,.78) 45%, rgba(255,255,255,.42) 100%),
+        url('platform-context-bg.jpg') center/cover no-repeat;
+    }
+    .b2b-pillars {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 24px; margin-top: 32px;
+    }
+
+    /* ========== Page 24 — Selected Social：三类别 × 3 竖版图位 ========== */
+    .sp-grid {
+      margin-top: 20px;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .sp-row {
+      display: flex; gap: 24px; align-items: stretch;
+    }
+    .sp-label {
+      width: 150px; flex-shrink: 0;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .sp-label .spl-en {
+      font-family: var(--font-en); font-size: 15px;
+      letter-spacing: 1.5px; font-weight: 600;
+      color: var(--c-primary);
+    }
+    .sp-label .spl-zh {
+      font-family: var(--font-serif); font-size: 20px; font-weight: 600;
+      color: var(--c-text); margin-top: 6px;
+    }
+    .sp-slots {
+      flex: 1;
+      display: grid; grid-template-columns: repeat(3, 190px);
+      gap: 16px;
+    }
+    .sp-slot {
+      aspect-ratio: 3 / 4; width: 100%;
+      border-radius: 10px; overflow: hidden;
+      border: 1.5px dashed rgba(47, 115, 200, .40);
+      background: rgba(255, 255, 255, .60);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; letter-spacing: 1px;
+      color: rgba(47, 115, 200, .55);
+    }
+    .sp-slot img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+    }
+
+    .b2b-pillar {
+      padding: 32px 24px; background: var(--c-bg-soft);
+      border-top: 3px solid var(--c-primary);
+    }
+    .b2b-pillar .bp-num {
+      font-family: var(--font-en); font-size: 36px;
+      color: var(--c-primary); font-weight: 300;
+    }
+    .b2b-pillar h4 {
+      font-family: var(--font-serif);
+      font-size: 22px; font-weight: 600;
+      margin: 12px 0 8px;
+    }
+    .b2b-pillar .bp-en {
+      font-family: var(--font-en); font-size: 11px;
+      letter-spacing: 1.5px; color: var(--c-primary);
+      margin-bottom: 12px;
+    }
+    .b2b-pillar p {
+      font-size: 13px; line-height: 1.7;
+      color: var(--c-text-light);
+    }
+    @media (max-width: 768px) {
+      .b2b-pillars { grid-template-columns: 1fr; }
+    }
+
+    /* ========== Page 24 — Selected Social ========== */
+    /* 小红书运营背景图：左侧白蒙版保文字/图位可读，右侧露出 IMAGE/VIDEO/SOCIAL 视觉 */
+    .page-24 {
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.90) 0%, rgba(255,255,255,.72) 45%, rgba(255,255,255,.30) 100%),
+        url('xhs-social-bg.png') center/cover no-repeat;
+    }
+    .social-tags {
+      display: flex; gap: 12px; flex-wrap: wrap;
+      margin-top: 24px;
+    }
+    .social-tag {
+      padding: 8px 16px; background: #fff;
+      border: 1px solid var(--c-border);
+      font-size: 13px;
+    }
+    /* page-32 多场景拍摄：hover 标签弹出对应场景剧照 */
+    .scene-head { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin-bottom: 16px; }
+    .scene-hint {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px; letter-spacing: .5px;
+      color: var(--c-text-light);
+    }
+    .scene-hint svg { width: 15px; height: 15px; flex-shrink: 0; stroke: currentColor; }
+    /* 标签均分占满一行 */
+    .scene-tags { display: flex; gap: 16px; flex-wrap: wrap; }
+    .scene-tag-wrap { position: relative; display: inline-block; flex: 1; min-width: 120px; }
+    .scene-tag-wrap .social-tag {
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%;
+      padding: 13px 20px; font-size: 15px;
+      background: #F2F7FF;
+      border: 1px dashed rgba(19,62,169,.4);
+      color: var(--c-primary);
+      transition: border-color .2s, border-style .2s, color .2s, background .2s, transform .2s, box-shadow .2s;
+    }
+    /* 摄影机小图标：暗示"这里可以看画面" */
+    .scene-tag-wrap .social-tag::before {
+      content: ""; width: 17px; height: 17px; flex-shrink: 0;
+      background: currentColor;
+      -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolygon points='23 7 16 12 23 17 23 7'/%3E%3Crect x='1' y='5' width='15' height='14' rx='2' ry='2'/%3E%3C/svg%3E") center/contain no-repeat;
+      mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolygon points='23 7 16 12 23 17 23 7'/%3E%3Crect x='1' y='5' width='15' height='14' rx='2' ry='2'/%3E%3C/svg%3E") center/contain no-repeat;
+    }
+    .scene-tag-wrap:hover .social-tag,
+    .scene-tag-wrap:focus-within .social-tag {
+      border-color: var(--c-primary); border-style: solid;
+      background: #fff; color: var(--c-primary);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px -8px rgba(19,62,169,.4);
+    }
+    .scene-pop {
+      position: absolute; bottom: calc(100% + 16px); left: 50%;
+      transform: translateX(-50%) translateY(10px);
+      width: 300px; margin: 0; background: #fff; border-radius: 10px; overflow: hidden;
+      box-shadow: 0 24px 60px -12px rgba(11,44,103,.35), 0 4px 16px rgba(11,44,103,.12);
+      opacity: 0; pointer-events: none;
+      transition: opacity .25s ease, transform .25s ease;
+      z-index: 40;
+    }
+    .scene-pop img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; }
+    .scene-pop figcaption {
+      padding: 8px 12px; font-family: var(--font-en); font-size: 11px;
+      letter-spacing: 2px; color: var(--c-text-light); text-align: center;
+    }
+    .scene-tag-wrap:hover .scene-pop,
+    .scene-tag-wrap:focus-within .scene-pop { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
+
+    .video-highlight {
+      padding: 28px;
+      background: linear-gradient(150deg, #0C2566 0%, #133EA9 100%);
+      border: none; border-radius: 16px;
+      margin-top: 20px;
+    }
+    .video-highlight .vh-num {
+      font-family: var(--font-serif);
+      font-size: 56px; font-weight: 600;
+      color: #fff; line-height: 1;
+    }
+    /* 大视频位（100K+ 主视频）+ 左侧文案 */
+    .vh-top { display: flex; gap: 32px; align-items: stretch; }
+    .vh-info {
+      width: 38%; flex-shrink: 0;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    /* 三个小视频位 */
+    .vh-small {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 20px; margin-top: 24px;
+    }
+    .vh-caption {
+      text-align: center; font-size: 14px; font-weight: 600;
+      color: var(--c-text); margin-top: 10px;
+    }
+    .video-highlight .vh-note {
+      margin-top: 30px;
+      text-align: center;
+      font-family: var(--font-serif);
+      font-size: 26px; font-weight: 600; line-height: 1.5;
+      letter-spacing: .5px;
+      color: var(--c-primary);
+    }
+    /* 视频位通用：虚线占位，视频缺失时显示提示 */
+    .vslot {
+      position: relative;
+      border-radius: 10px; overflow: hidden;
+      border: 1.5px dashed rgba(47, 115, 200, .40);
+      background: rgba(245, 248, 255, .8);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; letter-spacing: 1px;
+      color: rgba(47, 115, 200, .55);
+    }
+    .vslot video, .vslot img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+    }
+    /* 点击播放覆盖层：未播放时显示播放按钮 */
+    .vplay {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; z-index: 2;
+    }
+    .vplay span {
+      width: 54px; height: 54px; border-radius: 50%;
+      background: rgba(19, 62, 169, .82);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 6px 18px rgba(19, 62, 169, .30);
+      transition: transform .2s;
+    }
+    .vplay:hover span { transform: scale(1.08); }
+    .vplay span::after {
+      content: ''; margin-left: 5px;
+      border-left: 16px solid #fff;
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+    }
+    .vh-big { flex: 1; aspect-ratio: 16 / 9; max-height: 300px; }
+    .video-highlight p {
+      margin-top: 16px; font-size: 14px;
+      line-height: 1.7; color: rgba(255,255,255,.78);
+    }
+    .video-highlight h4 { color: #fff; }
+    .video-highlight .vh-caption { color: #fff; }
+    .video-highlight .vh-note { color: #fff; }
+    .video-highlight .vslot {
+      border-color: rgba(255,255,255,.30);
+      background: rgba(255,255,255,.08);
+    }
+
+    /* ========== Page 25 — Video 章节封面 ========== */
+    /* 拼贴图层视差：整图静止打底，三块撕纸拼贴（chip）各自随鼠标异向漂移，
+       内容与底层同源，错位时呈「剪辑图层」效果；chip 内 i 层挂常驻微漂动画 */
+    .page-25 {
+      position: relative;
+      background-color: #0A2364; /* 图片未加载时的兜底底色 */
+      color: #fff; text-align: center;
+    }
+    .page-25::before {
+      content: ''; position: absolute; inset: 0; z-index: 1;
+      background: linear-gradient(160deg, rgba(10,35,100,.78) 0%, rgba(19,62,169,.58) 50%, rgba(10,35,100,.78) 100%);
+      pointer-events: none;
+    }
+    .page-25 > * { position: relative; z-index: 1; }
+    .page-25 > .chapter-bg {
+      position: absolute; inset: 0; z-index: 0;
+      overflow: hidden; pointer-events: none;
+    }
+    .page-25 .chapter-bg-inner,
+    .page-25 .chip {
+      position: absolute; inset: 0;
+    }
+    .page-25 .chapter-bg-inner {
+      background: url('videoplan-bg.webp') center/cover no-repeat;
+    }
+    .page-25 .chip { will-change: transform; }
+    .page-25 .chip i {
+      display: block; position: absolute; inset: 0;
+      background: url('videoplan-bg.webp') center/cover no-repeat;
+      animation: chipDrift 9s ease-in-out infinite alternate;
+      will-change: transform;
+    }
+    /* 三块拼贴：左下大圆 / 右上撕纸块 / 底部撕纸条，相位错开 */
+    .page-25 .chip-a i { clip-path: circle(24% at 6% 84%); }
+    .page-25 .chip-b i { clip-path: polygon(79% 14%, 100% 9%, 100% 52%, 76% 47%, 81% 30%); animation-delay: -3s; }
+    .page-25 .chip-c i { clip-path: polygon(0 81%, 28% 87%, 52% 79%, 78% 89%, 100% 80%, 100% 100%, 0 100%); animation-delay: -6s; }
+    @keyframes chipDrift {
+      from { transform: translate3d(-4px, 3px, 0); }
+      to   { transform: translate3d(4px, -3px, 0); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .page-25 .chip i { animation: none; }
+    }
+    .page-25 .eyebrow { color: rgba(255,255,255,.85); }
+
+    /* ========== Page 26 — Video Concept ========== */
+    .page-26 {
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.92) 0%, rgba(255,255,255,.75) 45%, rgba(255,255,255,.35) 100%),
+        url('videoplan-page-bg.webp') center/cover no-repeat;
+    }
+    .video-flow {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 16px; margin-top: 32px;
+    }
+    .vf-step {
+      padding: 24px 16px; background: var(--c-bg-soft);
+    }
+    .vf-step .vf-num {
+      font-family: var(--font-en); font-size: 32px;
+      color: var(--c-primary); font-weight: 300;
+    }
+    .vf-step h5 {
+      font-family: var(--font-serif);
+      font-size: 16px; font-weight: 600; margin: 8px 0;
+    }
+    .vf-step p {
+      font-size: 12px; color: var(--c-text-light);
+    }
+    @media (max-width: 768px) {
+      .video-flow { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* ========== Page 27-28 — Video Cases ========== */
+    .page-27 {
+      background:
+        linear-gradient(90deg, rgba(8,14,36,.55) 0%, rgba(8,14,36,.28) 50%, rgba(8,14,36,.12) 100%),
+        url('matao-bg3.webp') center/cover no-repeat;
+      color: #fff;
+    }
+    .page-27 .eyebrow { color: rgba(255,255,255,.85); }
+    .page-27 .section-title { color: #fff; }
+    .page-27 .lead { color: rgba(255,255,255,.75); }
+    .page-27 p { color: rgba(255,255,255,.82); }
+    .page-27 h3[style] { color: #fff !important; }
+    .page-27 .ph-cap { color: rgba(255,255,255,.6); }
+    .page-28 {
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.92) 0%, rgba(255,255,255,.78) 45%, rgba(255,255,255,.35) 100%),
+        url('yidishui-bg.webp') center/cover no-repeat;
+    }
+    .case-section-grid {
+      display: grid; grid-template-columns: 1fr 1.2fr;
+      gap: 48px; align-items: start;
+    }
+    .case-mechanics {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 16px; margin-top: 24px;
+    }
+    .cm-card {
+      padding: 16px; background: var(--c-bg-soft);
+    }
+    .cm-card .cm-num {
+      font-family: var(--font-en); font-size: 22px;
+      color: var(--c-primary); font-weight: 300;
+    }
+    .cm-card h5 {
+      font-family: var(--font-serif);
+      font-size: 15px; font-weight: 600; margin: 6px 0 4px;
+    }
+    .cm-card p { font-size: 12px; color: var(--c-text-light); }
+    @media (max-width: 768px) {
+      .case-section-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ========== Page 29 — Selected Video ========== */
+    .page-29 { background: var(--c-bg-soft); }
+    .video-cases {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 24px; margin-top: 32px;
+    }
+    .vc-card {
+      background: #fff; padding: 24px;
+      border: 1px solid var(--c-border);
+    }
+    .vc-card .vc-tag {
+      display: inline-block; padding: 4px 10px;
+      background: var(--c-primary); color: #fff;
+      font-family: var(--font-en); font-size: 10px;
+      letter-spacing: 1.5px; margin-bottom: 12px;
+    }
+    .vc-card h4 {
+      font-family: var(--font-serif);
+      font-size: 18px; font-weight: 600; margin-bottom: 8px;
+    }
+    .vc-card p {
+      font-size: 13px; line-height: 1.7;
+      color: var(--c-text-light);
+    }
+    @media (max-width: 768px) {
+      .video-cases { grid-template-columns: 1fr; }
+    }
+
+    /* ========== Page 30 — Project 章节封面 ========== */
+    /* 电影镜头缓推：背景图层极慢推近 + 轻微横移（34s 无缝往复），叠加极淡环境冷光 */
+    .page-30 {
+      position: relative; overflow: hidden;
+      background-color: #0A2364; /* 图片未加载时的兜底底色 */
+      color: #fff; text-align: center;
+    }
+    .page-30 .chapter-cover { position: relative; z-index: 2; }
+
+    /* 镜头层：渐变蒙版与底图同层，一起被运镜带着走 */
+    .page-30 .scene {
+      position: absolute; inset: 0; z-index: 0;
+      background:
+        linear-gradient(160deg, rgba(10,35,100,.72) 0%, rgba(19,62,169,.5) 50%, rgba(10,35,100,.72) 100%),
+        url('project-bg.jpg') center/cover no-repeat;
+      transform-origin: 56% 44%;
+      animation: kenBurns 34s ease-in-out infinite;
+      will-change: transform;
+    }
+    /* 首尾关键帧一致 → 无缝循环；只推近不跳回，观感就是镜头持续缓缓前进 */
+    @keyframes kenBurns {
+      0%   { transform: scale(1.03)  translate3d(-1.2%, -.9%, 0); }
+      50%  { transform: scale(1.145) translate3d(1.3%, 1.0%, 0); }
+      100% { transform: scale(1.03)  translate3d(-1.2%, -.9%, 0); }
+    }
+
+    /* 环境冷光：横向铺开的无边界柔光，极缓呼吸，给深底一点活气 */
+    .page-30 .glow-layer {
+      position: absolute; inset: 0; z-index: 1;
+      overflow: hidden; pointer-events: none;
+    }
+    .page-30 .halo {
+      position: absolute; left: 50%; top: 52%;
+      width: 152vmin; height: 94vmin;
+      margin: -47vmin 0 0 -76vmin;
+      border-radius: 50%;
+      background: radial-gradient(closest-side ellipse at 50% 50%,
+        rgba(154, 198, 255, .26) 0%,
+        rgba(96, 150, 240, .11) 46%,
+        transparent 78%);
+      filter: blur(16px);
+      animation: haloBreath 13s ease-in-out infinite;
+      will-change: transform, opacity;
+    }
+    @keyframes haloBreath {
+      0%, 100% { transform: scale(.96); opacity: .55; }
+      50%      { transform: scale(1.06); opacity: .9; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .page-30 .scene { animation: none; transform: scale(1.03); }
+      .page-30 .halo { animation: none; opacity: .72; transform: scale(1); }
+    }
+
+    /* ========== Page 31-32 — Project Cases ========== */
+    .page-31 { background: var(--c-bg); }
+    .page-32 {
+      /* CEO 页背景：预优化版（图内自带左侧白渐变），贴顶铺满宽度，向下渐隐回浅底色 */
+      background:
+        linear-gradient(180deg, rgba(250,252,255,0) 52%, rgba(250,252,255,.9) 63%, #FAFCFF 72%),
+        url('ceo-bg.webp') right top / 100% auto no-repeat;
+      background-color: var(--c-bg-soft);
+    }
+    .project-flow {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 16px; margin: 32px 0;
+    }
+    .pf-step {
+      padding: 20px 16px; background: #fff;
+      border: 1px solid var(--c-border);
+    }
+    .pf-step .pf-num {
+      font-family: var(--font-en); font-size: 28px;
+      color: var(--c-primary); font-weight: 300;
+    }
+    .pf-step h5 {
+      font-family: var(--font-serif);
+      font-size: 15px; font-weight: 600; margin: 8px 0 4px;
+    }
+    .pf-step p { font-size: 12px; color: var(--c-text-light); }
+    @media (max-width: 768px) {
+      .project-flow { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* ========== Page 33 — Exhibition ========== */
+    .page-33 {
+      /* 展会页背景：白色展馆实景，白蒙版压淡保证深色文字可读 */
+      background:
+        linear-gradient(180deg, rgba(250,252,255,.86) 0%, rgba(250,252,255,.6) 42%, rgba(250,252,255,.68) 100%),
+        url('expo-bg.webp') center/cover no-repeat;
+    }
+    .ex-flow {
+      display: grid; grid-template-columns: repeat(5, 1fr);
+      gap: 12px; margin-top: 32px;
+    }
+    .ex-step {
+      padding: 18px 12px 14px; background: #fff;
+      text-align: center;
+      border-radius: 12px;
+      box-shadow: 0 16px 36px -12px rgba(47,115,200,.28), 0 6px 16px -6px rgba(47,115,200,.14), 0 2px 5px rgba(47,115,200,.06);
+    }
+    .ex-step .ex-num {
+      font-family: var(--font-en); font-size: 24px;
+      color: var(--c-primary); font-weight: 300;
+    }
+    .ex-step h5 {
+      font-family: var(--font-serif);
+      font-size: 13px; font-weight: 600; margin: 6px 0 4px;
+    }
+    .ex-step p { font-size: 11px; color: var(--c-text-light); }
+    @media (max-width: 768px) {
+      .ex-flow { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* ========== Page 34 — 联系页 ========== */
+    .page-34 {
+      /* 结尾页背景：蓝白丝绸质感图 + 深蓝罩压底，保白字可读 */
+      background:
+        linear-gradient(180deg, rgba(12,37,102,.82) 0%, rgba(19,62,169,.62) 50%, rgba(12,37,102,.78) 100%),
+        url('thanks-bg.jpg') center/cover no-repeat;
+      color: #fff;
+      text-align: center;
+    }
+    .thanks-title {
+      font-family: var(--font-serif);
+      font-size: clamp(96px, 18vw, 240px);
+      font-weight: 600; line-height: 1;
+      margin-bottom: 64px;
+    }
+    .contact-info {
+      display: flex; justify-content: center; gap: 64px;
+      flex-wrap: wrap;
+      margin-top: 48px;
+    }
+    .contact-item .ci-label {
+      font-family: var(--font-en); font-size: 11px;
+      letter-spacing: 3px; color: var(--c-accent-yellow);
+      margin-bottom: 12px;
+    }
+    .contact-item .ci-value {
+      font-family: var(--font-serif);
+      font-size: 20px; color: #fff;
+    }
+    /* 首页 / 尾页作为提示的定位基准（原缺 relative，两处提示都相对文档底部定位而重合） */
+    .page-1, .page-34 { position: relative; }
+    /* 返回顶部：右下角，与首页“向下滚动”的底部居中位置区分开 */
+    .page-34 .hero-arrow {
+      left: auto; right: 56px;
+      transform: none;
+      color: rgba(255,255,255,.85);
+      transition: color .3s ease, transform .3s ease;
+    }
+    .page-34 .hero-arrow:hover { color: #fff; transform: translateY(-2px); }
+
+    /* ========== 隐藏滚动条样式 ========== */
+    ::selection { background: var(--c-primary); color: #fff; }
+  </style>
+</head>
+<body>
+
+  <!-- ===== 顶部固定导航 ===== -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <div class="nav-logo"><a href="#page-1">CAI LIYING</a></div>
+      <ul class="nav-links">
+        <li><a href="#page-3">关于我</a></li>
+        <li class="has-sub">
+          <a href="#page-5">品牌&amp;产品</a>
+          <ul class="sub-menu">
+            <li><a href="#page-6">产品宣传</a></li>
+            <li><a href="#page-9">品牌宣传</a></li>
+            <li><a href="#page-13">内容营销</a></li>
+            <li><a href="#page-14">产品创意策划</a></li>
+          </ul>
+        </li>
+        <li><a href="#page-19">新媒体</a></li>
+        <li><a href="#page-25">视频策划</a></li>
+        <li><a href="#page-30">项目统筹</a></li>
+        <li><a href="#page-34">联系我</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ============================================== -->
+  <!-- Page 1 — Hero 封面（对应 PPT 第 1 页）-->
+  <!-- ============================================== -->
+  <section class="page page-1" id="page-1">
+    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="hero-inner">
+      <div class="hero-mark">PORTFOLIO · 2026</div>
+      <h1 class="hero-name">蔡利莹</h1>
+      <div class="hero-sub">BRAND · CONTENT · STRATEGY</div>
+    </div>
+    <div class="hero-arrow">向下滚动 ↓</div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- Page 2 — 引言（对应 PPT 第 2 页）-->
+  <!-- ============================================== -->
+  <section class="page page-2" id="page-2">
+    <div class="container-narrow">
+      <h2 class="display-title reveal"><span class="q-line">最好的进阶，</span><br /><span class="q-line">是创作永恒如新。</span></h2>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- Page 3 — 关于我（对应 PPT 第 3 页）-->
+  <!-- ============================================== -->
+  <section class="page page-3" id="page-3">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-text reveal">
+          <div class="num-tag">01 / ABOUT</div>
+          <p>2483 天，六个深圳的春夏秋冬；</p>
+          <p>偶然与想像，使我进入了广告行业；</p>
+          <p>从影视广告开始，我最早学会的是，如何把一个品牌、一件产品，讲成一个让人愿意听的故事。</p>
+          <p>后来做视频、做营销创意、做项目统筹，我逐渐意识到，好的商业内容不只需要表达，还要真正理解品牌、产品、受众，以及生意本身。</p>
+          <p>走入甲方公司，我的内容更贴近品牌与产品销售，我更加懂得产品、行业痛点、用户洞察，以及新媒体传播。</p>
+          <p>周而复始，生生不息；六年多过去，我仍然喜欢创意；但现在，我更关心创意为何有效。</p>
+          <p style="color: var(--c-primary); font-weight: 500;">第七年开始了。</p>
+        </div>
+        <figure class="about-portrait reveal reveal-delay-1">
+          <span class="portrait-frame"><img src="about-portrait.jpg" alt="蔡利莹" loading="lazy" /></span>
+          <span class="caption-en">PORTRAIT · 2026</span>
+          <span class="caption-cn">工作之外，仍写故事。</span>
+        </figure>
+        <div class="about-side reveal reveal-delay-2">
+          <div class="num-card">
+            <div class="big" data-count="2483">0</div>
+            <div class="small">DAYS · 走过的时间</div>
+          </div>
+          <div class="num-card">
+            <div class="big" data-count="6">0</div>
+            <div class="small">YEARS · 行业经验</div>
+          </div>
+          <div style="margin-top: 24px;">
+            <span class="chip">品牌与商业内容</span>
+            <span class="chip">乙方广告</span>
+            <span class="chip">甲方内容营销</span>
+            <span class="chip">新媒体运营</span>
+            <span class="chip">影视广告策划</span>
+            <span class="chip">项目统筹</span>
+          </div>
+          <div class="about-foot">
+            95后 · 双非高校中文系 · 主修汉语言文学<br />
+            祖籍 · 广东潮汕
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- Page 4 — 我在做什么（对应 PPT 第 4 页）-->
+  <!-- ============================================== -->
+  <section class="page page-4" id="page-4">
+    <div class="container">
+      <div class="reveal">
+        <div class="eyebrow">WHAT I DO</div>
+        <h2 class="section-title">从内容策略，到项目落地</h2>
+      </div>
+      <div class="capability-grid reveal reveal-delay-1">
+        <div class="cap-card">
+          <div class="num">01</div>
+          <div class="en-label">BRAND CONTENT</div>
+          <div class="cn-label">品牌与产品</div>
+          <div class="cap-desc">品牌传播 · 产品宣传 · 营销文案 · 策划方案</div>
+        </div>
+        <div class="cap-card">
+          <div class="num">02</div>
+          <div class="en-label">SOCIAL MEDIA</div>
+          <div class="cn-label">新媒体运营</div>
+          <div class="cap-desc">内容策划 · 渠道运营 · 公众号 · 小红书</div>
+        </div>
+        <div class="cap-card">
+          <div class="num">03</div>
+          <div class="en-label">VIDEO</div>
+          <div class="cn-label">视频策划</div>
+          <div class="cap-desc">创意概念 · 脚本创作 · 栏目策划 · 制作协同</div>
+        </div>
+        <div class="cap-card">
+          <div class="num">04</div>
+          <div class="en-label">PROJECT</div>
+          <div class="cn-label">项目统筹</div>
+          <div class="cap-desc">需求对接 · 资源协调 · 供应商管理 · 执行落地</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- Page 5 — 品牌与产品 章节封面（对应 PPT 第 5 页）-->
+  <!-- ============================================== -->
+  <section class="page page-5" id="page-5">
+    <div class="chapter-bg" aria-hidden="true"><div class="chapter-bg-inner"></div></div>
+    <div class="chapter-cover">
+      <div class="eyebrow">PART 01</div>
+      <h2 class="display-title">品牌 & 产品</h2>
+      <div class="en">BRAND CONTENT</div>
+      <div class="sub">品牌传播 · 产品宣传 · 营销文案 · 策划方案</div>
+    </div>
+    <svg class="scroll-cue" width="22" height="34" viewBox="0 0 22 34" fill="none" aria-hidden="true">
+      <path d="M11 2 V26" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      <path d="M4 19.5 L11 27.5 L18 19.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- Page 6 — 新品内容营销（对应 PPT 第 6 页）-->
+  <!-- ============================================== -->
+  <section class="page page-6" id="page-6">
+    <div class="container">
+      <div class="two-col">
+        <div class="reveal">
+          <div class="eyebrow">BRAND CONTENT</div>
+          <h2 class="section-title">新品内容营销</h2>
+          <p class="lead">把技术参数，转化为用户价值</p>
+          <div class="num-tag" style="margin-top: 24px;">PRODUCT LAUNCH CONTENT</div>
+          <p style="margin-top: 16px; line-height: 1.8; color: var(--c-text);">
+            围绕 ESL 电子标签，负责新品传播中的卖点提炼、内容策划、文案撰写与视觉内容协同。
+            工作重点是选定最值得传播的产品差异点，再用内容结构与画面把它变成可感知的用户价值。
+          </p>
+          <div class="process-bar">
+            <span class="step">产品理解</span><span class="arrow">→</span>
+            <span class="step">卖点提炼</span><span class="arrow">→</span>
+            <span class="step">内容转译</span><span class="arrow">→</span>
+            <span class="step">传播表达</span>
+          </div>
+        </div>
+        <div class="case-pair reveal reveal-delay-1">
+          <figure>
+            <img src="case-ds029-cover.jpg" alt="纤薄系列 DS029 微信封面主视觉" loading="lazy">
+            <figcaption>DS029 · 微信封面</figcaption>
+          </figure>
+          <figure>
+            <img src="case-ds021-cover.jpg" alt="纤薄系列 DS021 微信头图主视觉" loading="lazy">
+            <figcaption>DS021 · 头图主视觉</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- Page 7 — 案例研究 DS029（对应 PPT 第 7 页）-->
+  <!-- ============================================== -->
+  <section class="page page-7" id="page-7">
+    <div class="container">
+      <div class="case-hero reveal">
+        <div>
+          <div class="eyebrow"><span class="case-tag">CASE STUDY</span> / DS029</div>
+          <h2>先让人感到<em>轻薄</em>，<br />再让人相信它好用</h2>
+          <a class="case-original-link" href="https://mp.weixin.qq.com/s/6_VNJqrdng2C3czyco9exA" target="_blank" rel="noopener">
+            点击查看原文 ｜ 纤薄系列电子标签<span class="arr">→</span>
+          </a>
+        </div>
+        <figure class="img-placeholder portrait is-anim">
+          <img src="ds029-anim-cover.gif" alt="纤薄系列电子标签 DS029 微信长图动态海报" loading="lazy" />
+          <figcaption>
+            <span class="dot"></span>
+            DS029 · 微信长图动效
+          </figcaption>
+        </figure>
+      </div>
+
+      <p class="lead reveal" style="margin-bottom: 32px;">
+        以「纤薄，轻盈未来」建立新品记忆点；再用具体功能解决场景痛点来补足可信度。
+      </p>
+
+      <div class="three-block reveal">
+        <div class="case-block">
+          <div class="block-num">01 / CONCEPT</div>
+          <h4>用主视觉让"轻薄"先被看见</h4>
+          <p>9.8mm、36g → 轻盈视觉感受</p>
+        </div>
+        <div class="case-block">
+          <div class="block-num">02 / PROOF</div>
+          <h4>用功能证明"简约而不简单"</h4>
+          <p>蓝牙秒级更新、电子墨水屏与续航、多终端操控、LED 定位</p>
+        </div>
+        <div class="case-block">
+          <div class="block-num">03 / SCENARIO</div>
+          <h4>用场景痛点让价值真正落地</h4>
+          <p>从改价延展到补货、拣货、资产管理与复杂环境适配</p>
+        </div>
+      </div>
+
+      <p style="margin-top: 48px; padding: 24px; background: var(--c-bg-soft); border-left: 3px solid var(--c-accent-yellow); font-size: 15px; line-height: 1.8;">
+        <strong style="color: var(--c-primary);">我的内容价值：</strong>
+        将「产品参数 — 功能卖点 — 门店场景」组织为一条完整的新产品传播线索。
+        从「轻薄」概念，到「轻薄但不简单」的价值证明。
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- Page 8 — Selected Launch（对应 PPT 第 8 页）-->
+  <!-- ============================================== -->
+  <section class="page page-8" id="page-8">
+    <div class="container">
+      <div class="reveal">
+        <div class="eyebrow">SELECTED LAUNCH CONTENT</div>
+        <h2 class="section-title">不同产品，不同传播锚点</h2>
+        <p class="lead">在产品卖点相似的情况下，找出产品差异点与应用场景痛点，调整传播的核心点。</p>
+      </div>
+
+      <div class="launch-grid">
+        <div class="launch-card reveal">
+          <span class="launch-tag">COLOR AS MESSAGE</span>
+          <a class="launch-link" href="https://mp.weixin.qq.com/s/9WVRutSwP-Wd3lVMJ7Z_kw" target="_blank" rel="noopener noreferrer">
+            <figure class="img-placeholder">
+              <img src="launch-01.jpg" alt="四色电子价签新品海报" loading="lazy" />
+            </figure>
+          </a>
+          <h4>四色电子价签</h4>
+          <p>色彩能力 → 促销提示 / 信息分层</p>
+        </div>
+        <div class="launch-card reveal reveal-delay-1">
+          <span class="launch-tag">DISPLAY AS CONTENT</span>
+          <a class="launch-link" href="https://mp.weixin.qq.com/s/PBVzk-zTZ60yI_vP8iYA5A" target="_blank" rel="noopener noreferrer">
+            <figure class="img-placeholder">
+              <img src="launch-02.jpg" alt="炫彩 LCD 电子价签新品海报" loading="lazy" />
+            </figure>
+          </a>
+          <h4>炫彩 LCD</h4>
+          <p>动态显示能力 → 商品展示 / 门店营销</p>
+        </div>
+        <div class="launch-card reveal reveal-delay-2">
+          <span class="launch-tag">RELIABILITY IN CONTEXT</span>
+          <a class="launch-link" href="https://mp.weixin.qq.com/s/wqKwdoeEU4ggXgmbDzMNKw" target="_blank" rel="noopener noreferrer">
+            <figure class="img-placeholder">
+              <img src="launch-03.jpg" alt="快刷版电子价签新品海报" loading="lazy" />
+            </figure>
+          </a>
+          <h4>快刷版电子价签</h4>
+          <p>3秒刷新、-15℃～65℃ → 特殊零售、仓储环境</p>
+        </div>
+        <div class="launch-card reveal reveal-delay-3">
+          <span class="launch-tag">FORM MEETS SCENE</span>
+          <a class="launch-link" href="https://mp.weixin.qq.com/s/XZgkmywKkYdS4DeFiLo4gw" target="_blank" rel="noopener noreferrer">
+            <figure class="img-placeholder">
+              <img src="launch-04.jpg" alt="智能电子桌牌新品海报" loading="lazy" />
+            </figure>
+          </a>
+          <h4>智能电子桌牌</h4>
+          <p>会议场景 → 双面显示 / 灵活使用</p>
+        </div>
+      </div>
+
+      <p style="margin-top: 48px; text-align: center; color: var(--c-text-light); font-size: 14px;">
+        工作流程：理解产品差异 → 选定传播命题 → 用内容与画面让价值可感知
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- Page 9 — Brand Communication（对应 PPT 第 9 页）-->
+  <!-- ============================================== -->
+  <section class="page page-9" id="page-9">
+    <div class="container">
+      <div class="reveal">
+        <div class="eyebrow">BRAND COMMUNICATION</div>
+        <h2 class="section-title">让品牌在<br />不同场景里，<br />被看见、被理解、被记住。</h2>
+      </div>
+      <div class="three-modules reveal reveal-delay-1">
+        <div class="module-card">
+          <div class="m-num">01</div>
+          <h4>热点借势</h4>
+          <p>让外部科技话题成为企业品牌叙事的入口。</p>
+        </div>
+        <div class="module-card">
+          <div class="m-num">02</div>
+          <h4>品牌背书</h4>
+          <p>把获奖信息转化为企业能力与行业认可。</p>
+        </div>
+        <div class="module-card">
+          <div class="m-num">03</div>
+          <h4>节点传播</h4>
+          <p>展前预热与展后回顾，让品牌在重要现场持续存在。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- Page 10 — Hot Topic × Brand（对应 PPT 第 10 页）-->
+  <!-- ============================================== -->
+  <section class="page page-10" id="page-10">
+    <div class="container">
+      <div class="reveal">
+        <div class="eyebrow">HOT TOPIC × BRAND MESSAGE</div>
+        <h2 class="section-title">让热点成为<br />品牌表达的入口</h2>
+      </div>
+      <div class="hot-topic-grid">
+        <div class="reveal">
+          <p class="lead">
+            2025 年初，当 DeepSeek 成为公共科技话题后，以「AI 如何洞察云里物里」为内容入口，
+            把企业的技术、产品、业务与应用价值重新组织成可阅读的品牌内容。
+          </p>
+          <p style="margin-top: 24px; padding: 16px; background: #fff; border-left: 3px solid var(--c-accent-yellow); font-size: 14px; color: var(--c-text);">
+            <strong style="color: var(--c-primary);">洞察：</strong> 云里物里有哪些硬核密码？
+            <br />热点不只是标题，也是一扇重新理解企业的门。
+          </p>
+          <a class="case-original-link" href="https://mp.weixin.qq.com/s/ZZxaOklKfIwZIlfHzWuOyw" target="_blank" rel="noopener">
+            点击查看 ｜ 品牌热点传播原文<span class="arr">→</span>
+          </a>
+        </div>
+        <div class="reveal reveal-delay-1">
+          <div class="hot-flow">
+            <div class="flow-step">
+              <div class="step-label">01 / HOT TOPIC</div>
+              <h5>热点</h5>
+              <p>DeepSeek / AI / 深度思考</p>
+            </div>
+            <div class="flow-step">
+              <div class="step-label">02 / BRAND CONNECTION</div>
+              <h5>连接点</h5>
+              <p>让 AI 重新审视企业实力</p>
+            </div>
+            <div class="flow-step">
+              <div class="step-label">03 / CONTENT IDEA</div>
+              <h5>内容形式</h5>
+              <p>DeepSeek × 云里物里对话</p>
+            </div>
+            <div class="flow-step">
+              <div class="step-label">04 / BRAND MESSAGE</div>
+              <h5>品牌落点</h5>
+              <p>技术、产品、业务与场景价值</p>
+            </div>
+          </div>
+          <figure class="img-placeholder wide hot-cover" style="margin-top: 24px;">
+            <img src="hot-topic-cover.jpg" alt="DeepSeek × 品牌热点传播主视觉：洞察·云里物里有哪些硬核密码？" loading="lazy" />
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- Page 11 — Awards（对应 PPT 第 11 页）-->
+  <!-- ============================================== -->
+  <section class="page page-11" id="page-11">
+    <div class="container">
+      <div class="reveal">
+        <div class="eyebrow">SELECTED AWARD CONTENT</div>
+        <h2 class="section-title">把「获奖」，<br />写成品牌可信度。</h2>
+        <p class="lead" style="margin-top: 24px;">凸显企业为何获奖、这份认可证明了什么能力，以及它如何回到品牌实力与行业价值。</p>
+      </div>
+
+      <div class="award-flow reveal">
+        <div class="award-step">
+          <div class="a-num">01</div>
+          <h5>奖项信息</h5>
+          <p>这是什么认可？</p>
+        </div>
+        <div class="award-step">
+          <div class="a-num">02</div>
+          <h5>获奖理由</h5>
+          <p>企业为何获得它？</p>
+        </div>
+        <div class="award-step">
+          <div class="a-num">03</div>
+          <h5>能力证明</h5>
+          <p>它强化哪项实力？</p>
+        </div>
+        <div class="award-step">
+          <div class="a-num">04</div>
+          <h5>品牌价值</h5>
+          <p>如何回到行业信任？</p>
+        </div>
+      </div>
+
+      <div class="award-types reveal">
+        <div class="award-type">
+          <h4>品牌实力认证</h4>
+          <p style="margin-top: 8px; color: var(--c-text-light); font-size: 13px;">企业层面的能力认可</p>
+          <a class="launch-link" href="https://mp.weixin.qq.com/s/WQnTJnvPVbCXitwn05W23w" target="_blank" rel="noopener noreferrer">
+            <figure class="award-figure">
+              <img src="award-01.png" alt="品牌实力认证：云里物里入选新一届「深圳知名品牌」" loading="lazy" />
+            </figure>
+          </a>
+        </div>
+        <div class="award-type">
+          <h4>产品设计认可</h4>
+          <p style="margin-top: 8px; color: var(--c-text-light); font-size: 13px;">产品维度的设计荣誉</p>
+          <a class="launch-link" href="https://mp.weixin.qq.com/s/jQUIN4jkOyQvVmbWdKuNsA" target="_blank" rel="noopener noreferrer">
+            <figure class="award-figure">
+              <img src="award-02.png" alt="产品设计认可：V 型智能电子桌牌荣获智慧办公创新产品设计奖" loading="lazy" />
+            </figure>
+          </a>
+        </div>
+        <div class="award-type">
+          <h4>企业形象与人物背书</h4>
+          <p style="margin-top: 8px; color: var(--c-text-light); font-size: 13px;">人物与品牌的外部认证</p>
+          <a class="launch-link" href="https://mp.weixin.qq.com/s/JuIEPMVfWySUDG8llHR1Vw" target="_blank" rel="noopener noreferrer">
+            <figure class="award-figure">
+              <img src="award-03.png" alt="人物背书：云里物里董事长庄严荣获 2022 年「深圳市十大杰出青年企业家」" loading="lazy" />
+            </figure>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- Page 12 — Brand Moments（对应 PPT 第 12 页）-->
+  <!-- ============================================== -->
+  <section class="page page-12" id="page-12">
+    <div class="container">
+      <div class="reveal">
+        <div class="eyebrow">BRAND MOMENTS</div>
+        <h2 class="section-title" style="color: #fff;">重要节点，<br />也需要持续被看见。</h2>
+        <p class="lead" style="margin-top: 24px; color: rgba(255,255,255,.9);">
+          展会是一段能够延续品牌存在感的传播节奏。
+        </p>
+      </div>
+      <div class="moment-split reveal reveal-delay-1">
+        <div class="moment-side">
+          <div class="moment-tag">BEFORE</div>
+          <h4>展前预告</h4>
+          <ul>
+            <li>参展信息</li>
+            <li>主推产品</li>
+            <li>展会看点</li>
+            <li>邀约与预热</li>
+          </ul>
+          <p style="margin-top: 24px; color: rgba(255,255,255,.6); font-size: 13px;">
+            让受众提前知道：品牌将在何处出现
+          </p>
+        </div>
+        <div class="moment-side">
+          <div class="moment-tag">AFTER</div>
+          <h4>展后回顾</h4>
+          <ul>
+            <li>现场亮点</li>
+            <li>产品展示</li>
+            <li>客户互动</li>
+            <li>品牌曝光延续</li>
+          </ul>
+          <p style="margin-top: 24px; color: rgba(255,255,255,.6); font-size: 13px;">
+            让现场发生的事，继续留在品牌记忆里
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- Page 13 — Product Marketing（对应 PPT 第 13 页）-->
+  <!-- ============================================== -->
+  <section class="page page-13" id="page-13">
+    <div class="container">
+      <div class="reveal">
+        <div class="eyebrow">PRODUCT CONTENT MARKETING</div>
+        <h2 class="section-title">产品营销软文：<br />承担不同的业务任务</h2>
+        <p class="lead" style="margin-top: 16px;">从销售疑问、公共热点与落地项目中找到内容切口，服务客户理解、产品关注与销售沟通。</p>
+      </div>
+      <div class="product-three reveal reveal-delay-1">
+        <div class="p-card">
+          <span class="p-tag">01 / QUESTION</span>
+          <h4>回答真实问题</h4>
+          <div class="p-sub">用户教育 · 墨水屏里到底有没有墨水？</div>
+          <p>把销售反馈的客户疑问转化为选题，用模拟对话引出电子纸原理，再连接低功耗、类纸显示等产品特点。</p>
+          <div class="p-flow">销售反馈 → 内容切入 → 技术释疑</div>
+          <a class="launch-link" href="https://mp.weixin.qq.com/s/zOQDSWmA3SJFZtaaTaOFkA" target="_blank" rel="noopener noreferrer">
+            <figure class="award-figure" style="margin-top: 20px;">
+              <img src="pm-article-01.png" alt="ESL 电子标签｜电子墨水屏里到底有没有墨水？" loading="lazy" />
+            </figure>
+          </a>
+        </div>
+        <div class="p-card">
+          <span class="p-tag">02 / ATTENTION</span>
+          <h4>借热点获得注意</h4>
+          <div class="p-sub">热点借势 · iPhone 16 配色话题</div>
+          <p>从新机配色讨论找到"色彩"连接点，引出价签外壳的「潘通色定制」卖点，把产品特点放进读者熟悉的话题里。</p>
+          <div class="p-flow">配色讨论 → 外壳定制 → 门店形象</div>
+          <a class="launch-link" href="https://mp.weixin.qq.com/s/yC-sESZ18wN0KtBh2PthXw" target="_blank" rel="noopener noreferrer">
+            <figure class="award-figure" style="margin-top: 20px;">
+              <img src="pm-article-02.png" alt="iPhone 16 配色不够「哇」？不如来定制潘通色电子价签" loading="lazy" />
+            </figure>
+          </a>
+        </div>
+        <div class="p-card">
+          <span class="p-tag">03 / PROOF</span>
+          <h4>把落地成果变成销售案例</h4>
+          <div class="p-sub">案例营销 · 香港伊利沙伯医院</div>
+          <p>从交付信息中提炼可复用的案例线索：诊室信息更新滞后 → 大屏电子标签联动系统 → 信息同步管理效率。</p>
+          <div class="p-flow">客户需求 → 应用方案 → 产品价值 → 销售素材</div>
+          <a class="launch-link" href="https://mp.weixin.qq.com/s/IwzRqTP968V3KNvr-lbBkA" target="_blank" rel="noopener noreferrer">
+            <figure class="award-figure" style="margin-top: 20px;">
+              <img src="pm-article-03.png" alt="云里物里 ESL 电子标签落地香港伊利沙伯医院：打造无纸显示新范式" loading="lazy" />
+            </figure>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- Page 14 — Brand × Product（对应 PPT 第 14 页；PSD 视觉整版落地，文字 HTML 化）-->
+  <!-- ============================================== -->
+  <section class="page page-14" id="page-14">
+    <div class="sub-cover reveal">
+      <div class="sc-eyebrow">BRAND &times; PRODUCT</div>
+      <h2 class="sc-title">让产品不止有卖点，<br />也有品牌记忆。</h2>
+      <p class="sc-sub">从产品洞察、概念提炼，<br />到命名、文案与传播物料</p>
+      <div class="sc-mark"></div>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- Page 15 — 婺源幽兰 概念（对应 PPT 第 15 页）-->
+  <!-- ============================================== -->
+  <section class="page page-15" id="page-15">
+    <div class="container">
+      <div class="reveal">
+        <div class="eyebrow">01 / WUYUAN YOULAN · CONCEPT</div>
+        <h2 class="section-title">从产品特质出发，<br />建立产品的独特表达</h2>
+        <p class="lead" style="margin-top: 16px;">婺源幽兰燕麦奶 系列产品文宣策划 / 产品分析、定位与概念提炼、命名与营销文案策划</p>
+      </div>
+      <div class="case-detail-grid reveal reveal-delay-1" style="margin-top: 48px;">
+        <div class="case-steps">
+          <div class="case-step">
+            <div class="cs-num">01</div>
+            <h5>产品洞察</h5>
+            <p>在原料特征中找到差异</p>
+            <p style="margin-top: 8px; color: var(--c-text);">梳理茶、燕麦奶与香橙的风味，从婺源幽兰茶中提取"珠兰花香"。</p>
+          </div>
+          <div class="case-step">
+            <div class="cs-num">02</div>
+            <h5>文化联想</h5>
+            <p>把香气转化为产品性格</p>
+            <p style="margin-top: 8px; color: var(--c-text);">对照桂、梅、栀等东方花意象，从珠兰的幽香联想到质朴、自得与风骨。</p>
+          </div>
+          <div class="case-step">
+            <div class="cs-num">03</div>
+            <h5>表达定位</h5>
+            <p>以"东方意象茶"统领内容</p>
+            <p style="margin-top: 8px; color: var(--c-text);">建立新古风文创表达方向，将品名、slogan 与产品故事统一起来。</p>
+          </div>
+        </div>
+        <div>
+          <button type="button" class="deck-trigger" data-deck-open
+            data-deck-prefix="youlan-plan" data-deck-total="18" data-deck-title="婺源幽兰燕麦奶 · 文宣策划案"
+            aria-label="打开婺源幽兰燕麦奶文宣策划案预览">
+            <figure class="img-placeholder wide hot-cover">
+              <img src="youlan-plan.jpg" alt="婺源幽兰燕麦奶产品文宣策划案：加瓦新品策划案封面、品名系统、产品故事与系列文案" loading="lazy" />
+            </figure>
+          </button>
+          <a class="case-pdf-link" href="#" data-deck-open
+            data-deck-prefix="youlan-plan" data-deck-total="18" data-deck-title="婺源幽兰燕麦奶 · 文宣策划案">
+            <p style="margin-top: 16px; text-align: center; color: var(--c-primary); font-size: 13px;">
+              婺源幽兰燕麦奶 · 文宣策划案 →
+            </p>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- Page 16 — 婺源幽兰 表达（对应 PPT 第 16 页）-->
+  <!-- ============================================== -->
+  <section class="page page-16" id="page-16">
+    <div class="container">
+      <div class="reveal">
+        <div class="eyebrow">01 / WUYUAN YOULAN · EXPRESSION</div>
+        <h2 class="section-title">让一个概念，<br />延展成一套新品文宣</h2>
+        <p class="lead" style="margin-top: 16px;">围绕"珠兰不矜"，组织产品故事、海报文案与周边创意。</p>
+      </div>
+
+      <div class="reveal reveal-delay-1" style="margin-top: 48px;">
+        <h3 style="font-family: var(--font-serif); font-size: 24px; margin-bottom: 16px;">COPY / 海报语言</h3>
+        <div>
+          <span class="copy-pill">珠兰不矜</span>
+          <span class="copy-pill">香自不矜</span>
+          <span class="copy-pill">婺里叹花</span>
+          <span class="copy-pill">孤芳待品</span>
+        </div>
+        <p style="margin-top: 12px; color: var(--c-text-light); font-size: 13px;">以命名、香气、产地与品饮感受，形成同一概念下的多组表达。</p>
+      </div>
+
+      <div style="margin-top: 48px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+        <div class="reveal">
+          <figure class="longpic-frame">
+            <img src="zhulan-story.png" alt="珠兰不矜 产品故事长图：东方意象茶——外观/香气/冲泡/品饮的全套文宣表达" loading="lazy" />
+          </figure>
+          <figcaption style="margin-top: 12px; text-align: center; color: var(--c-primary); font-size: 13px;">产品故事 · 东方意象茶</figcaption>
+        </div>
+        <div class="reveal reveal-delay-1">
+          <figure class="img-placeholder tall hot-cover">
+            <img src="zhulan-merch.png" alt="小珠兰周边包材：不矜簪周边创意与包材风格参考——简约、自然、东方意境" loading="lazy" />
+          </figure>
+          <figcaption style="margin-top: 12px; text-align: center; color: var(--c-primary); font-size: 13px;">小珠兰 · 周边包材</figcaption>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- Page 17 — 蛙小侠（对应 PPT 第 17 页）-->
+  <!-- ============================================== -->
+  <section class="page page-17" id="page-17">
+    <div class="container">
+      <div class="reveal">
+        <div class="eyebrow">02 / WAXIAOXIA · BRAND-LED PRODUCT IDEA</div>
+        <h2 class="section-title">让产品本身，<br />变成品牌记忆点</h2>
+        <p class="lead" style="margin-top: 16px;">蛙小侠饮品方案 / 策划文案、品牌关联概念与传播延展</p>
+      </div>
+
+      <div class="two-col" style="margin-top: 48px;">
+        <div class="reveal">
+          <h3 style="font-family: var(--font-serif); font-size: 22px; margin-bottom: 16px; color: var(--c-primary);">品牌命题</h3>
+          <p style="line-height: 1.8; margin-bottom: 24px;">如何让饮品与"蛙小侠"建立更强的识别关联？</p>
+          <p style="line-height: 1.8;">从蛙小侠品牌的"功夫文创"调性出发，将饮品外观与"蛙下蛋"的趣味联想结合，形成"蛙蛙下蛋"的产品概念。</p>
+
+          <h4 style="font-family: var(--font-serif); margin: 32px 0 16px;">我的策划延展</h4>
+          <ul style="list-style: none; padding: 0;">
+            <li style="padding: 12px 0; border-bottom: 1px solid var(--c-border);">命名与文案：围绕"蛙、蛋、侠"发散记忆点</li>
+            <li style="padding: 12px 0; border-bottom: 1px solid var(--c-border);">物料表达：杯贴、系列海报与品牌角色联动</li>
+            <li style="padding: 12px 0;">互动提案：翻折杯套、等位"武林秘籍"</li>
+          </ul>
+          <p style="margin-top: 24px; color: rgba(11,44,103,.7); font-size: 13px;">品牌调性 → 产品概念 → 物料与互动创意</p>
+        </div>
+        <div class="reveal reveal-delay-1">
+          <button type="button" class="deck-trigger" data-deck-open
+            data-deck-prefix="waxiaoxia-plan" data-deck-total="16" data-deck-title="蛙小侠饮品策划案"
+            aria-label="打开蛙小侠饮品策划案预览">
+            <figure class="img-placeholder wide hot-cover">
+              <img src="waxiaoxia-plan.jpg" alt="蛙小侠产品方案：蛙蛙下蛋文案内容打造、试试运气互动与周边物料" loading="lazy" />
+            </figure>
+          </button>
+          <a class="case-pdf-link" href="#" data-deck-open
+            data-deck-prefix="waxiaoxia-plan" data-deck-total="16" data-deck-title="蛙小侠饮品策划案">
+            <p style="margin-top: 12px; text-align: center; color: rgba(11,44,103,.7); font-size: 13px;">
+              蛙小侠饮品策划案 →
+            </p>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- Page 18 — 华为 Cafebar（对应 PPT 第 18 页）-->
+  <!-- ============================================== -->
+  <section class="page page-18" id="page-18">
+    <div class="container">
+      <div class="reveal">
+        <div class="eyebrow">03 / SELECTED EXPRESSION</div>
+        <h2 class="section-title">用品牌语气，<br />写出产品的不同性格</h2>
+        <p class="lead" style="margin-top: 16px;">华为 Cafebar 饮品策划文案 / 搭配早期产品内容，呈现品牌表达与卖点转译的积累</p>
+      </div>
+
+      <div class="reveal reveal-delay-1" style="margin-top: 48px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+        <div style="padding: 24px; background: rgba(255,255,255,.10); border: 1px solid rgba(255,255,255,.15); backdrop-filter: blur(8px); display: flex; align-items: flex-start; gap: 16px;">
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-family: var(--font-en); font-size: 10px; letter-spacing: 2px; color: var(--c-accent-yellow); margin-bottom: 12px;">CAFE</div>
+            <h4 style="font-family: var(--font-serif); font-size: 18px; font-weight: 600; margin-bottom: 8px;">"华为生活，很有意式"</h4>
+            <p style="font-size: 13px; color: rgba(255,255,255,.75);">原方案咖啡系列文案</p>
+          </div>
+          <img src="cafe-espresso.png" alt="意式浓缩咖啡产品图标" loading="lazy" style="flex-shrink: 0; align-self: center; height: 100px; width: auto; filter: drop-shadow(0 4px 10px rgba(0,10,40,.35));" />
+        </div>
+        <div style="padding: 24px; background: rgba(255,255,255,.10); border: 1px solid rgba(255,255,255,.15); backdrop-filter: blur(8px); display: flex; align-items: flex-start; gap: 16px;">
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-family: var(--font-en); font-size: 10px; letter-spacing: 2px; color: var(--c-accent-yellow); margin-bottom: 12px;">JUICE</div>
+            <h4 style="font-family: var(--font-serif); font-size: 18px; font-weight: 600; margin-bottom: 8px;">没有"苹果"什么事</h4>
+            <p style="font-size: 13px; color: rgba(255,255,255,.75);">果饮系列</p>
+          </div>
+          <img src="cafe-peach.png" alt="华为茶饮系列产品图标" loading="lazy" style="flex-shrink: 0; align-self: center; height: 100px; width: auto; filter: drop-shadow(0 4px 10px rgba(0,10,40,.35));" />
+        </div>
+        <div style="padding: 24px; background: rgba(255,255,255,.10); border: 1px solid rgba(255,255,255,.15); backdrop-filter: blur(8px); display: flex; align-items: flex-start; gap: 16px;">
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-family: var(--font-en); font-size: 10px; letter-spacing: 2px; color: var(--c-accent-yellow); margin-bottom: 12px;">PACKAGE</div>
+            <h4 style="font-family: var(--font-serif); font-size: 18px; font-weight: 600; margin-bottom: 8px;">"来杯华子，交个朋友"</h4>
+            <p style="font-size: 13px; color: rgba(255,255,255,.75);">包材文案</p>
+          </div>
+          <img src="cafe-package.png" alt="华为咖啡吧包材系统图标" loading="lazy" style="flex-shrink: 0; align-self: center; height: 100px; width: auto; filter: drop-shadow(0 4px 10px rgba(0,10,40,.35));" />
+        </div>
+      </div>
+
+      <div style="margin-top: 48px;">
+        <div style="font-family: var(--font-en); font-size: 11px; letter-spacing: 3px; color: rgba(255,255,255,.55); margin-bottom: 8px;">EARLIER PRODUCT CONTENT</div>
+        <h3 style="font-family: var(--font-serif); font-size: 28px; font-weight: 600; margin-bottom: 24px;">把产品理解，落实到文案</h3>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+          <div style="padding: 20px; background: rgba(9, 26, 72, .5); border: 1px solid rgba(255,255,255,.18); backdrop-filter: blur(8px);">
+            <h5 style="font-family: var(--font-serif); font-size: 16px; font-weight: 600; margin-bottom: 8px;">云盖粉</h5>
+            <p style="font-size: 13px; color: rgba(255,255,255,.75);">品尝与讨论后提炼轻盈、绵密等内容标签。</p>
+            <img src="earlier-yungaifen.png" alt="云盖粉轻乳茶产品海报：轻松云、稳稳云双卖点" loading="lazy" style="display: block; width: 100%; height: auto; border-radius: 8px; margin-top: 14px; box-shadow: 0 6px 18px -6px rgba(0,8,40,.5);" />
+          </div>
+          <div style="padding: 20px; background: rgba(9, 26, 72, .5); border: 1px solid rgba(255,255,255,.18); backdrop-filter: blur(8px);">
+            <h5 style="font-family: var(--font-serif); font-size: 16px; font-weight: 600; margin-bottom: 8px;">智能茶饮设备</h5>
+            <p style="font-size: 13px; color: rgba(255,255,255,.75);">围绕研发痛点组织卖点：专注操作、出料与配方保存。</p>
+            <img src="earlier-waterbar.png" alt="8S智能水吧机：专为饮品研发师设计" loading="lazy" style="display: block; width: 100%; height: auto; border-radius: 8px; margin-top: 14px; box-shadow: 0 6px 18px -6px rgba(0,8,40,.5);" />
+          </div>
+          <div style="padding: 20px; background: rgba(9, 26, 72, .5); border: 1px solid rgba(255,255,255,.18); backdrop-filter: blur(8px);">
+            <h5 style="font-family: var(--font-serif); font-size: 16px; font-weight: 600; margin-bottom: 8px;">B 端产品资料</h5>
+            <p style="font-size: 13px; color: rgba(255,255,255,.75);">理解产地、研发与差异，选择对应受众的表达方式。</p>
+            <img src="earlier-loquat.png" alt="枇杷果冻 B端产品资料页" loading="lazy" style="display: block; width: 100%; height: auto; border-radius: 8px; margin-top: 14px; box-shadow: 0 6px 18px -6px rgba(0,8,40,.5);" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- Page 19 — 新媒体运营 章节封面（对应 PPT 第 19 页）-->
+  <!-- ============================================== -->
+  <section class="page page-19" id="page-19">
+    <div class="chapter-bg" aria-hidden="true"><div class="chapter-bg-inner"></div></div>
+    <div class="chapter-cover">
+      <div class="eyebrow">PART 02</div>
+      <div class="vertical-cn">新媒体运营</div>
+      <div class="en">SOCIAL MEDIA</div>
+      <div class="sub">矩阵 · 内容 · 图文 · 短视频 · 渠道 · 数据</div>
+      <div class="sc-mark"></div>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- Page 20 — 数据看板（对应 PPT 第 20 页）-->
+  <!-- ============================================== -->
+  <section class="page page-20" id="page-20">
+    <div class="container">
+      <div class="reveal">
+        <div class="eyebrow">SOCIAL MEDIA</div>
+        <h2 class="section-title" style="color: #fff;">从单点内容生产，<br />到企业多平台持续运营</h2>
+        <p class="lead" style="margin-top: 16px; color: rgba(255,255,255,.85);">
+          负责企业社媒账号的内容策划、制作统筹与日常运营，覆盖选题、文案、视觉/视频协同、发布与账号维护。
+        </p>
+        <p style="margin-top: 16px; font-family: var(--font-en); font-size: 12px; letter-spacing: 2px; color: var(--c-accent-yellow);">OPERATION PERIOD · 2023—2025</p>
+      </div>
+
+      <div class="data-grid reveal reveal-delay-1">
+        <div class="data-card">
+          <div class="data-num" data-count="937">0<span class="data-unit">次</span></div>
+          <div class="data-label">CONTENT OUTPUT</div>
+          <div class="data-sub">本人运营期间累计跨平台内容发布</div>
+        </div>
+        <div class="data-card">
+          <div class="data-num" data-count="203.6">0<span class="data-unit">万</span></div>
+          <div class="data-label">TOTAL REACH</div>
+          <div class="data-sub">累计曝光 / 阅读 / 播放</div>
+        </div>
+        <div class="data-card">
+          <div class="data-num" data-count="7207">0</div>
+          <div class="data-label">ENGAGEMENT</div>
+          <div class="data-sub">次累计互动</div>
+        </div>
+      </div>
+
+      <div class="data-grid reveal reveal-delay-2" style="margin-top: 24px;">
+        <div class="data-card">
+          <div class="data-num" data-count="23.6">0<span class="data-unit">%</span></div>
+          <div class="data-label">MATRIX GROWTH</div>
+          <div class="data-sub">矩阵粉丝总量增长 8,458 → 10,452</div>
+        </div>
+        <div class="data-card">
+          <div class="data-num" data-count="100.5">0<span class="data-unit">%</span></div>
+          <div class="data-label">PRODUCT ACCOUNT</div>
+          <div class="data-sub">产品订阅号粉丝增长 790 → 1,584</div>
+        </div>
+        <div class="data-card">
+          <div class="data-num" style="font-size: 28px; line-height: 1.4;">CORE SOCIAL</div>
+          <div class="data-label">CHANNELS</div>
+          <div class="data-sub">公众号 · 视频号 · 抖音 · 微博 · B站 · 小红书</div>
+        </div>
+      </div>
+
+      <p style="margin-top: 24px; text-align: center; color: rgba(255,255,255,.5); font-size: 12px;">
+        数据取自本人运营期间各平台年度/月度统计
+      </p>
+
+      <div class="soc-marquee reveal reveal-delay-2" aria-label="运营平台">
+        <div class="soc-track">
+          <span class="soc-item"><img src="icons/wechat.svg" alt="" />微信公众号</span>
+          <span class="soc-item"><img src="icons/shipinhao.png" alt="" />视频号</span>
+          <span class="soc-item"><img src="icons/tiktok.svg" alt="" />抖音</span>
+          <span class="soc-item"><img src="icons/xiaohongshu.svg" alt="" />小红书</span>
+          <span class="soc-item"><img src="icons/baijiahao.png" alt="" />百家号</span>
+          <span class="soc-item"><img src="icons/sohu.png" alt="" />搜狐</span>
+          <span class="soc-item"><img src="icons/zhihu.svg" alt="" />知乎</span>
+          <span class="soc-item"><img src="icons/toutiao.png" alt="" />今日头条</span>
+          <span class="soc-item"><img src="icons/bilibili.svg" alt="" />bilibili</span>
+          <span class="soc-item"><img src="icons/csdn.svg" alt="" onerror="this.replaceWith(document.createTextNode('C'));this.parentNode.style.gap='0'" />CSDN</span>
+          <!-- 复制一份实现无缝循环 -->
+          <span class="soc-item"><img src="icons/wechat.svg" alt="" />微信公众号</span>
+          <span class="soc-item"><img src="icons/shipinhao.png" alt="" />视频号</span>
+          <span class="soc-item"><img src="icons/tiktok.svg" alt="" />抖音</span>
+          <span class="soc-item"><img src="icons/xiaohongshu.svg" alt="" />小红书</span>
+          <span class="soc-item"><img src="icons/baijiahao.png" alt="" />百家号</span>
+          <span class="soc-item"><img src="icons/sohu.png" alt="" />搜狐</span>
+          <span class="soc-item"><img src="icons/zhihu.svg" alt="" />知乎</span>
+          <span class="soc-item"><img src="icons/toutiao.png" alt="" />今日头条</span>
+          <span class="soc-item"><img src="icons/bilibili.svg" alt="" />bilibili</span>
+          <span class="soc-item"><img src="icons/csdn.svg" alt="" onerror="this.replaceWith(document.createTextNode('C'));this.parentNode.style.gap='0'" />CSDN</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- Page 21 — Matrix Works（对应 PPT 第 21 页）-->
+  <!-- ============================================== -->
+  <section class="page page-21" id="page-21">
+    <div class="container">
+      <div class="reveal">
+        <div class="eyebrow">01 / HOW THE MATRIX WORKS</div>
+        <h2 class="section-title">统一品牌信息，<br />也要适配每个平台的语言</h2>
+        <p class="lead" style="margin-top: 16px;">围绕同一传播目标，根据渠道形态调整标题、内容表达方式与发布节奏。</p>
+      </div>
+
+      <div class="matrix-flow reveal reveal-delay-1">
+        <div class="mf-step">
+          <div class="mf-num">01</div>
+          <h5>内容策划</h5>
+          <p>企业节点 / 产品传播 / 品牌内容 / 日常选题</p>
+        </div>
+        <div class="mf-step">
+          <div class="mf-num">02</div>
+          <h5>制作统筹</h5>
+          <p>文案 / 视觉 / 视频 / 排版</p>
+        </div>
+        <div class="mf-step">
+          <div class="mf-num">03</div>
+          <h5>跨平台分发</h5>
+          <p>统一核心信息，按渠道调整呈现与节奏</p>
+        </div>
+        <div class="mf-step">
+          <div class="mf-num">04</div>
+          <h5>日常运营</h5>
+          <p>发布维护 / 节点响应 / 内容更新 / 基础数据复盘</p>
+        </div>
+      </div>
+
+      <p style="margin-top: 32px; text-align: center; font-family: var(--font-en); font-size: 12px; letter-spacing: 2px; color: var(--c-primary);">策划 → 统筹 → 适配 → 持续运营</p>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- Page 22 — B2B From Zero（对应 PPT 第 22 页）-->
+  <!-- ============================================== -->
+  <section class="page page-22" id="page-22">
+    <div class="container">
+      <div class="reveal">
+        <div class="eyebrow">02 / BUILD A B2B CHANNEL FROM ZERO</div>
+        <h2 class="section-title">为 B2B 产品，<br />重新设计一套平台语言</h2>
+        <p class="lead" style="margin-top: 16px;">从 0 到 1 搭建 ESL 产品线小红书 / 独立负责账号定位、选题策划与日常运营，并承担部分拍摄、剪辑与视觉制作。</p>
+      </div>
+
+      <div class="b2b-stats reveal reveal-delay-1">
+        <div class="b2b-stat">
+          <div class="b-num" data-count="80">0<span class="data-unit" style="font-size: 20px;">条</span></div>
+          <div class="b-label">运营期间累计发布</div>
+        </div>
+        <div class="b2b-stat">
+          <div class="b-num" data-count="19.1">0<span class="data-unit" style="font-size: 20px;">万</span></div>
+          <div class="b-label">阅读 / 播放</div>
+        </div>
+        <div class="b2b-stat">
+          <div class="b-num" data-count="1621">0<span class="data-unit" style="font-size: 20px;">次</span></div>
+          <div class="b-label">累计互动</div>
+        </div>
+        <div class="b2b-stat">
+          <div class="b-num" data-count="10">0<span class="data-unit" style="font-size: 20px;">万+</span></div>
+          <div class="b-label">单条视频最高播放</div>
+        </div>
+      </div>
+
+      <p style="margin-top: 32px; padding: 16px; background: #fff; border-left: 3px solid var(--c-accent-yellow); font-size: 14px; line-height: 1.7;">
+        面对偏专业、偏 B2B 的产品，用更轻、更直观、更具平台感的内容语言降低理解门槛。
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- Page 23 — B2B Product × Social（对应 PPT 第 23 页）-->
+  <!-- ============================================== -->
+  <section class="page page-23" id="page-23">
+    <div class="container">
+      <div class="reveal">
+        <div class="eyebrow">03 / B2B PRODUCT × SOCIAL CONTENT</div>
+        <h2 class="section-title">让专业产品，<br />进入平台语境</h2>
+        <p class="lead" style="margin-top: 16px;">内容不是简单搬运，而是分别解决"理解、用途与点击"三个问题。</p>
+      </div>
+
+      <div class="b2b-pillars reveal reveal-delay-1">
+        <div class="b2b-pillar">
+          <div class="bp-num">01</div>
+          <div class="bp-en">KNOWLEDGE</div>
+          <h4>让人看懂</h4>
+          <p>把专业知识拆成具体问题，用直白、场景化的回答降低理解成本。</p>
+          <p style="margin-top: 12px; font-size: 12px; color: var(--c-text-light);">产品科普 / 选型 / 功能解释 / 使用问题</p>
+        </div>
+        <div class="b2b-pillar">
+          <div class="bp-num">02</div>
+          <div class="bp-en">SCENARIO</div>
+          <h4>让人看见用途</h4>
+          <p>从真实案例与应用场景切入，让产品价值从参数变成可感知的用途。</p>
+          <p style="margin-top: 12px; font-size: 12px; color: var(--c-text-light);">案例 / 场景 / 应用价值 / 信任建立</p>
+        </div>
+        <div class="b2b-pillar">
+          <div class="bp-num">03</div>
+          <div class="bp-en">INTEREST</div>
+          <h4>让人愿意点开</h4>
+          <p>借热点、职场梗和趣味表达，为冷门 B2B 产品创造进入内容流的入口。</p>
+          <p style="margin-top: 12px; font-size: 12px; color: var(--c-text-light);">热点 / 趣味 / 情绪 / 平台感</p>
+        </div>
+      </div>
+
+      <p style="margin-top: 32px; text-align: center; font-family: var(--font-en); font-size: 12px; letter-spacing: 2px; color: var(--c-primary);">看懂产品 → 看见用途 → 愿意点击</p>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- Page 24 — Selected Social（对应 PPT 第 24 页）-->
+  <!-- ============================================== -->
+  <section class="page page-24" id="page-24" style="padding-top: 100px; padding-bottom: 56px;">
+    <div class="container">
+      <div class="reveal">
+        <div class="eyebrow">04 / SELECTED SOCIAL CONTENT</div>
+        <h2 class="section-title">图文与轻量短视频，<br />共同建立平台感</h2>
+        <p class="lead" style="margin-top: 16px;">图文以产品痛点与应用为主；视频以直观演示、趣味反差与场景展示为主要形式。</p>
+      </div>
+
+      <div class="sp-grid reveal reveal-delay-1">
+        <div class="sp-row">
+          <div class="sp-label">
+            <div class="spl-en">KNOWLEDGE</div>
+            <div class="spl-zh">科普式</div>
+          </div>
+          <div class="sp-slots">
+            <div class="sp-slot"><img src="post-knowledge-01.jpg" alt="科普式图文 1" onerror="this.parentNode.textContent='科普式 · 图位1'"></div>
+            <div class="sp-slot"><img src="post-knowledge-02.jpg" alt="科普式图文 2" onerror="this.parentNode.textContent='科普式 · 图位2'"></div>
+            <div class="sp-slot"><img src="post-knowledge-03.jpg" alt="科普式图文 3" onerror="this.parentNode.textContent='科普式 · 图位3'"></div>
+          </div>
+        </div>
+        <div class="sp-row">
+          <div class="sp-label">
+            <div class="spl-en">SCENARIO</div>
+            <div class="spl-zh">场景化</div>
+          </div>
+          <div class="sp-slots">
+            <div class="sp-slot"><img src="post-scenario-01.jpg" alt="场景化图文 1" onerror="this.parentNode.textContent='场景化 · 图位1'"></div>
+            <div class="sp-slot"><img src="post-scenario-02.jpg" alt="场景化图文 2" onerror="this.parentNode.textContent='场景化 · 图位2'"></div>
+            <div class="sp-slot"><img src="post-scenario-03.jpg" alt="场景化图文 3" onerror="this.parentNode.textContent='场景化 · 图位3'"></div>
+          </div>
+        </div>
+        <div class="sp-row">
+          <div class="sp-label">
+            <div class="spl-en">INTEREST</div>
+            <div class="spl-zh">痛点式</div>
+          </div>
+          <div class="sp-slots">
+            <div class="sp-slot"><img src="post-interest-01.jpg" alt="痛点式图文 1" onerror="this.parentNode.textContent='痛点式 · 图位1'"></div>
+            <div class="sp-slot"><img src="post-interest-02.jpg" alt="痛点式图文 2" onerror="this.parentNode.textContent='痛点式 · 图位2'"></div>
+            <div class="sp-slot"><img src="post-interest-03.jpg" alt="痛点式图文 3" onerror="this.parentNode.textContent='痛点式 · 图位3'"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="video-highlight reveal reveal-delay-2">
+        <div class="vh-top">
+          <div class="vh-info">
+            <div class="vh-num">100K+</div>
+            <p style="font-size: 12px; color: rgba(255,255,255,.65); margin-top: 8px;">单条独立制作视频最高播放</p>
+            <h4 style="font-family: var(--font-serif); font-size: 18px; font-weight: 600; margin-top: 20px; margin-bottom: 6px;">黑白快刷屏电子标签</h4>
+            <p style="font-size: 13px; line-height: 1.7;">以刷新速度差异为核心，通过短平快且具有一定争议性的文案，对比呈现产品特性。</p>
+          </div>
+          <div class="vslot vh-big">
+            <video src="video-hero.mp4" poster="poster-hero.jpg" preload="none" playsinline onerror="var p=this.parentNode; this.remove(); p.textContent='视频位 · video-hero.mp4'"></video>
+            <div class="vplay" onclick="var v=this.parentNode.querySelector('video'); v.controls=true; v.play(); this.remove();"><span></span></div>
+          </div>
+        </div>
+
+        <div class="vh-small">
+          <div class="vh-item">
+            <div class="vslot" style="aspect-ratio: 16 / 9;">
+              <video src="video-fun.mp4" poster="poster-fun.jpg" preload="none" muted loop playsinline onerror="var p=this.parentNode; this.remove(); p.textContent='视频位 · video-fun.mp4'"></video>
+              <div class="vplay" onclick="var v=this.parentNode.querySelector('video'); v.controls=true; v.play(); this.remove();"><span></span></div>
+            </div>
+            <div class="vh-caption">趣味科普</div>
+          </div>
+          <div class="vh-item">
+            <div class="vslot" style="aspect-ratio: 16 / 9;">
+              <video src="video-scene.mp4" poster="poster-scene.jpg" preload="none" muted loop playsinline onerror="var p=this.parentNode; this.remove(); p.textContent='视频位 · video-scene.mp4'"></video>
+              <div class="vplay" onclick="var v=this.parentNode.querySelector('video'); v.controls=true; v.play(); this.remove();"><span></span></div>
+            </div>
+            <div class="vh-caption">场景展示</div>
+          </div>
+          <div class="vh-item">
+            <div class="vslot" style="aspect-ratio: 16 / 9;">
+              <video src="video-promo.mp4" poster="poster-promo.jpg" preload="none" muted loop playsinline onerror="var p=this.parentNode; this.remove(); p.textContent='视频位 · video-promo.mp4'"></video>
+              <div class="vplay" onclick="var v=this.parentNode.querySelector('video'); v.controls=true; v.play(); this.remove();"><span></span></div>
+            </div>
+            <div class="vh-caption">营销推广</div>
+          </div>
+        </div>
+
+        <p class="vh-note">短、快、直观的视频语言：先让产品被看懂，再让它被记住。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- Page 25 — 视频策划 章节封面（对应 PPT 第 25 页）-->
+  <!-- ============================================== -->
+  <section class="page page-25" id="page-25">
+    <div class="chapter-bg" aria-hidden="true">
+      <div class="chapter-bg-inner"></div>
+      <div class="chip chip-a" data-depth="16,-12"><i></i></div>
+      <div class="chip chip-b" data-depth="-12,9"><i></i></div>
+      <div class="chip chip-c" data-depth="9,-7"><i></i></div>
+    </div>
+    <div class="chapter-cover">
+      <div class="eyebrow">PART 03</div>
+      <h2 class="display-title" style="color: #fff;">视频策划 · 方案 · 脚本</h2>
+      <div class="en">VIDEO PLAN</div>
+    </div>
+    <div class="sc-mark"></div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- Page 26 — Video Concept（对应 PPT 第 26 页）-->
+  <!-- ============================================== -->
+  <section class="page page-26" id="page-26">
+    <div class="container">
+      <div class="reveal">
+        <div class="eyebrow">VIDEO CONCEPT & STORYTELLING</div>
+        <h2 class="section-title">不只写脚本，<br />更设计"为何是这个故事"</h2>
+        <p class="lead" style="margin-top: 16px;">从品牌/项目理解出发，把传播目标组织成概念、故事、镜头与可执行的制作路径。</p>
+      </div>
+
+      <div class="video-flow reveal reveal-delay-1">
+        <div class="vf-step">
+          <div class="vf-num">01</div>
+          <h5>理解传播项目</h5>
+          <p>品牌 / 产品差异化 / 受众</p>
+        </div>
+        <div class="vf-step">
+          <div class="vf-num">02</div>
+          <h5>建立创意抓手</h5>
+          <p>主题 / 人设 / 系列 / 栏目 / 视觉意象</p>
+        </div>
+        <div class="vf-step">
+          <div class="vf-num">03</div>
+          <h5>组织叙事结构</h5>
+          <p>故事 / 旁白 / 分镜 / 节奏</p>
+        </div>
+        <div class="vf-step">
+          <div class="vf-num">04</div>
+          <h5>推动创意落地</h5>
+          <p>拍摄协同 / 制作沟通 / 项目推进</p>
+        </div>
+      </div>
+
+      <div class="two-col" style="margin-top: 48px;">
+        <div class="reveal">
+          <figure class="img-placeholder hot-cover">
+            <img src="matao.gif" alt="会展湾智创《猫总二三事》动画" style="width:100%; height:auto; display:block;" loading="lazy" />
+          </figure>
+          <a class="case-pdf-link" href="#" data-deck-open
+            data-deck-single="maozong-script.webp" data-deck-title="会展湾智创《猫总二三事》策划脚本">
+            <p style="margin-top: 12px; text-align: center; color: var(--c-primary); font-size: 13px;">会展湾智创《猫总二三事》策划脚本→</p>
+          </a>
+        </div>
+        <div class="reveal reveal-delay-1">
+          <figure class="img-placeholder hot-cover">
+            <img src="yidishui.jpg" alt="《一滴水》品牌影片画面" style="width:100%; height:auto; display:block;" loading="lazy" />
+          </figure>
+          <p style="margin-top: 12px; text-align: center; color: var(--c-primary); font-size: 13px;">《一滴水》品牌影片</p>
+        </div>
+      </div>
+
+      <div class="reveal" style="margin-top: 48px;">
+        <figure class="img-placeholder hot-cover">
+          <img src="xifengji.jpg" alt="戏凤记猪肚鸡火锅品牌影片画面" style="width:100%; height:auto; display:block;" loading="lazy" />
+        </figure>
+        <p style="margin-top: 12px; text-align: center; color: var(--c-primary); font-size: 13px;">戏凤记 · 餐饮品牌影片</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- Page 27 — Cat Boss（对应 PPT 第 27 页）-->
+  <!-- ============================================== -->
+  <section class="page page-27" id="page-27">
+    <div class="container">
+      <div class="reveal">
+        <div class="eyebrow">01 / FROM REAL ESTATE TO CHARACTER IP</div>
+        <h2 class="section-title">把地产价值点，<br />变成一个可持续的视频 IP</h2>
+        <p class="lead" style="margin-top: 16px;">会展湾智创总部 PARK《猫总二三事》｜策划 · 编剧 · 制片统筹</p>
+      </div>
+
+      <div class="reveal" style="margin-top: 48px;">
+        <h3 style="font-family: var(--font-serif); font-size: 22px; margin-bottom: 16px; color: #fff;">传播任务</h3>
+        <p style="line-height: 1.8;">让企业客户看见办公产品的区位、空间与服务价值。</p>
+        <p style="line-height: 1.8; margin-top: 16px;">传统地产内容易陷入卖点罗列，缺少持续观看的动力。</p>
+
+        <div style="margin-top: 28px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px 16px;">
+          <div style="padding: 12px 16px; background: rgba(12,22,48,.55); border: 1px solid rgba(255,255,255,.22);">
+            <strong style="color: #fff;">01 客群切口</strong> · 以企业决策者 / CEO 为沟通对象
+          </div>
+          <div style="padding: 12px 16px; background: rgba(12,22,48,.55); border: 1px solid rgba(255,255,255,.22);">
+            <strong style="color: #fff;">02 反差人设</strong> · 用"上市事业猫"口吻传播楼盘卖点
+          </div>
+          <div style="padding: 12px 16px; background: rgba(12,22,48,.55); border: 1px solid rgba(255,255,255,.22);">
+            <strong style="color: #fff;">03 系列机制</strong> · 围绕产品优势设计连续的主题 mini 剧
+          </div>
+          <div style="padding: 12px 16px; background: rgba(12,22,48,.55); border: 1px solid rgba(255,255,255,.22);">
+            <strong style="color: #fff;">04 内容延展</strong> · 形成 6 期视频与系列海报，沉淀栏目内容
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal reveal-delay-1" style="margin-top: 40px; max-width: 640px; margin-left: auto; margin-right: auto;">
+        <div class="vslot" style="aspect-ratio: 16 / 9;">
+          <video src="video-matao.mp4" poster="matao-cover.jpg" preload="none" playsinline onerror="var p=this.parentNode; this.remove(); p.textContent='视频位 · video-matao.mp4'"></video>
+          <div class="vplay" onclick="var v=this.parentNode.querySelector('video'); v.controls=true; v.play(); this.remove();"><span></span></div>
+        </div>
+        <p style="margin-top: 12px; text-align: center; color: rgba(255,255,255,.75); font-size: 13px;">《猫总二三事》· 第五集《令人惊喜的年终奖》</p>
+      </div>
+
+      <p style="margin-top: 40px; text-align: center; font-family: var(--font-serif); font-size: 28px; font-weight: 600; letter-spacing: .5px; line-height: 1.6; color: rgba(255,255,255,.92); font-style: italic;">
+        把"介绍一栋楼"，改造成"追更一个角色"。
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- Page 28 — 壹滴水 LOGO 演绎（对应 PPT 第 28 页）-->
+  <!-- ============================================== -->
+  <section class="page page-28" id="page-28">
+    <div class="container">
+      <div class="reveal">
+        <div class="eyebrow">02 / FROM BRAND CULTURE TO VISUAL LANGUAGE</div>
+        <h2 class="section-title">当文案退场，<br />镜头要能承担品牌表达</h2>
+        <p class="lead" style="margin-top: 16px;">壹滴水品牌 LOGO 演绎创意 / 策划 · 对接</p>
+      </div>
+
+      <div class="case-section-grid" style="margin-top: 48px;">
+        <div class="reveal">
+          <p style="line-height: 1.8;">时长很短，只用画面表达。因此每个镜头都必须回答：它与品牌有什么关系？</p>
+          <div style="margin-top: 24px;">
+            <div style="padding: 12px 16px; background: var(--c-bg-soft); margin-bottom: 8px;">
+              <strong style="color: var(--c-primary);">01 BRAND</strong> · 理解品牌资料与客户文化偏好
+            </div>
+            <div style="padding: 12px 16px; background: var(--c-bg-soft); margin-bottom: 8px;">
+              <strong style="color: var(--c-primary);">02 IMAGE</strong> · 以"水"作为品牌意象与视觉母题
+            </div>
+            <div style="padding: 12px 16px; background: var(--c-bg-soft); margin-bottom: 8px;">
+              <strong style="color: var(--c-primary);">03 DIRECTION</strong> · 分别提出"蜕变"与"凝聚"两套方向
+            </div>
+            <div style="padding: 12px 16px; background: var(--c-bg-soft);">
+              <strong style="color: var(--c-primary);">04 SHOT</strong> · 把文化含义落实为分镜、节奏与 LOGO
+            </div>
+          </div>
+        </div>
+        <div class="reveal reveal-delay-1">
+          <div style="padding: 24px; background: #fff; border: 1px solid var(--c-border); margin-bottom: 16px; display: flex; align-items: center; gap: 20px;">
+            <figure class="img-placeholder hot-cover" style="flex: 0 0 42%; margin: 0;">
+              <img src="yidishui-plan1.png" alt="方案一 · 蜕变 水滴意象画面" style="width:100%; height:100%; display:block;" loading="lazy" />
+            </figure>
+            <div style="flex: 1;">
+              <a class="case-pdf-link" href="#" data-deck-open
+                data-deck-prefix="yidishui-plan1" data-deck-total="8" data-deck-title="壹滴水 LOGO 演绎创意方案 · 一「蜕变」">
+                <h4 style="font-family: var(--font-serif); font-size: 18px; font-weight: 600; color: var(--c-primary); margin-bottom: 8px;">方案一 · 蜕变→</h4>
+              </a>
+              <p style="font-size: 13px; line-height: 1.7;">主题为「润物、上善」，强调一滴水带来的蜕变，整体视觉调性凸显生长繁荣、智慧、刚健的感觉。</p>
+            </div>
+          </div>
+          <div style="padding: 24px; background: #fff; border: 1px solid var(--c-border); display: flex; align-items: center; gap: 20px;">
+            <figure class="img-placeholder hot-cover" style="flex: 0 0 42%; margin: 0;">
+              <img src="yidishui-plan2.png" alt="方案二 · 凝聚 水滴汇聚画面" style="width:100%; height:100%; display:block;" loading="lazy" />
+            </figure>
+            <div style="flex: 1;">
+              <a class="case-pdf-link" href="#" data-deck-open
+                data-deck-prefix="yidishui-plan2" data-deck-total="8" data-deck-title="壹滴水 LOGO 演绎创意方案 · 二「凝聚」">
+                <h4 style="font-family: var(--font-serif); font-size: 18px; font-weight: 600; color: var(--c-primary); margin-bottom: 8px;">方案二 · 凝聚→</h4>
+              </a>
+              <p style="font-size: 13px; line-height: 1.7;">主题为「上善、聚水」，强调许多滴水的汇聚变化，整体视觉调性体现滴水成渊、海纳百川的宏伟感。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- Page 29 — Selected Video（对应 PPT 第 29 页）-->
+  <!-- ============================================== -->
+  <section class="page page-29" id="page-29">
+    <div class="container">
+      <div class="reveal">
+        <div class="eyebrow">03 / SELECTED VIDEO CONCEPTS</div>
+        <h2 class="section-title">不同影像类型，<br />服务不同的表达任务</h2>
+        <p class="lead" style="margin-top: 16px;">品牌片用影像传达品牌性格，旁白则为影像建立叙事秩序。</p>
+      </div>
+
+      <!-- 戏凤记 · 主推大板块 -->
+      <div class="reveal reveal-delay-1" style="margin-top: 40px; background: #0C1B3A; border-radius: 16px; overflow: hidden;">
+        <div style="aspect-ratio: 16 / 5.5; overflow: hidden;">
+          <img src="xifengji-hero.webp" alt="戏凤记 · 品牌影片主视觉" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+        </div>
+        <div style="padding: 26px 32px 30px;">
+          <span style="color: #E8B84B; font-family: var(--font-en); font-size: 12px; font-weight: 600; letter-spacing: 2px;">BRAND FILM</span>
+          <div style="display: flex; align-items: end; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-top: 10px;">
+            <h4 style="font-family: var(--font-serif); font-size: 24px; font-weight: 600; color: #fff;">戏凤记｜用“年轻的匠心”连接传统与当代</h4>
+            <a class="case-pdf-link role-link" href="#" data-deck-open
+              data-deck-prefix="xifengji-plan" data-deck-total="20" data-deck-title="戏凤记品牌宣传片创意方案">
+              <span style="color: #5BC8D6; font-family: var(--font-en); font-size: 12px; letter-spacing: 1px; white-space: nowrap;">ROLE 策划文案→</span>
+            </a>
+          </div>
+          <p style="margin-top: 10px; font-size: 14px; line-height: 1.7; color: rgba(255,255,255,.75);">从“一锅好汤，一出好戏”的品牌调性出发，组织影片主题、人设、字幕与分镜。</p>
+        </div>
+      </div>
+
+      <!-- 星空迅朗 × 瑞金国际 · 并排小板块 -->
+      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 24px;">
+        <div class="vc-card reveal reveal-delay-2" style="padding: 0; overflow: hidden; border-radius: 12px;">
+          <div style="aspect-ratio: 16 / 7.5; overflow: hidden;">
+            <img src="skyplus.jpg" alt="星空迅朗 · 概念宣传片画面" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+          </div>
+          <div style="padding: 20px 24px 24px;">
+            <span class="vc-tag">CONCEPT FILM</span>
+            <div style="display: flex; align-items: end; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+              <h4 style="margin-bottom: 0;">星空迅朗</h4>
+              <a class="case-pdf-link role-link" href="#" data-deck-open
+                data-deck-single="skyplus-copy.webp" data-deck-title="星空迅朗概念宣传片文案">
+                <span style="color: var(--c-primary); font-family: var(--font-en); font-size: 12px; letter-spacing: 1px; white-space: nowrap;">策划文案 →</span>
+              </a>
+            </div>
+            <p style="margin-top: 8px;">从“生命与自然之气”出发，以旁白组织空气净化的概念表达。</p>
+          </div>
+        </div>
+        <div class="vc-card reveal reveal-delay-2" style="padding: 0; overflow: hidden; border-radius: 12px;">
+          <div style="aspect-ratio: 16 / 7.5; overflow: hidden;">
+            <img src="ruijin.png" alt="瑞金国际 · 品牌宣传片画面" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+          </div>
+          <div style="padding: 20px 24px 24px;">
+            <span class="vc-tag">JEWELRY NARRATIVE</span>
+            <div style="display: flex; align-items: end; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+              <h4 style="margin-bottom: 0;">瑞金国际</h4>
+              <a class="case-pdf-link role-link" href="https://mp.weixin.qq.com/s/3MxHuO_H1gvJ4pl1Z5MZGA" target="_blank" rel="noopener noreferrer">
+                <span style="color: var(--c-primary); font-family: var(--font-en); font-size: 12px; letter-spacing: 1px; white-space: nowrap;">策划文案 →</span>
+              </a>
+            </div>
+            <p style="margin-top: 8px;">以“起承转合”组织珠宝品牌叙事，让旁白承担文化感与品牌秩序。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- Page 30 — 项目统筹 章节封面（对应 PPT 第 30 页）-->
+  <!-- ============================================== -->
+  <section class="page page-30" id="page-30">
+    <div class="scene" aria-hidden="true"></div>
+    <div class="glow-layer" aria-hidden="true">
+      <div class="halo"></div>
+    </div>
+    <div class="chapter-cover">
+      <div class="eyebrow">PART 04</div>
+      <div class="vertical-cn">对接 · 沟通 · 统筹</div>
+      <div class="en">PROJECT</div>
+      <div class="sub">从客户需求到最终交付</div>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- Page 31 — 麦富迪 × 上新了故宫（对应 PPT 第 31 页）-->
+  <!-- ============================================== -->
+  <section class="page page-31" id="page-31">
+    <div class="container">
+      <div class="reveal">
+        <div class="eyebrow">01 / FROM BRIEF TO DELIVERY</div>
+        <h2 class="section-title">麦富迪 ×《上新了故宫》<br />系列广告片</h2>
+        <p class="lead" style="margin-top: 16px;">弗列加特猫粮产品广告 / 项目经理 · 统筹 · 对接</p>
+        <p style="margin-top: 16px; padding: 12px 16px; background: var(--c-bg-soft); border-left: 3px solid var(--c-primary); font-size: 14px;">
+          围绕广告交付，对齐客户、创意与制作团队。
+        </p>
+      </div>
+
+      <div class="project-flow reveal reveal-delay-1">
+        <div class="pf-step">
+          <div class="pf-num">01</div>
+          <h5>需求接收</h5>
+          <p>梳理传播需求、客户反馈与交付要求</p>
+        </div>
+        <div class="pf-step">
+          <div class="pf-num">02</div>
+          <h5>内部协同</h5>
+          <p>推进方案流转、修改及多方确认</p>
+        </div>
+        <div class="pf-step">
+          <div class="pf-num">03</div>
+          <h5>外部资源</h5>
+          <p>对接制作资源，跟进拍摄制作事项</p>
+        </div>
+        <div class="pf-step">
+          <div class="pf-num">04</div>
+          <h5>项目交付</h5>
+          <p>跟进节点与信息同步，推动最终交付</p>
+        </div>
+      </div>
+
+      <p style="margin-top: 24px; text-align: center; font-family: var(--font-en); font-size: 12px; letter-spacing: 2px; color: var(--c-primary);">CLIENT → TEAM → PRODUCTION → DELIVERY</p>
+
+      <div class="two-col" style="margin-top: 48px; align-items: start;">
+        <div style="min-width: 0;">
+          <div style="aspect-ratio: 1080 / 447; overflow: hidden; border-radius: 4px;">
+            <img src="myd-gugong-hero.webp" alt="麦富迪 ×《上新了故宫》· 项目案例图" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px;">
+            <div style="aspect-ratio: 16 / 9; overflow: hidden; border-radius: 4px;">
+              <img src="myd-frame-1.webp" alt="《画猫篇》成片画面" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+            </div>
+            <div style="aspect-ratio: 16 / 9; overflow: hidden; border-radius: 4px;">
+              <img src="myd-frame-2.webp" alt="成片画面 02" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+            </div>
+            <div style="aspect-ratio: 16 / 9; overflow: hidden; border-radius: 4px;">
+              <img src="myd-frame-3.webp" alt="成片画面 03" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+            </div>
+            <div style="aspect-ratio: 16 / 9; overflow: hidden; border-radius: 4px;">
+              <img src="myd-frame-4.webp" alt="成片画面 04" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+            </div>
+            <div style="aspect-ratio: 16 / 9; overflow: hidden; border-radius: 4px;">
+              <img src="myd-frame-5.webp" alt="成片画面 05" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+            </div>
+            <div style="aspect-ratio: 16 / 9; overflow: hidden; border-radius: 4px;">
+              <img src="myd-frame-6.webp" alt="成片画面 06" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+            </div>
+          </div>
+          <p style="margin-top: 12px; text-align: center; font-family: var(--font-en); font-size: 12px; letter-spacing: 2px; color: var(--c-text-light);">《上新了故宫》系列TVC · 成片画面</p>
+        </div>
+        <div class="reveal reveal-delay-1">
+          <h3 style="font-family: var(--font-serif); font-size: 22px; margin-bottom: 16px; color: var(--c-primary);">交付物</h3>
+          <div style="padding: 16px; background: var(--c-bg-soft); margin-bottom: 12px;">
+            <strong>1 个故宫「御用猫粮」系列广告</strong>
+            <p style="font-size: 13px; color: var(--c-text-light); margin-top: 8px;">①《画猫篇》 ②《宫斗篇》 ③《将军篇》</p>
+          </div>
+          <div style="padding: 16px; background: var(--c-bg-soft);">
+            <strong>1 个社媒短视频</strong>
+            <p style="font-size: 13px; color: var(--c-text-light); margin-top: 8px;">《娘娘与猫的枯燥生活》</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- Page 32 — Production Coordination（对应 PPT 第 32 页）-->
+  <!-- ============================================== -->
+  <section class="page page-32" id="page-32">
+    <div class="container">
+      <div class="reveal">
+        <div class="eyebrow">02 / PRODUCTION COORDINATION</div>
+        <h2 class="section-title">《一个 CEO 的无理要求》<br />产品宣传片</h2>
+        <p class="lead" style="margin-top: 16px;">会展湾智创总部 PARK 产品宣传片 / 制片 · 客户对接</p>
+      </div>
+
+      <div class="project-flow reveal reveal-delay-1">
+        <div class="pf-step">
+          <div class="pf-num">01</div>
+          <h5>概念</h5>
+          <p>独栋 / 生态 / 产业 / 区位</p>
+        </div>
+        <div class="pf-step">
+          <div class="pf-num">02</div>
+          <h5>准备</h5>
+          <p>理解脚本与分镜中的拍摄需求</p>
+        </div>
+        <div class="pf-step">
+          <div class="pf-num">03</div>
+          <h5>现场</h5>
+          <p>协助制作团队，配合现场拍摄推进</p>
+        </div>
+        <div class="pf-step">
+          <div class="pf-num">04</div>
+          <h5>交付</h5>
+          <p>从创意方案到多场景成片的执行经验</p>
+        </div>
+      </div>
+
+      <div class="reveal reveal-delay-2" style="margin-top: 48px;">
+        <div class="scene-head">
+          <h3 style="font-family: var(--font-serif); font-size: 22px; margin: 0;">多场景拍摄</h3>
+          <span class="scene-hint">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+            悬停标签，查看对应场景剧照
+          </span>
+        </div>
+        <div class="scene-tags">
+          <span class="scene-tag-wrap" tabindex="0">
+            <span class="social-tag">山顶</span>
+            <figure class="scene-pop">
+              <img src="ceo-scene-1.webp" alt="山顶剧照" loading="lazy">
+              <figcaption>山顶 · 剧照</figcaption>
+            </figure>
+          </span>
+          <span class="scene-tag-wrap" tabindex="0">
+            <span class="social-tag">草原</span>
+            <figure class="scene-pop">
+              <img src="ceo-scene-2.webp" alt="草原剧照" loading="lazy">
+              <figcaption>草原 · 剧照</figcaption>
+            </figure>
+          </span>
+          <span class="scene-tag-wrap" tabindex="0">
+            <span class="social-tag">河滩</span>
+            <figure class="scene-pop">
+              <img src="ceo-scene-3.webp" alt="河滩剧照" loading="lazy">
+              <figcaption>河滩 · 剧照</figcaption>
+            </figure>
+          </span>
+          <span class="scene-tag-wrap" tabindex="0">
+            <span class="social-tag">游艇</span>
+            <figure class="scene-pop">
+              <img src="ceo-scene-4.webp" alt="游艇剧照" loading="lazy">
+              <figcaption>游艇 · 剧照</figcaption>
+            </figure>
+          </span>
+          <span class="scene-tag-wrap" tabindex="0">
+            <span class="social-tag">飞机</span>
+            <figure class="scene-pop">
+              <img src="ceo-scene-5.webp" alt="飞机剧照" loading="lazy">
+              <figcaption>飞机 · 剧照</figcaption>
+            </figure>
+          </span>
+        </div>
+        <p style="margin-top: 28px; line-height: 1.8; font-size: 17px;">跟进方案到分镜，制定拍摄计划，统筹协调多场景、多方资源配合现场拍摄，沟通后期修改直到成片定稿。</p>
+
+        <div class="reveal" style="margin-top: 36px; max-width: 900px; margin-left: auto; margin-right: auto;">
+          <div class="vslot" style="aspect-ratio: 16 / 9; border: none; background: #0A1526; border-radius: 12px; box-shadow: 0 24px 60px -18px rgba(11,44,103,.4);">
+            <video src="ceo-video.mp4" poster="ceo-cover.webp" preload="none" playsinline onerror="var p=this.parentNode; this.remove(); p.textContent='视频位 · ceo-video.mp4'"></video>
+            <div class="vplay" onclick="var v=this.parentNode.querySelector('video'); v.controls=true; v.play(); this.remove();"><span></span></div>
+          </div>
+          <p style="margin-top: 12px; text-align: center; font-family: var(--font-en); font-size: 12px; letter-spacing: 2px; color: var(--c-text-light);">《一个CEO的无理要求》 · 独栋篇成片</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- Page 33 — Exhibition（对应 PPT 第 33 页）-->
+  <!-- ============================================== -->
+  <section class="page page-33" id="page-33">
+    <div class="container">
+      <div class="reveal">
+        <div class="eyebrow">EXHIBITION PROJECT</div>
+        <h2 class="section-title">展会跟进：<br />从方案比选，到展位落地</h2>
+        <p class="lead" style="margin-top: 16px;">B2B 展会筹备 ｜ 项目经理 · 跟进展会设计、搭建、落地</p>
+      </div>
+
+      <div class="ex-flow reveal reveal-delay-1">
+        <div class="ex-step">
+          <div class="ex-num">01</div>
+          <h5>撰写设计需求</h5>
+          <p>明确展示重点</p>
+          <div style="aspect-ratio: 4 / 3; margin-top: 12px; border-radius: 8px; overflow: hidden;">
+            <img src="expo-s1.webp" alt="撰写设计需求 · 设计需求文档与物料图纸" style="width: 100%; height: 100%; object-fit: cover; display: block;" loading="lazy">
+          </div>
+        </div>
+        <div class="ex-step">
+          <div class="ex-num">02</div>
+          <h5>对接供应商</h5>
+          <p>多方案比选</p>
+          <div style="aspect-ratio: 4 / 3; margin-top: 12px; border-radius: 8px; overflow: hidden;">
+            <img src="expo-s2.webp" alt="对接供应商 · 展位设计效果图" style="width: 100%; height: 100%; object-fit: cover; display: block;" loading="lazy">
+          </div>
+        </div>
+        <div class="ex-step">
+          <div class="ex-num">03</div>
+          <h5>方案确认</h5>
+          <p>推进报价与合同</p>
+          <div style="aspect-ratio: 4 / 3; margin-top: 12px; border-radius: 8px; overflow: hidden;">
+            <img src="expo-s3.webp" alt="方案确认 · 展位落地实拍" style="width: 100%; height: 100%; object-fit: cover; display: block;" loading="lazy">
+          </div>
+        </div>
+        <div class="ex-step">
+          <div class="ex-num">04</div>
+          <h5>筹备展品</h5>
+          <p>产品与画册</p>
+          <div style="aspect-ratio: 4 / 3; margin-top: 12px; border-radius: 8px; overflow: hidden;">
+            <img src="expo-s4.webp" alt="筹备展品 · 电子价签产品展示" style="width: 100%; height: 100%; object-fit: cover; display: block;" loading="lazy">
+          </div>
+        </div>
+        <div class="ex-step">
+          <div class="ex-num">05</div>
+          <h5>现场活动</h5>
+          <p>互动与社媒导流</p>
+          <div style="aspect-ratio: 4 / 3; margin-top: 12px; border-radius: 8px; overflow: hidden;">
+            <img src="expo-s5.webp" alt="现场活动 · 展位互动现场" style="width: 100%; height: 100%; object-fit: cover; display: block;" loading="lazy">
+          </div>
+        </div>
+      </div>
+
+      <p style="margin-top: 32px; padding: 24px; background: var(--c-bg-soft); border-left: 3px solid var(--c-primary); font-size: 14px; line-height: 1.8;">
+        负责展位设计需求梳理、供应商比稿与方案确认，跟进展品筹备、现场陈列及互动活动执行，
+        兼顾展位互动与社媒导流，串联前期方案与现场执行，推动展会各环节顺利落地。
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- Page 34 — 联系页（对应 PPT 第 34 页）-->
+  <!-- ============================================== -->
+  <section class="page page-34" id="page-34">
+    <div class="chapter-cover">
+      <h1 class="thanks-title">谢谢</h1>
+      <div class="en" style="margin-bottom: 32px;">THANK YOU</div>
+      <div style="font-family: var(--font-serif); font-size: 24px; color: var(--c-accent-yellow); margin-bottom: 64px;">
+        期待与您合作
+      </div>
+      <div class="contact-info">
+        <div class="contact-item">
+          <div class="ci-label">PHONE / WECHAT</div>
+          <div class="ci-value">15814483278</div>
+        </div>
+        <div class="contact-item">
+          <div class="ci-label">EMAIL</div>
+          <div class="ci-value">996341873@qq.com</div>
+        </div>
+      </div>
+    </div>
+    <a href="#page-1" class="hero-arrow" style="position: absolute; bottom: 48px;">↑ 返回顶部</a>
+  </section>
+
+  <!-- ===== 策划案预览弹层（站内浏览，无下载入口）===== -->
+  <div class="deck-viewer" id="deckViewer" role="dialog" aria-modal="true" aria-label="婺源幽兰燕麦奶 · 文宣策划案预览" aria-hidden="true">
+    <div class="deck-head">
+      <div class="deck-title"><span class="deck-name" id="deckTitle">策划案预览</span><span class="deck-meta" id="deckCount"></span></div>
+      <button type="button" class="deck-close" id="deckClose" aria-label="关闭预览">&times;</button>
+    </div>
+    <div class="deck-body" id="deckBody"></div>
+    <div class="deck-foot">滚动浏览 · 按 ESC 关闭</div>
+  </div>
+
+  <!-- ===== JS：滚动渐入 + 数据计数 ===== -->
+  <script>
+    // 0) 打开/刷新一律从封面第一页开始
+    //    浏览器默认会"恢复上次的滚动位置"，且这一步发生在 load 之后，
+    //    所以这里：① 关掉恢复机制 ② 清掉地址栏残留的 #page-X ③ 加载后多次强制回顶
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    (() => {
+      const toTop = () => {
+        const html = document.documentElement;
+        const prev = html.style.scrollBehavior;
+        html.style.scrollBehavior = 'auto';   // 绕开全局 smooth，避免可见的"滚回去"动画
+        window.scrollTo(0, 0);
+        html.style.scrollBehavior = prev;
+      };
+      if (location.hash) {
+        try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+      }
+      // 用户一旦自己滚了，就不再干预
+      let left = false;
+      ['wheel', 'touchmove', 'keydown'].forEach(ev =>
+        window.addEventListener(ev, () => { left = true; }, { once: true, passive: true }));
+      const guard = () => { if (!left) toTop(); };
+      guard();
+      ['DOMContentLoaded', 'load'].forEach(ev => window.addEventListener(ev, guard));
+      requestAnimationFrame(guard);
+      setTimeout(guard, 120);
+      setTimeout(guard, 450);
+    })();
+
+    // 1) 滚动渐入
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    // 2) 数字计数动画
+    const countObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting && !e.target.dataset.counted) {
+          e.target.dataset.counted = '1';
+          const target = parseFloat(e.target.dataset.count);
+          const isInt = Number.isInteger(target);
+          const unitEl = e.target.querySelector('.data-unit');
+          const unitHTML = unitEl ? unitEl.outerHTML : '';
+          const duration = 1400;
+          const start = performance.now();
+          const animate = (now) => {
+            const t = Math.min(1, (now - start) / duration);
+            const eased = 1 - Math.pow(1 - t, 3);
+            const val = target * eased;
+            e.target.innerHTML = (isInt ? Math.round(val) : val.toFixed(1)) + unitHTML;
+            if (t < 1) requestAnimationFrame(animate);
+          };
+          requestAnimationFrame(animate);
+          countObserver.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.4 });
+
+    document.querySelectorAll('[data-count]').forEach(el => countObserver.observe(el));
+
+    // 3) 导航高亮当前 section
+    const sections = document.querySelectorAll('.page');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    const navObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const id = e.target.id;
+          navLinks.forEach(a => {
+            a.style.color = a.getAttribute('href') === '#' + id ? 'var(--c-primary)' : '';
+          });
+        }
+      });
+    }, { rootMargin: '-50% 0px -50% 0px' });
+    sections.forEach(s => navObserver.observe(s));
+
+    // 4) nav 在深色 section（首页 / 引言页克莱因蓝）上方时用半透明深蓝；
+    //    浅色 section 上保持默认浅色玻璃态
+    const darkSections = [document.getElementById('page-1'), document.getElementById('page-2')];
+    const navEl = document.querySelector('.nav');
+    if (navEl && darkSections.some(Boolean)) {
+      const syncNavOnDark = () => {
+        const navH = navEl.offsetHeight;
+        // 只要任一深色 section 还没完全滚出 nav，就套用深色玻璃态
+        const coversNav = darkSections.some((sec) => {
+          if (!sec) return false;
+          const r = sec.getBoundingClientRect();
+          return r.bottom > navH + 8;
+        });
+        navEl.classList.toggle('on-light-hero', coversNav);
+      };
+      window.addEventListener('scroll', syncNavOnDark, { passive: true });
+      window.addEventListener('resize', syncNavOnDark);
+      syncNavOnDark();
+    }
+
+    /* ===== 鼠标视差（首页 & 章节封面通用）：背景反向缓动 + 文字正向微移（lerp 平滑） ===== */
+    const initParallax = (section, bg, inner, bgBase, bgAmpX, bgAmpY, inAmpX, inAmpY) => {
+      if (!section || !bg || !inner) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      let tx = 0, ty = 0;   // 目标位置 (-1 ~ 1)
+      let cx = 0, cy = 0;   // 当前缓动位置
+      let rafId = null;
+
+      const tick = () => {
+        cx += (tx - cx) * 0.06;
+        cy += (ty - cy) * 0.06;
+        bg.style.transform = bgBase + ' translate3d(' + (cx * bgAmpX) + 'px,' + (cy * bgAmpY) + 'px,0)';
+        inner.style.transform = 'translate3d(' + (cx * inAmpX) + 'px,' + (cy * inAmpY) + 'px,0)';
+        if (Math.abs(tx - cx) > 0.001 || Math.abs(ty - cy) > 0.001) {
+          rafId = requestAnimationFrame(tick);
+        } else {
+          rafId = null;
+        }
+      };
+      const kick = () => { if (rafId === null) rafId = requestAnimationFrame(tick); };
+
+      section.addEventListener('mousemove', (e) => {
+        const r = section.getBoundingClientRect();
+        tx = ((e.clientX - r.left) / r.width - 0.5) * 2;
+        ty = ((e.clientY - r.top) / r.height - 0.5) * 2;
+        kick();
+      });
+      section.addEventListener('mouseleave', () => { tx = 0; ty = 0; kick(); });
+    };
+
+    // 首页：丝绸背景
+    (() => {
+      const hero = document.getElementById('page-1');
+      if (hero) initParallax(hero, hero.querySelector('.hero-bg'), hero.querySelector('.hero-inner'), 'scale(1.08)', -16, -12, 9, 7);
+    })();
+
+    // PART 01 封面：水彩波纹（幅度更轻，与缓流动画叠加）
+    (() => {
+      const sec = document.getElementById('page-5');
+      if (sec) initParallax(sec, sec.querySelector('.chapter-bg'), sec.querySelector('.chapter-cover'), '', -10, -7, 6, 4);
+    })();
+
+    // PART 02 封面：同款水彩缓流 + 视差（参数与 PART 01 一致）
+    (() => {
+      const sec = document.getElementById('page-19');
+      if (sec) initParallax(sec, sec.querySelector('.chapter-bg'), sec.querySelector('.chapter-cover'), '', -10, -7, 6, 4);
+    })();
+
+    // PART 03 封面：拼贴图层视差——三块撕纸 chip 各按 data-depth 异向漂移（剪辑图层错位感）
+    (() => {
+      const sec = document.getElementById('page-25');
+      if (!sec) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const chips = Array.from(sec.querySelectorAll('.chip'));
+      if (!chips.length) return;
+      let tx = 0, ty = 0, cx = 0, cy = 0, rafId = null;
+      const tick = () => {
+        cx += (tx - cx) * 0.06; cy += (ty - cy) * 0.06;
+        for (const ch of chips) {
+          const p = (ch.dataset.depth || '0,0').split(',');
+          ch.style.transform = 'translate3d(' + (cx * parseFloat(p[0])) + 'px,' + (cy * parseFloat(p[1])) + 'px,0)';
+        }
+        if (Math.abs(tx - cx) > 0.001 || Math.abs(ty - cy) > 0.001) rafId = requestAnimationFrame(tick);
+        else rafId = null;
+      };
+      const kick = () => { if (rafId === null) rafId = requestAnimationFrame(tick); };
+      sec.addEventListener('mousemove', (e) => {
+        const r = sec.getBoundingClientRect();
+        tx = ((e.clientX - r.left) / r.width - 0.5) * 2;
+        ty = ((e.clientY - r.top) / r.height - 0.5) * 2;
+        kick();
+      });
+      sec.addEventListener('mouseleave', () => { tx = 0; ty = 0; kick(); });
+    })();
+
+    // 策划案预览弹层：站内逐页浏览，无下载 / 源文件入口（支持多份策划案）
+    (() => {
+      const viewer = document.getElementById('deckViewer');
+      const body = document.getElementById('deckBody');
+      const counter = document.getElementById('deckCount');
+      const titleEl = document.getElementById('deckTitle');
+      const closeBtn = document.getElementById('deckClose');
+      if (!viewer || !body) return;
+
+      let builtKey = null, lastFocus = null;
+
+      const build = (prefix, total, single) => {
+        const key = single ? ('single:' + single) : (prefix + ':' + total);
+        if (builtKey === key) return;
+        body.innerHTML = '';
+        const frag = document.createDocumentFragment();
+        if (single) {
+          const img = document.createElement('img');
+          img.src = single;
+          img.alt = titleEl.textContent || '策划脚本长图';
+          img.className = 'deck-long';
+          img.draggable = false;
+          frag.appendChild(img);
+        } else {
+          for (let i = 1; i <= total; i++) {
+            const img = document.createElement('img');
+            img.src = prefix + '/p' + String(i).padStart(2, '0') + '.jpg';
+            img.alt = (titleEl.textContent || '策划案') + ' 第 ' + i + ' 页';
+            img.loading = i <= 2 ? 'eager' : 'lazy';
+            img.draggable = false;
+            frag.appendChild(img);
+          }
+        }
+        body.appendChild(frag);
+        builtKey = key;
+      };
+
+      const open = (trigger) => {
+        const prefix = trigger.dataset.deckPrefix || 'youlan-plan';
+        const total = parseInt(trigger.dataset.deckTotal, 10) || 1;
+        const single = trigger.dataset.deckSingle || '';
+        titleEl.textContent = trigger.dataset.deckTitle || '策划案预览';
+        counter.textContent = single ? '长图 · 上下滚动浏览' : '01 / ' + String(total).padStart(2, '0');
+        lastFocus = trigger || document.activeElement;
+        build(prefix, total, single);
+        viewer.classList.add('open');
+        requestAnimationFrame(() => viewer.classList.add('visible'));
+        viewer.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('deck-locked');
+        body.scrollTop = 0;
+        closeBtn.focus({ preventScroll: true });
+      };
+
+      const close = () => {
+        viewer.classList.remove('visible');
+        viewer.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('deck-locked');
+        setTimeout(() => viewer.classList.remove('open'), 320);
+        if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+      };
+
+      document.querySelectorAll('[data-deck-open]').forEach(el => {
+        el.addEventListener('click', (e) => { e.preventDefault(); open(el); });
+      });
+
+      closeBtn.addEventListener('click', close);
+      viewer.addEventListener('click', (e) => { if (e.target === viewer) close(); });
+      document.addEventListener('keydown', (e) => {
+        if (!viewer.classList.contains('open')) return;
+        if (e.key === 'Escape') close();
+      });
+
+      // 当前页码提示
+      const imgs = () => Array.from(body.querySelectorAll('img'));
+      const onScroll = () => {
+        const list = imgs();
+        if (!list.length || body.querySelector('img.deck-long')) return;
+        const mid = body.scrollTop + body.clientHeight / 2;
+        let idx = 1;
+        for (let i = 0; i < list.length; i++) {
+          if (list[i].offsetTop <= mid) idx = i + 1;
+        }
+        counter.textContent = String(idx).padStart(2, '0') + ' / ' + String(list.length).padStart(2, '0');
+      };
+      body.addEventListener('scroll', onScroll, { passive: true });
+
+      // 弹层内屏蔽右键另存（仅降低顺手保存的概率）
+      viewer.addEventListener('contextmenu', (e) => e.preventDefault());
+    })();
+
+  </script>
+</body>
+</html>
