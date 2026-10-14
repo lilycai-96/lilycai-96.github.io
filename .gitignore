@@ -9,3 +9,8 @@ _*
 # 编辑器
 .vscode/
 .idea/
+
+# 部署临时凭据 / 调试响应（本地生成，绝不入库）
+.gh_token_tmp
+.repo_resp.json
+.pages_*.json
