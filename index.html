@@ -174,6 +174,9 @@
       min-height: 100vh;
       padding: 120px 32px 80px;
       display: flex; flex-direction: column; justify-content: center;
+      /* 屏幕外的页面跳过渲染：其中的背景图/内容等滚近时才加载 */
+      content-visibility: auto;
+      contain-intrinsic-size: auto 100vh;
     }
     .container { max-width: var(--container); margin: 0 auto; width: 100%; }
     .container-narrow { max-width: var(--container-narrow); margin: 0 auto; width: 100%; }
@@ -347,7 +350,7 @@
     /* 首页视差：丝绸背景独立图层，scale 放大留出位移余量，由 JS 驱动反向缓动 */
     .page-1 .hero-bg {
       position: absolute; inset: 0; z-index: 0;
-      background: url('home-bg.jpg') center/cover no-repeat;
+      background: url('home-bg.webp') center/cover no-repeat;
       transform: scale(1.08);
       will-change: transform;
       pointer-events: none;
@@ -399,7 +402,7 @@
       /* 背景图：克莱因蓝（IKB），全屏 cover */
       background:
         linear-gradient(180deg, rgba(0,47,167,.0) 0%, rgba(11,44,103,.15) 100%),
-        url('bg-klein.png') center/cover no-repeat;
+        url('bg-klein.webp') center/cover no-repeat;
       text-align: center;
       color: #fff;
     }
@@ -435,7 +438,7 @@
       /* 背景图：2023作品集背景2.jpg — 蓝白笔触 */
       background:
         linear-gradient(180deg, rgba(255,255,255,.55) 0%, rgba(255,255,255,.62) 100%),
-        url('about-bg.jpg') center/cover no-repeat;
+        url('about-bg.webp') center/cover no-repeat;
       position: relative;
     }
     /* 三栏布局：文字 + 肖像 + 数据 */
@@ -587,7 +590,7 @@
       /* 背景图：视觉背景.png — 蓝白水彩丝带 */
       background:
         linear-gradient(180deg, rgba(255,255,255,.48) 0%, rgba(255,255,255,.58) 100%),
-        url('capabilities-bg.png') center/cover no-repeat;
+        url('capabilities-bg.webp') center/cover no-repeat;
       color: var(--c-text);
     }
     .page-4 .eyebrow { color: var(--c-primary); }
@@ -653,12 +656,12 @@
     .page-5 .chapter-bg-inner,
     .page-19 .chapter-bg-inner {
       position: absolute; inset: 0;
-      background: url('chapter1-bg.jpg') center/cover no-repeat;
+      background: url('chapter1-bg.webp') center/cover no-repeat;
       animation: bg-drift 16s ease-in-out infinite;
       will-change: transform;
     }
     .page-19 .chapter-bg-inner {
-      background: url('chapter2-bg.jpg') center/cover no-repeat;
+      background: url('chapter2-bg.webp') center/cover no-repeat;
     }
     /* 水彩缓流：多段路径缓慢漂移（缩放在 1.08~1.17 之间呼吸，位移最大 ±3%） */
     @keyframes bg-drift {
@@ -738,7 +741,7 @@
     /* ========== Page 18 — 华为 Cafebar（渐变蓝 × 咖啡吧图融合背景） ========== */
     .page-18 {
       position: relative;
-      background: url('cafebar-bg.jpg') center/cover no-repeat;
+      background: url('cafebar-bg.webp') center/cover no-repeat;
       color: #fff;
     }
     .page-18::before {
@@ -900,6 +903,12 @@
       transition: transform .5s ease;
     }
     .img-placeholder.hot-cover:hover img { transform: scale(1.02); }
+    /* 动效视频（替代原 GIF，体积降 ~88%）：滚到可见才加载播放 */
+    .img-placeholder.is-anim video.anim-video,
+    .img-placeholder.hot-cover video.anim-video {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+    }
 
     /* 图位 2 (page-7) — 动态海报 GIF */
     .img-placeholder.is-anim {
@@ -1085,7 +1094,7 @@
     .page-9 {
       background:
         linear-gradient(180deg, rgba(255,255,255,.5) 0%, rgba(255,255,255,.62) 100%),
-        url('brand-comm-bg.jpg') center/cover no-repeat;
+        url('brand-comm-bg.webp') center/cover no-repeat;
       color: var(--c-text);
     }
     .page-9 .eyebrow { color: var(--c-primary); }
@@ -1221,7 +1230,7 @@
           rgba(9, 34, 96, .82) 34%,
           rgba(8, 40, 120, .58) 62%,
           rgba(0, 47, 167, .32) 100%),
-        url('expo-booth.jpg') center/cover no-repeat;
+        url('expo-booth.webp') center/cover no-repeat;
       color: #fff;
     }
     .page-12 .eyebrow { color: var(--c-accent-yellow); }
@@ -1536,7 +1545,7 @@
       /* 多屏矩阵背景图：左侧文字区白蒙版重、右侧露出设备样机 */
       background:
         linear-gradient(90deg, rgba(255,255,255,.92) 0%, rgba(255,255,255,.78) 45%, rgba(255,255,255,.38) 100%),
-        url('matrix-bg.jpg') center/cover no-repeat;
+        url('matrix-bg.webp') center/cover no-repeat;
     }
     .matrix-flow {
       display: grid; grid-template-columns: repeat(4, 1fr);
@@ -1572,7 +1581,7 @@
       /* 小红书矩阵背景图：左侧文字区白蒙版重、右侧露出账号样机 */
       background:
         linear-gradient(90deg, rgba(255,255,255,.94) 0%, rgba(255,255,255,.80) 45%, rgba(255,255,255,.40) 100%),
-        url('b2b-bg.jpg') center/cover no-repeat;
+        url('b2b-bg.webp') center/cover no-repeat;
     }
     .b2b-stats {
       display: grid; grid-template-columns: repeat(4, 1fr);
@@ -1607,7 +1616,7 @@
     .page-23 {
       background:
         linear-gradient(90deg, rgba(255,255,255,.92) 0%, rgba(255,255,255,.78) 45%, rgba(255,255,255,.42) 100%),
-        url('platform-context-bg.jpg') center/cover no-repeat;
+        url('platform-context-bg.webp') center/cover no-repeat;
     }
     .b2b-pillars {
       display: grid; grid-template-columns: repeat(3, 1fr);
@@ -1685,7 +1694,7 @@
     .page-24 {
       background:
         linear-gradient(90deg, rgba(255,255,255,.90) 0%, rgba(255,255,255,.72) 45%, rgba(255,255,255,.30) 100%),
-        url('xhs-social-bg.png') center/cover no-repeat;
+        url('xhs-social-bg.webp') center/cover no-repeat;
     }
     .social-tags {
       display: flex; gap: 12px; flex-wrap: wrap;
@@ -1986,7 +1995,7 @@
       position: absolute; inset: 0; z-index: 0;
       background:
         linear-gradient(160deg, rgba(10,35,100,.72) 0%, rgba(19,62,169,.5) 50%, rgba(10,35,100,.72) 100%),
-        url('project-bg.jpg') center/cover no-repeat;
+        url('project-bg.webp') center/cover no-repeat;
       transform-origin: 56% 44%;
       animation: kenBurns 34s ease-in-out infinite;
       will-change: transform;
@@ -2090,7 +2099,7 @@
       /* 结尾页背景：蓝白丝绸质感图 + 深蓝罩压底，保白字可读 */
       background:
         linear-gradient(180deg, rgba(12,37,102,.82) 0%, rgba(19,62,169,.62) 50%, rgba(12,37,102,.78) 100%),
-        url('thanks-bg.jpg') center/cover no-repeat;
+        url('thanks-bg.webp') center/cover no-repeat;
       color: #fff;
       text-align: center;
     }
@@ -2193,7 +2202,7 @@
           <p style="color: var(--c-primary); font-weight: 500;">第七年开始了。</p>
         </div>
         <figure class="about-portrait reveal reveal-delay-1">
-          <span class="portrait-frame"><img src="about-portrait.jpg" alt="蔡利莹" loading="lazy" /></span>
+          <span class="portrait-frame"><img src="about-portrait.webp" decoding="async" alt="蔡利莹" loading="lazy" /></span>
           <span class="caption-en">PORTRAIT · 2026</span>
           <span class="caption-cn">工作之外，仍写故事。</span>
         </figure>
@@ -2302,11 +2311,11 @@
         </div>
         <div class="case-pair reveal reveal-delay-1">
           <figure>
-            <img src="case-ds029-cover.jpg" alt="纤薄系列 DS029 微信封面主视觉" loading="lazy">
+            <img src="case-ds029-cover.webp" decoding="async" alt="纤薄系列 DS029 微信封面主视觉" loading="lazy">
             <figcaption>DS029 · 微信封面</figcaption>
           </figure>
           <figure>
-            <img src="case-ds021-cover.jpg" alt="纤薄系列 DS021 微信头图主视觉" loading="lazy">
+            <img src="case-ds021-cover.webp" decoding="async" alt="纤薄系列 DS021 微信头图主视觉" loading="lazy">
             <figcaption>DS021 · 头图主视觉</figcaption>
           </figure>
         </div>
@@ -2328,7 +2337,7 @@
           </a>
         </div>
         <figure class="img-placeholder portrait is-anim">
-          <img src="ds029-anim-cover.gif" alt="纤薄系列电子标签 DS029 微信长图动态海报" loading="lazy" />
+          <video class="anim-video" src="ds029-anim-cover.mp4" poster="ds029-anim-cover-poster.webp" muted loop playsinline preload="none" aria-label="纤薄系列电子标签 DS029 微信长图动态海报"></video>
           <figcaption>
             <span class="dot"></span>
             DS029 · 微信长图动效
@@ -2382,7 +2391,7 @@
           <span class="launch-tag">COLOR AS MESSAGE</span>
           <a class="launch-link" href="https://mp.weixin.qq.com/s/9WVRutSwP-Wd3lVMJ7Z_kw" target="_blank" rel="noopener noreferrer">
             <figure class="img-placeholder">
-              <img src="launch-01.jpg" alt="四色电子价签新品海报" loading="lazy" />
+              <img src="launch-01.webp" decoding="async" alt="四色电子价签新品海报" loading="lazy" />
             </figure>
           </a>
           <h4>四色电子价签</h4>
@@ -2392,7 +2401,7 @@
           <span class="launch-tag">DISPLAY AS CONTENT</span>
           <a class="launch-link" href="https://mp.weixin.qq.com/s/PBVzk-zTZ60yI_vP8iYA5A" target="_blank" rel="noopener noreferrer">
             <figure class="img-placeholder">
-              <img src="launch-02.jpg" alt="炫彩 LCD 电子价签新品海报" loading="lazy" />
+              <img src="launch-02.webp" decoding="async" alt="炫彩 LCD 电子价签新品海报" loading="lazy" />
             </figure>
           </a>
           <h4>炫彩 LCD</h4>
@@ -2402,7 +2411,7 @@
           <span class="launch-tag">RELIABILITY IN CONTEXT</span>
           <a class="launch-link" href="https://mp.weixin.qq.com/s/wqKwdoeEU4ggXgmbDzMNKw" target="_blank" rel="noopener noreferrer">
             <figure class="img-placeholder">
-              <img src="launch-03.jpg" alt="快刷版电子价签新品海报" loading="lazy" />
+              <img src="launch-03.webp" decoding="async" alt="快刷版电子价签新品海报" loading="lazy" />
             </figure>
           </a>
           <h4>快刷版电子价签</h4>
@@ -2412,7 +2421,7 @@
           <span class="launch-tag">FORM MEETS SCENE</span>
           <a class="launch-link" href="https://mp.weixin.qq.com/s/XZgkmywKkYdS4DeFiLo4gw" target="_blank" rel="noopener noreferrer">
             <figure class="img-placeholder">
-              <img src="launch-04.jpg" alt="智能电子桌牌新品海报" loading="lazy" />
+              <img src="launch-04.webp" decoding="async" alt="智能电子桌牌新品海报" loading="lazy" />
             </figure>
           </a>
           <h4>智能电子桌牌</h4>
@@ -2502,7 +2511,7 @@
             </div>
           </div>
           <figure class="img-placeholder wide hot-cover" style="margin-top: 24px;">
-            <img src="hot-topic-cover.jpg" alt="DeepSeek × 品牌热点传播主视觉：洞察·云里物里有哪些硬核密码？" loading="lazy" />
+            <img src="hot-topic-cover.webp" decoding="async" alt="DeepSeek × 品牌热点传播主视觉：洞察·云里物里有哪些硬核密码？" loading="lazy" />
           </figure>
         </div>
       </div>
@@ -2549,7 +2558,7 @@
           <p style="margin-top: 8px; color: var(--c-text-light); font-size: 13px;">企业层面的能力认可</p>
           <a class="launch-link" href="https://mp.weixin.qq.com/s/WQnTJnvPVbCXitwn05W23w" target="_blank" rel="noopener noreferrer">
             <figure class="award-figure">
-              <img src="award-01.png" alt="品牌实力认证：云里物里入选新一届「深圳知名品牌」" loading="lazy" />
+              <img src="award-01.webp" decoding="async" alt="品牌实力认证：云里物里入选新一届「深圳知名品牌」" loading="lazy" />
             </figure>
           </a>
         </div>
@@ -2558,7 +2567,7 @@
           <p style="margin-top: 8px; color: var(--c-text-light); font-size: 13px;">产品维度的设计荣誉</p>
           <a class="launch-link" href="https://mp.weixin.qq.com/s/jQUIN4jkOyQvVmbWdKuNsA" target="_blank" rel="noopener noreferrer">
             <figure class="award-figure">
-              <img src="award-02.png" alt="产品设计认可：V 型智能电子桌牌荣获智慧办公创新产品设计奖" loading="lazy" />
+              <img src="award-02.webp" decoding="async" alt="产品设计认可：V 型智能电子桌牌荣获智慧办公创新产品设计奖" loading="lazy" />
             </figure>
           </a>
         </div>
@@ -2567,7 +2576,7 @@
           <p style="margin-top: 8px; color: var(--c-text-light); font-size: 13px;">人物与品牌的外部认证</p>
           <a class="launch-link" href="https://mp.weixin.qq.com/s/JuIEPMVfWySUDG8llHR1Vw" target="_blank" rel="noopener noreferrer">
             <figure class="award-figure">
-              <img src="award-03.png" alt="人物背书：云里物里董事长庄严荣获 2022 年「深圳市十大杰出青年企业家」" loading="lazy" />
+              <img src="award-03.webp" decoding="async" alt="人物背书：云里物里董事长庄严荣获 2022 年「深圳市十大杰出青年企业家」" loading="lazy" />
             </figure>
           </a>
         </div>
@@ -2637,7 +2646,7 @@
           <div class="p-flow">销售反馈 → 内容切入 → 技术释疑</div>
           <a class="launch-link" href="https://mp.weixin.qq.com/s/zOQDSWmA3SJFZtaaTaOFkA" target="_blank" rel="noopener noreferrer">
             <figure class="award-figure" style="margin-top: 20px;">
-              <img src="pm-article-01.png" alt="ESL 电子标签｜电子墨水屏里到底有没有墨水？" loading="lazy" />
+              <img src="pm-article-01.webp" decoding="async" alt="ESL 电子标签｜电子墨水屏里到底有没有墨水？" loading="lazy" />
             </figure>
           </a>
         </div>
@@ -2649,7 +2658,7 @@
           <div class="p-flow">配色讨论 → 外壳定制 → 门店形象</div>
           <a class="launch-link" href="https://mp.weixin.qq.com/s/yC-sESZ18wN0KtBh2PthXw" target="_blank" rel="noopener noreferrer">
             <figure class="award-figure" style="margin-top: 20px;">
-              <img src="pm-article-02.png" alt="iPhone 16 配色不够「哇」？不如来定制潘通色电子价签" loading="lazy" />
+              <img src="pm-article-02.webp" decoding="async" alt="iPhone 16 配色不够「哇」？不如来定制潘通色电子价签" loading="lazy" />
             </figure>
           </a>
         </div>
@@ -2661,7 +2670,7 @@
           <div class="p-flow">客户需求 → 应用方案 → 产品价值 → 销售素材</div>
           <a class="launch-link" href="https://mp.weixin.qq.com/s/IwzRqTP968V3KNvr-lbBkA" target="_blank" rel="noopener noreferrer">
             <figure class="award-figure" style="margin-top: 20px;">
-              <img src="pm-article-03.png" alt="云里物里 ESL 电子标签落地香港伊利沙伯医院：打造无纸显示新范式" loading="lazy" />
+              <img src="pm-article-03.webp" decoding="async" alt="云里物里 ESL 电子标签落地香港伊利沙伯医院：打造无纸显示新范式" loading="lazy" />
             </figure>
           </a>
         </div>
@@ -2717,7 +2726,7 @@
             data-deck-prefix="youlan-plan" data-deck-total="18" data-deck-title="婺源幽兰燕麦奶 · 文宣策划案"
             aria-label="打开婺源幽兰燕麦奶文宣策划案预览">
             <figure class="img-placeholder wide hot-cover">
-              <img src="youlan-plan.jpg" alt="婺源幽兰燕麦奶产品文宣策划案：加瓦新品策划案封面、品名系统、产品故事与系列文案" loading="lazy" />
+              <img src="youlan-plan.webp" decoding="async" alt="婺源幽兰燕麦奶产品文宣策划案：加瓦新品策划案封面、品名系统、产品故事与系列文案" loading="lazy" />
             </figure>
           </button>
           <a class="case-pdf-link" href="#" data-deck-open
@@ -2756,13 +2765,13 @@
       <div style="margin-top: 48px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
         <div class="reveal">
           <figure class="longpic-frame">
-            <img src="zhulan-story.png" alt="珠兰不矜 产品故事长图：东方意象茶——外观/香气/冲泡/品饮的全套文宣表达" loading="lazy" />
+            <img src="zhulan-story.webp" decoding="async" alt="珠兰不矜 产品故事长图：东方意象茶——外观/香气/冲泡/品饮的全套文宣表达" loading="lazy" />
           </figure>
           <figcaption style="margin-top: 12px; text-align: center; color: var(--c-primary); font-size: 13px;">产品故事 · 东方意象茶</figcaption>
         </div>
         <div class="reveal reveal-delay-1">
           <figure class="img-placeholder tall hot-cover">
-            <img src="zhulan-merch.png" alt="小珠兰周边包材：不矜簪周边创意与包材风格参考——简约、自然、东方意境" loading="lazy" />
+            <img src="zhulan-merch.webp" decoding="async" alt="小珠兰周边包材：不矜簪周边创意与包材风格参考——简约、自然、东方意境" loading="lazy" />
           </figure>
           <figcaption style="margin-top: 12px; text-align: center; color: var(--c-primary); font-size: 13px;">小珠兰 · 周边包材</figcaption>
         </div>
@@ -2800,7 +2809,7 @@
             data-deck-prefix="waxiaoxia-plan" data-deck-total="16" data-deck-title="蛙小侠饮品策划案"
             aria-label="打开蛙小侠饮品策划案预览">
             <figure class="img-placeholder wide hot-cover">
-              <img src="waxiaoxia-plan.jpg" alt="蛙小侠产品方案：蛙蛙下蛋文案内容打造、试试运气互动与周边物料" loading="lazy" />
+              <img src="waxiaoxia-plan.webp" decoding="async" alt="蛙小侠产品方案：蛙蛙下蛋文案内容打造、试试运气互动与周边物料" loading="lazy" />
             </figure>
           </button>
           <a class="case-pdf-link" href="#" data-deck-open
@@ -2832,7 +2841,7 @@
             <h4 style="font-family: var(--font-serif); font-size: 18px; font-weight: 600; margin-bottom: 8px;">"华为生活，很有意式"</h4>
             <p style="font-size: 13px; color: rgba(255,255,255,.75);">原方案咖啡系列文案</p>
           </div>
-          <img src="cafe-espresso.png" alt="意式浓缩咖啡产品图标" loading="lazy" style="flex-shrink: 0; align-self: center; height: 100px; width: auto; filter: drop-shadow(0 4px 10px rgba(0,10,40,.35));" />
+          <img src="cafe-espresso.webp" decoding="async" alt="意式浓缩咖啡产品图标" loading="lazy" style="flex-shrink: 0; align-self: center; height: 100px; width: auto; filter: drop-shadow(0 4px 10px rgba(0,10,40,.35));" />
         </div>
         <div style="padding: 24px; background: rgba(255,255,255,.10); border: 1px solid rgba(255,255,255,.15); backdrop-filter: blur(8px); display: flex; align-items: flex-start; gap: 16px;">
           <div style="flex: 1; min-width: 0;">
@@ -2840,7 +2849,7 @@
             <h4 style="font-family: var(--font-serif); font-size: 18px; font-weight: 600; margin-bottom: 8px;">没有"苹果"什么事</h4>
             <p style="font-size: 13px; color: rgba(255,255,255,.75);">果饮系列</p>
           </div>
-          <img src="cafe-peach.png" alt="华为茶饮系列产品图标" loading="lazy" style="flex-shrink: 0; align-self: center; height: 100px; width: auto; filter: drop-shadow(0 4px 10px rgba(0,10,40,.35));" />
+          <img src="cafe-peach.webp" decoding="async" alt="华为茶饮系列产品图标" loading="lazy" style="flex-shrink: 0; align-self: center; height: 100px; width: auto; filter: drop-shadow(0 4px 10px rgba(0,10,40,.35));" />
         </div>
         <div style="padding: 24px; background: rgba(255,255,255,.10); border: 1px solid rgba(255,255,255,.15); backdrop-filter: blur(8px); display: flex; align-items: flex-start; gap: 16px;">
           <div style="flex: 1; min-width: 0;">
@@ -2848,7 +2857,7 @@
             <h4 style="font-family: var(--font-serif); font-size: 18px; font-weight: 600; margin-bottom: 8px;">"来杯华子，交个朋友"</h4>
             <p style="font-size: 13px; color: rgba(255,255,255,.75);">包材文案</p>
           </div>
-          <img src="cafe-package.png" alt="华为咖啡吧包材系统图标" loading="lazy" style="flex-shrink: 0; align-self: center; height: 100px; width: auto; filter: drop-shadow(0 4px 10px rgba(0,10,40,.35));" />
+          <img src="cafe-package.webp" decoding="async" alt="华为咖啡吧包材系统图标" loading="lazy" style="flex-shrink: 0; align-self: center; height: 100px; width: auto; filter: drop-shadow(0 4px 10px rgba(0,10,40,.35));" />
         </div>
       </div>
 
@@ -2859,17 +2868,17 @@
           <div style="padding: 20px; background: rgba(9, 26, 72, .5); border: 1px solid rgba(255,255,255,.18); backdrop-filter: blur(8px);">
             <h5 style="font-family: var(--font-serif); font-size: 16px; font-weight: 600; margin-bottom: 8px;">云盖粉</h5>
             <p style="font-size: 13px; color: rgba(255,255,255,.75);">品尝与讨论后提炼轻盈、绵密等内容标签。</p>
-            <img src="earlier-yungaifen.png" alt="云盖粉轻乳茶产品海报：轻松云、稳稳云双卖点" loading="lazy" style="display: block; width: 100%; height: auto; border-radius: 8px; margin-top: 14px; box-shadow: 0 6px 18px -6px rgba(0,8,40,.5);" />
+            <img src="earlier-yungaifen.webp" decoding="async" alt="云盖粉轻乳茶产品海报：轻松云、稳稳云双卖点" loading="lazy" style="display: block; width: 100%; height: auto; border-radius: 8px; margin-top: 14px; box-shadow: 0 6px 18px -6px rgba(0,8,40,.5);" />
           </div>
           <div style="padding: 20px; background: rgba(9, 26, 72, .5); border: 1px solid rgba(255,255,255,.18); backdrop-filter: blur(8px);">
             <h5 style="font-family: var(--font-serif); font-size: 16px; font-weight: 600; margin-bottom: 8px;">智能茶饮设备</h5>
             <p style="font-size: 13px; color: rgba(255,255,255,.75);">围绕研发痛点组织卖点：专注操作、出料与配方保存。</p>
-            <img src="earlier-waterbar.png" alt="8S智能水吧机：专为饮品研发师设计" loading="lazy" style="display: block; width: 100%; height: auto; border-radius: 8px; margin-top: 14px; box-shadow: 0 6px 18px -6px rgba(0,8,40,.5);" />
+            <img src="earlier-waterbar.webp" decoding="async" alt="8S智能水吧机：专为饮品研发师设计" loading="lazy" style="display: block; width: 100%; height: auto; border-radius: 8px; margin-top: 14px; box-shadow: 0 6px 18px -6px rgba(0,8,40,.5);" />
           </div>
           <div style="padding: 20px; background: rgba(9, 26, 72, .5); border: 1px solid rgba(255,255,255,.18); backdrop-filter: blur(8px);">
             <h5 style="font-family: var(--font-serif); font-size: 16px; font-weight: 600; margin-bottom: 8px;">B 端产品资料</h5>
             <p style="font-size: 13px; color: rgba(255,255,255,.75);">理解产地、研发与差异，选择对应受众的表达方式。</p>
-            <img src="earlier-loquat.png" alt="枇杷果冻 B端产品资料页" loading="lazy" style="display: block; width: 100%; height: auto; border-radius: 8px; margin-top: 14px; box-shadow: 0 6px 18px -6px rgba(0,8,40,.5);" />
+            <img src="earlier-loquat.webp" decoding="async" alt="枇杷果冻 B端产品资料页" loading="lazy" style="display: block; width: 100%; height: auto; border-radius: 8px; margin-top: 14px; box-shadow: 0 6px 18px -6px rgba(0,8,40,.5);" />
           </div>
         </div>
       </div>
@@ -2946,27 +2955,27 @@
 
       <div class="soc-marquee reveal reveal-delay-2" aria-label="运营平台">
         <div class="soc-track">
-          <span class="soc-item"><img src="icons/wechat.svg" alt="" />微信公众号</span>
-          <span class="soc-item"><img src="icons/shipinhao.png" alt="" />视频号</span>
-          <span class="soc-item"><img src="icons/tiktok.svg" alt="" />抖音</span>
-          <span class="soc-item"><img src="icons/xiaohongshu.svg" alt="" />小红书</span>
-          <span class="soc-item"><img src="icons/baijiahao.png" alt="" />百家号</span>
-          <span class="soc-item"><img src="icons/sohu.png" alt="" />搜狐</span>
-          <span class="soc-item"><img src="icons/zhihu.svg" alt="" />知乎</span>
-          <span class="soc-item"><img src="icons/toutiao.png" alt="" />今日头条</span>
-          <span class="soc-item"><img src="icons/bilibili.svg" alt="" />bilibili</span>
-          <span class="soc-item"><img src="icons/csdn.svg" alt="" onerror="this.replaceWith(document.createTextNode('C'));this.parentNode.style.gap='0'" />CSDN</span>
+          <span class="soc-item"><img src="icons/wechat.svg" decoding="async" loading="lazy" alt="" />微信公众号</span>
+          <span class="soc-item"><img src="icons/shipinhao.png" decoding="async" loading="lazy" alt="" />视频号</span>
+          <span class="soc-item"><img src="icons/tiktok.svg" decoding="async" loading="lazy" alt="" />抖音</span>
+          <span class="soc-item"><img src="icons/xiaohongshu.svg" decoding="async" loading="lazy" alt="" />小红书</span>
+          <span class="soc-item"><img src="icons/baijiahao.png" decoding="async" loading="lazy" alt="" />百家号</span>
+          <span class="soc-item"><img src="icons/sohu.png" decoding="async" loading="lazy" alt="" />搜狐</span>
+          <span class="soc-item"><img src="icons/zhihu.svg" decoding="async" loading="lazy" alt="" />知乎</span>
+          <span class="soc-item"><img src="icons/toutiao.png" decoding="async" loading="lazy" alt="" />今日头条</span>
+          <span class="soc-item"><img src="icons/bilibili.svg" decoding="async" loading="lazy" alt="" />bilibili</span>
+          <span class="soc-item"><img src="icons/csdn.svg" decoding="async" loading="lazy" alt="" onerror="this.replaceWith(document.createTextNode('C'));this.parentNode.style.gap='0'" />CSDN</span>
           <!-- 复制一份实现无缝循环 -->
-          <span class="soc-item"><img src="icons/wechat.svg" alt="" />微信公众号</span>
-          <span class="soc-item"><img src="icons/shipinhao.png" alt="" />视频号</span>
-          <span class="soc-item"><img src="icons/tiktok.svg" alt="" />抖音</span>
-          <span class="soc-item"><img src="icons/xiaohongshu.svg" alt="" />小红书</span>
-          <span class="soc-item"><img src="icons/baijiahao.png" alt="" />百家号</span>
-          <span class="soc-item"><img src="icons/sohu.png" alt="" />搜狐</span>
-          <span class="soc-item"><img src="icons/zhihu.svg" alt="" />知乎</span>
-          <span class="soc-item"><img src="icons/toutiao.png" alt="" />今日头条</span>
-          <span class="soc-item"><img src="icons/bilibili.svg" alt="" />bilibili</span>
-          <span class="soc-item"><img src="icons/csdn.svg" alt="" onerror="this.replaceWith(document.createTextNode('C'));this.parentNode.style.gap='0'" />CSDN</span>
+          <span class="soc-item"><img src="icons/wechat.svg" decoding="async" loading="lazy" alt="" />微信公众号</span>
+          <span class="soc-item"><img src="icons/shipinhao.png" decoding="async" loading="lazy" alt="" />视频号</span>
+          <span class="soc-item"><img src="icons/tiktok.svg" decoding="async" loading="lazy" alt="" />抖音</span>
+          <span class="soc-item"><img src="icons/xiaohongshu.svg" decoding="async" loading="lazy" alt="" />小红书</span>
+          <span class="soc-item"><img src="icons/baijiahao.png" decoding="async" loading="lazy" alt="" />百家号</span>
+          <span class="soc-item"><img src="icons/sohu.png" decoding="async" loading="lazy" alt="" />搜狐</span>
+          <span class="soc-item"><img src="icons/zhihu.svg" decoding="async" loading="lazy" alt="" />知乎</span>
+          <span class="soc-item"><img src="icons/toutiao.png" decoding="async" loading="lazy" alt="" />今日头条</span>
+          <span class="soc-item"><img src="icons/bilibili.svg" decoding="async" loading="lazy" alt="" />bilibili</span>
+          <span class="soc-item"><img src="icons/csdn.svg" decoding="async" loading="lazy" alt="" onerror="this.replaceWith(document.createTextNode('C'));this.parentNode.style.gap='0'" />CSDN</span>
         </div>
       </div>
     </div>
@@ -3103,9 +3112,9 @@
             <div class="spl-zh">科普式</div>
           </div>
           <div class="sp-slots">
-            <div class="sp-slot"><img src="post-knowledge-01.jpg" alt="科普式图文 1" onerror="this.parentNode.textContent='科普式 · 图位1'"></div>
-            <div class="sp-slot"><img src="post-knowledge-02.jpg" alt="科普式图文 2" onerror="this.parentNode.textContent='科普式 · 图位2'"></div>
-            <div class="sp-slot"><img src="post-knowledge-03.jpg" alt="科普式图文 3" onerror="this.parentNode.textContent='科普式 · 图位3'"></div>
+            <div class="sp-slot"><img src="post-knowledge-01.webp" decoding="async" loading="lazy" alt="科普式图文 1" onerror="this.parentNode.textContent='科普式 · 图位1'"></div>
+            <div class="sp-slot"><img src="post-knowledge-02.webp" decoding="async" loading="lazy" alt="科普式图文 2" onerror="this.parentNode.textContent='科普式 · 图位2'"></div>
+            <div class="sp-slot"><img src="post-knowledge-03.webp" decoding="async" loading="lazy" alt="科普式图文 3" onerror="this.parentNode.textContent='科普式 · 图位3'"></div>
           </div>
         </div>
         <div class="sp-row">
@@ -3114,9 +3123,9 @@
             <div class="spl-zh">场景化</div>
           </div>
           <div class="sp-slots">
-            <div class="sp-slot"><img src="post-scenario-01.jpg" alt="场景化图文 1" onerror="this.parentNode.textContent='场景化 · 图位1'"></div>
-            <div class="sp-slot"><img src="post-scenario-02.jpg" alt="场景化图文 2" onerror="this.parentNode.textContent='场景化 · 图位2'"></div>
-            <div class="sp-slot"><img src="post-scenario-03.jpg" alt="场景化图文 3" onerror="this.parentNode.textContent='场景化 · 图位3'"></div>
+            <div class="sp-slot"><img src="post-scenario-01.webp" decoding="async" loading="lazy" alt="场景化图文 1" onerror="this.parentNode.textContent='场景化 · 图位1'"></div>
+            <div class="sp-slot"><img src="post-scenario-02.webp" decoding="async" loading="lazy" alt="场景化图文 2" onerror="this.parentNode.textContent='场景化 · 图位2'"></div>
+            <div class="sp-slot"><img src="post-scenario-03.webp" decoding="async" loading="lazy" alt="场景化图文 3" onerror="this.parentNode.textContent='场景化 · 图位3'"></div>
           </div>
         </div>
         <div class="sp-row">
@@ -3125,9 +3134,9 @@
             <div class="spl-zh">痛点式</div>
           </div>
           <div class="sp-slots">
-            <div class="sp-slot"><img src="post-interest-01.jpg" alt="痛点式图文 1" onerror="this.parentNode.textContent='痛点式 · 图位1'"></div>
-            <div class="sp-slot"><img src="post-interest-02.jpg" alt="痛点式图文 2" onerror="this.parentNode.textContent='痛点式 · 图位2'"></div>
-            <div class="sp-slot"><img src="post-interest-03.jpg" alt="痛点式图文 3" onerror="this.parentNode.textContent='痛点式 · 图位3'"></div>
+            <div class="sp-slot"><img src="post-interest-01.webp" decoding="async" loading="lazy" alt="痛点式图文 1" onerror="this.parentNode.textContent='痛点式 · 图位1'"></div>
+            <div class="sp-slot"><img src="post-interest-02.webp" decoding="async" loading="lazy" alt="痛点式图文 2" onerror="this.parentNode.textContent='痛点式 · 图位2'"></div>
+            <div class="sp-slot"><img src="post-interest-03.webp" decoding="async" loading="lazy" alt="痛点式图文 3" onerror="this.parentNode.textContent='痛点式 · 图位3'"></div>
           </div>
         </div>
       </div>
@@ -3230,7 +3239,7 @@
       <div class="two-col" style="margin-top: 48px;">
         <div class="reveal">
           <figure class="img-placeholder hot-cover">
-            <img src="matao.gif" alt="会展湾智创《猫总二三事》动画" style="width:100%; height:auto; display:block;" loading="lazy" />
+            <video class="anim-video" src="matao.mp4" poster="matao-poster.webp" muted loop playsinline preload="none" aria-label="会展湾智创《猫总二三事》动画" style="width:100%; height:auto; display:block;"></video>
           </figure>
           <a class="case-pdf-link" href="#" data-deck-open
             data-deck-single="maozong-script.webp" data-deck-title="会展湾智创《猫总二三事》策划脚本">
@@ -3239,7 +3248,7 @@
         </div>
         <div class="reveal reveal-delay-1">
           <figure class="img-placeholder hot-cover">
-            <img src="yidishui.jpg" alt="《一滴水》品牌影片画面" style="width:100%; height:auto; display:block;" loading="lazy" />
+            <img src="yidishui.webp" decoding="async" alt="《一滴水》品牌影片画面" style="width:100%; height:auto; display:block;" loading="lazy" />
           </figure>
           <p style="margin-top: 12px; text-align: center; color: var(--c-primary); font-size: 13px;">《一滴水》品牌影片</p>
         </div>
@@ -3247,7 +3256,7 @@
 
       <div class="reveal" style="margin-top: 48px;">
         <figure class="img-placeholder hot-cover">
-          <img src="xifengji.jpg" alt="戏凤记猪肚鸡火锅品牌影片画面" style="width:100%; height:auto; display:block;" loading="lazy" />
+          <img src="xifengji.webp" decoding="async" alt="戏凤记猪肚鸡火锅品牌影片画面" style="width:100%; height:auto; display:block;" loading="lazy" />
         </figure>
         <p style="margin-top: 12px; text-align: center; color: var(--c-primary); font-size: 13px;">戏凤记 · 餐饮品牌影片</p>
       </div>
@@ -3332,7 +3341,7 @@
         <div class="reveal reveal-delay-1">
           <div style="padding: 24px; background: #fff; border: 1px solid var(--c-border); margin-bottom: 16px; display: flex; align-items: center; gap: 20px;">
             <figure class="img-placeholder hot-cover" style="flex: 0 0 42%; margin: 0;">
-              <img src="yidishui-plan1.png" alt="方案一 · 蜕变 水滴意象画面" style="width:100%; height:100%; display:block;" loading="lazy" />
+              <img src="yidishui-plan1.webp" decoding="async" alt="方案一 · 蜕变 水滴意象画面" style="width:100%; height:100%; display:block;" loading="lazy" />
             </figure>
             <div style="flex: 1;">
               <a class="case-pdf-link" href="#" data-deck-open
@@ -3344,7 +3353,7 @@
           </div>
           <div style="padding: 24px; background: #fff; border: 1px solid var(--c-border); display: flex; align-items: center; gap: 20px;">
             <figure class="img-placeholder hot-cover" style="flex: 0 0 42%; margin: 0;">
-              <img src="yidishui-plan2.png" alt="方案二 · 凝聚 水滴汇聚画面" style="width:100%; height:100%; display:block;" loading="lazy" />
+              <img src="yidishui-plan2.webp" decoding="async" alt="方案二 · 凝聚 水滴汇聚画面" style="width:100%; height:100%; display:block;" loading="lazy" />
             </figure>
             <div style="flex: 1;">
               <a class="case-pdf-link" href="#" data-deck-open
@@ -3373,7 +3382,7 @@
       <!-- 戏凤记 · 主推大板块 -->
       <div class="reveal reveal-delay-1" style="margin-top: 40px; background: #0C1B3A; border-radius: 16px; overflow: hidden;">
         <div style="aspect-ratio: 16 / 5.5; overflow: hidden;">
-          <img src="xifengji-hero.webp" alt="戏凤记 · 品牌影片主视觉" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+          <img src="xifengji-hero.webp" decoding="async" loading="lazy" alt="戏凤记 · 品牌影片主视觉" style="width: 100%; height: 100%; object-fit: cover; display: block;">
         </div>
         <div style="padding: 26px 32px 30px;">
           <span style="color: #E8B84B; font-family: var(--font-en); font-size: 12px; font-weight: 600; letter-spacing: 2px;">BRAND FILM</span>
@@ -3392,7 +3401,7 @@
       <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 24px;">
         <div class="vc-card reveal reveal-delay-2" style="padding: 0; overflow: hidden; border-radius: 12px;">
           <div style="aspect-ratio: 16 / 7.5; overflow: hidden;">
-            <img src="skyplus.jpg" alt="星空迅朗 · 概念宣传片画面" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+            <img src="skyplus.webp" decoding="async" loading="lazy" alt="星空迅朗 · 概念宣传片画面" style="width: 100%; height: 100%; object-fit: cover; display: block;">
           </div>
           <div style="padding: 20px 24px 24px;">
             <span class="vc-tag">CONCEPT FILM</span>
@@ -3408,7 +3417,7 @@
         </div>
         <div class="vc-card reveal reveal-delay-2" style="padding: 0; overflow: hidden; border-radius: 12px;">
           <div style="aspect-ratio: 16 / 7.5; overflow: hidden;">
-            <img src="ruijin.png" alt="瑞金国际 · 品牌宣传片画面" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+            <img src="ruijin.webp" decoding="async" loading="lazy" alt="瑞金国际 · 品牌宣传片画面" style="width: 100%; height: 100%; object-fit: cover; display: block;">
           </div>
           <div style="padding: 20px 24px 24px;">
             <span class="vc-tag">JEWELRY NARRATIVE</span>
@@ -3483,26 +3492,26 @@
       <div class="two-col" style="margin-top: 48px; align-items: start;">
         <div style="min-width: 0;">
           <div style="aspect-ratio: 1080 / 447; overflow: hidden; border-radius: 4px;">
-            <img src="myd-gugong-hero.webp" alt="麦富迪 ×《上新了故宫》· 项目案例图" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+            <img src="myd-gugong-hero.webp" decoding="async" loading="lazy" alt="麦富迪 ×《上新了故宫》· 项目案例图" style="width: 100%; height: 100%; object-fit: cover; display: block;">
           </div>
           <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px;">
             <div style="aspect-ratio: 16 / 9; overflow: hidden; border-radius: 4px;">
-              <img src="myd-frame-1.webp" alt="《画猫篇》成片画面" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+              <img src="myd-frame-1.webp" decoding="async" loading="lazy" alt="《画猫篇》成片画面" style="width: 100%; height: 100%; object-fit: cover; display: block;">
             </div>
             <div style="aspect-ratio: 16 / 9; overflow: hidden; border-radius: 4px;">
-              <img src="myd-frame-2.webp" alt="成片画面 02" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+              <img src="myd-frame-2.webp" decoding="async" loading="lazy" alt="成片画面 02" style="width: 100%; height: 100%; object-fit: cover; display: block;">
             </div>
             <div style="aspect-ratio: 16 / 9; overflow: hidden; border-radius: 4px;">
-              <img src="myd-frame-3.webp" alt="成片画面 03" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+              <img src="myd-frame-3.webp" decoding="async" loading="lazy" alt="成片画面 03" style="width: 100%; height: 100%; object-fit: cover; display: block;">
             </div>
             <div style="aspect-ratio: 16 / 9; overflow: hidden; border-radius: 4px;">
-              <img src="myd-frame-4.webp" alt="成片画面 04" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+              <img src="myd-frame-4.webp" decoding="async" loading="lazy" alt="成片画面 04" style="width: 100%; height: 100%; object-fit: cover; display: block;">
             </div>
             <div style="aspect-ratio: 16 / 9; overflow: hidden; border-radius: 4px;">
-              <img src="myd-frame-5.webp" alt="成片画面 05" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+              <img src="myd-frame-5.webp" decoding="async" loading="lazy" alt="成片画面 05" style="width: 100%; height: 100%; object-fit: cover; display: block;">
             </div>
             <div style="aspect-ratio: 16 / 9; overflow: hidden; border-radius: 4px;">
-              <img src="myd-frame-6.webp" alt="成片画面 06" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+              <img src="myd-frame-6.webp" decoding="async" loading="lazy" alt="成片画面 06" style="width: 100%; height: 100%; object-fit: cover; display: block;">
             </div>
           </div>
           <p style="margin-top: 12px; text-align: center; font-family: var(--font-en); font-size: 12px; letter-spacing: 2px; color: var(--c-text-light);">《上新了故宫》系列TVC · 成片画面</p>
@@ -3568,35 +3577,35 @@
           <span class="scene-tag-wrap" tabindex="0">
             <span class="social-tag">山顶</span>
             <figure class="scene-pop">
-              <img src="ceo-scene-1.webp" alt="山顶剧照" loading="lazy">
+              <img src="ceo-scene-1.webp" decoding="async" alt="山顶剧照" loading="lazy">
               <figcaption>山顶 · 剧照</figcaption>
             </figure>
           </span>
           <span class="scene-tag-wrap" tabindex="0">
             <span class="social-tag">草原</span>
             <figure class="scene-pop">
-              <img src="ceo-scene-2.webp" alt="草原剧照" loading="lazy">
+              <img src="ceo-scene-2.webp" decoding="async" alt="草原剧照" loading="lazy">
               <figcaption>草原 · 剧照</figcaption>
             </figure>
           </span>
           <span class="scene-tag-wrap" tabindex="0">
             <span class="social-tag">河滩</span>
             <figure class="scene-pop">
-              <img src="ceo-scene-3.webp" alt="河滩剧照" loading="lazy">
+              <img src="ceo-scene-3.webp" decoding="async" alt="河滩剧照" loading="lazy">
               <figcaption>河滩 · 剧照</figcaption>
             </figure>
           </span>
           <span class="scene-tag-wrap" tabindex="0">
             <span class="social-tag">游艇</span>
             <figure class="scene-pop">
-              <img src="ceo-scene-4.webp" alt="游艇剧照" loading="lazy">
+              <img src="ceo-scene-4.webp" decoding="async" alt="游艇剧照" loading="lazy">
               <figcaption>游艇 · 剧照</figcaption>
             </figure>
           </span>
           <span class="scene-tag-wrap" tabindex="0">
             <span class="social-tag">飞机</span>
             <figure class="scene-pop">
-              <img src="ceo-scene-5.webp" alt="飞机剧照" loading="lazy">
+              <img src="ceo-scene-5.webp" decoding="async" alt="飞机剧照" loading="lazy">
               <figcaption>飞机 · 剧照</figcaption>
             </figure>
           </span>
@@ -3631,7 +3640,7 @@
           <h5>撰写设计需求</h5>
           <p>明确展示重点</p>
           <div style="aspect-ratio: 4 / 3; margin-top: 12px; border-radius: 8px; overflow: hidden;">
-            <img src="expo-s1.webp" alt="撰写设计需求 · 设计需求文档与物料图纸" style="width: 100%; height: 100%; object-fit: cover; display: block;" loading="lazy">
+            <img src="expo-s1.webp" decoding="async" alt="撰写设计需求 · 设计需求文档与物料图纸" style="width: 100%; height: 100%; object-fit: cover; display: block;" loading="lazy">
           </div>
         </div>
         <div class="ex-step">
@@ -3639,7 +3648,7 @@
           <h5>对接供应商</h5>
           <p>多方案比选</p>
           <div style="aspect-ratio: 4 / 3; margin-top: 12px; border-radius: 8px; overflow: hidden;">
-            <img src="expo-s2.webp" alt="对接供应商 · 展位设计效果图" style="width: 100%; height: 100%; object-fit: cover; display: block;" loading="lazy">
+            <img src="expo-s2.webp" decoding="async" alt="对接供应商 · 展位设计效果图" style="width: 100%; height: 100%; object-fit: cover; display: block;" loading="lazy">
           </div>
         </div>
         <div class="ex-step">
@@ -3647,7 +3656,7 @@
           <h5>方案确认</h5>
           <p>推进报价与合同</p>
           <div style="aspect-ratio: 4 / 3; margin-top: 12px; border-radius: 8px; overflow: hidden;">
-            <img src="expo-s3.webp" alt="方案确认 · 展位落地实拍" style="width: 100%; height: 100%; object-fit: cover; display: block;" loading="lazy">
+            <img src="expo-s3.webp" decoding="async" alt="方案确认 · 展位落地实拍" style="width: 100%; height: 100%; object-fit: cover; display: block;" loading="lazy">
           </div>
         </div>
         <div class="ex-step">
@@ -3655,7 +3664,7 @@
           <h5>筹备展品</h5>
           <p>产品与画册</p>
           <div style="aspect-ratio: 4 / 3; margin-top: 12px; border-radius: 8px; overflow: hidden;">
-            <img src="expo-s4.webp" alt="筹备展品 · 电子价签产品展示" style="width: 100%; height: 100%; object-fit: cover; display: block;" loading="lazy">
+            <img src="expo-s4.webp" decoding="async" alt="筹备展品 · 电子价签产品展示" style="width: 100%; height: 100%; object-fit: cover; display: block;" loading="lazy">
           </div>
         </div>
         <div class="ex-step">
@@ -3663,7 +3672,7 @@
           <h5>现场活动</h5>
           <p>互动与社媒导流</p>
           <div style="aspect-ratio: 4 / 3; margin-top: 12px; border-radius: 8px; overflow: hidden;">
-            <img src="expo-s5.webp" alt="现场活动 · 展位互动现场" style="width: 100%; height: 100%; object-fit: cover; display: block;" loading="lazy">
+            <img src="expo-s5.webp" decoding="async" alt="现场活动 · 展位互动现场" style="width: 100%; height: 100%; object-fit: cover; display: block;" loading="lazy">
           </div>
         </div>
       </div>
@@ -3736,6 +3745,36 @@
       requestAnimationFrame(guard);
       setTimeout(guard, 120);
       setTimeout(guard, 450);
+    })();
+
+
+    // 章节锚点位置修正：content-visibility 下未渲染区块的高度是估算值，
+    // 跳转后连续校准，直到落点稳定（±8px）或超时，保证导航跳转精准
+    (() => {
+      let timer = null;
+      const fix = () => {
+        const h = location.hash;
+        if (!h || h.length < 2) return false;
+        const el = document.querySelector(h);
+        if (!el) return false;
+        if (Math.abs(el.getBoundingClientRect().top) > 8) {
+          const html = document.documentElement;
+          const prev = html.style.scrollBehavior;
+          html.style.scrollBehavior = 'auto';
+          el.scrollIntoView({ block: 'start', behavior: 'auto' });
+          html.style.scrollBehavior = prev;
+          return true;
+        }
+        return false;
+      };
+      window.addEventListener('hashchange', () => {
+        if (timer) clearInterval(timer);
+        const t0 = performance.now();
+        requestAnimationFrame(fix);
+        timer = setInterval(() => {
+          if (!fix() || performance.now() - t0 > 900) { clearInterval(timer); timer = null; }
+        }, 90);
+      });
     })();
 
     // 1) 滚动渐入
@@ -3978,5 +4017,17 @@
     })();
 
   </script>
+<script>
+  // 动效视频：preload=none 不预载，滚近视口才播放、离开即暂停
+  (() => {
+    const vs = document.querySelectorAll('video.anim-video');
+    if (!vs.length) return;
+    const play = v => { try { v.muted = true; const r = v.play(); if (r && r.catch) r.catch(() => {}); } catch (e) {} };
+    if (!('IntersectionObserver' in window)) { vs.forEach(play); return; }
+    const vio = new IntersectionObserver(es => es.forEach(e => e.isIntersecting ? play(e.target) : e.target.pause()),
+                                        { rootMargin: '300px 0px' });
+    vs.forEach(v => vio.observe(v));
+  })();
+</script>
 </body>
 </html>
